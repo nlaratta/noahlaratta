@@ -15,12 +15,12 @@ export default function Home() {
         >
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              <span className="text-sage">Software Engineer</span>
+              <span className="text-sage hover:text-sage-dark transition-colors duration-300">Software Engineer</span>
               <br />
               Building Scalable Solutions with Precision
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-600 hover:text-gray-800 mb-8 leading-relaxed transition-colors duration-300">
               Hi, I&apos;m Noah Laratta. I&apos;m a software engineer passionate about creating efficient, 
               scalable solutions and sharing knowledge through technical writing. 
               I specialize in full-stack development, cloud architecture, and building 
@@ -62,14 +62,14 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex-shrink-0"
           >
-            <div className="relative w-[280px] h-[280px] md:w-[520px] md:h-[520px] rounded-full overflow-hidden">
+            <div className="relative w-[280px] h-[280px] md:w-[520px] md:h-[520px] rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <Image
                 src="/me.jpg"
                 alt="Noah Laratta"
                 fill
                 style={{ objectFit: 'cover' }}
                 priority
-                className="hover:scale-105 transition-transform duration-300"
+                className="hover:scale-110 transition-transform duration-500 ease-in-out"
               />
             </div>
           </motion.div>

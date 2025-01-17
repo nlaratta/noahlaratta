@@ -23,7 +23,7 @@ export default function Navbar() {
           <div className="container mx-auto px-4">
             <div className="flex justify-between h-16">
               <div className="flex-shrink-0 flex items-center">
-                <Link href="/" className="text-xl font-bold text-sage hover:text-sage-dark transition-colors duration-300">
+                <Link href="/" className="text-xl font-bold text-sage hover:text-sage-dark transform hover:scale-105 transition-all duration-300">
                   Noah Laratta
                 </Link>
               </div>
@@ -37,25 +37,27 @@ export default function Navbar() {
                     className={`${
                       isActive(item.href)
                         ? 'text-sage border-b-2 border-sage'
-                        : 'text-gray-600 hover:text-sage'
-                    } transition-colors duration-300`}
+                        : 'text-gray-600 hover:text-sage hover:border-b-2 hover:border-sage'
+                    } transition-all duration-300 py-1`}
                   >
                     {item.name}
                   </Link>
                 ))}
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   href="/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white bg-sage hover:bg-sage-dark px-4 py-2 rounded transition-colors duration-300"
+                  className="text-white bg-sage hover:bg-sage-dark px-4 py-2 rounded shadow-md hover:shadow-lg transition-all duration-300"
                 >
                   Resume
-                </a>
+                </motion.a>
               </div>
 
               {/* Mobile menu button */}
               <div className="md:hidden flex items-center">
-                <Disclosure.Button className="text-gray-600 hover:text-sage">
+                <Disclosure.Button className="text-gray-600 hover:text-sage transform hover:scale-110 transition-all duration-300">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,19 +90,21 @@ export default function Navbar() {
                     isActive(item.href)
                       ? 'text-sage bg-sage-light/10'
                       : 'text-gray-600 hover:text-sage hover:bg-sage-light/10'
-                  } block px-3 py-2 rounded-md text-base transition-colors duration-300`}
+                  } block px-3 py-2 rounded-md text-base transform hover:translate-x-2 transition-all duration-300`}
                 >
                   {item.name}
                 </Disclosure.Button>
               ))}
-              <a
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block px-3 py-2 rounded-md text-base text-white bg-sage hover:bg-sage-dark transition-colors duration-300"
+                className="block px-3 py-2 rounded-md text-base text-white bg-sage hover:bg-sage-dark shadow-md hover:shadow-lg transition-all duration-300"
               >
                 Resume
-              </a>
+              </motion.a>
             </motion.div>
           </Disclosure.Panel>
         </>
