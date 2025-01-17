@@ -34,7 +34,7 @@ export default function Home() {
               >
                 <Link
                   href="/projects"
-                  className="inline-block bg-sage text-white px-8 py-3 rounded-lg font-medium hover:bg-sage-dark transition-colors duration-300"
+                  className="inline-block bg-sage text-white px-10 py-4 text-lg rounded-lg font-semibold hover:bg-sage-dark hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
                 >
                   View My Projects
                 </Link>
@@ -48,7 +48,7 @@ export default function Home() {
                   href="/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-white text-sage border-2 border-sage px-8 py-3 rounded-lg font-medium hover:bg-sage hover:text-white transition-colors duration-300"
+                  className="inline-block bg-white text-sage border-2 border-sage px-10 py-4 text-lg rounded-lg font-semibold hover:bg-sage hover:text-white hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Download Resume
                 </a>
