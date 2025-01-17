@@ -28,10 +28,10 @@ export default function Layout({ children, title = 'Noah Laratta | Software Engi
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div>© {new Date().getFullYear()} Noah Laratta</div>
           <div className="flex gap-4">
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="hover:text-sage-light transition-colors duration-300">
+            <a href="https://github.com/nlaratta" target="_blank" rel="noopener noreferrer" className="hover:text-sage-light transition-colors duration-300">
               GitHub
             </a>
-            <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="hover:text-sage-light transition-colors duration-300">
+            <a href="https://linkedin.com/in/noah-laratta" target="_blank" rel="noopener noreferrer" className="hover:text-sage-light transition-colors duration-300">
               LinkedIn
             </a>
             <a href="mailto:noahlaratta@gmail.com" className="hover:text-sage-light transition-colors duration-300">
