@@ -10,7 +10,7 @@ interface LayoutProps {
 
 export default function Layout({ children, title = 'Noah Laratta | Software Engineer', description = 'Software Engineer Portfolio showcasing projects and technical blog posts' }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen flex flex-col bg-white">
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -20,11 +20,11 @@ export default function Layout({ children, title = 'Noah Laratta | Software Engi
 
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-8">
         {children}
       </main>
 
-      <footer className="bg-sage text-white py-4 mt-8">
+      <footer className="bg-sage text-white py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div>© {new Date().getFullYear()} Noah Laratta</div>
           <div className="flex gap-4">

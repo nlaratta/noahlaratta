@@ -62,6 +62,40 @@ export const projects: Project[] = [
     `,
     technologies: ['Next.js', 'Tailwind CSS', 'React', 'TypeScript', 'Framer Motion'],
     githubLink: 'https://github.com/nlaratta/personal-website'
+  },
+  {
+    id: 'project4',
+    title: 'Placeholder',
+    summary: 'Personal website built with Next.js and Tailwind CSS',
+    description: `
+      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and blog posts.
+
+      **Key Features:**
+
+      - **CI/CD:** Automated build and deployment pipeline using GitHub Actions.
+      - **Projects:** A projects section to showcase my projects.
+      - **About:** An about section to showcase my about me.
+      - **Contact:** A contact section to showcase my contact information.
+    `,
+    technologies: ['Next.js', 'Tailwind CSS', 'React', 'TypeScript', 'Framer Motion'],
+    githubLink: 'https://github.com/nlaratta/personal-website'
+  },
+  {
+    id: 'project5',
+    title: 'Placeholder 2',
+    summary: 'Personal website built with Next.js and Tailwind CSS',
+    description: `
+      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and blog posts.
+
+      **Key Features:**
+
+      - **CI/CD:** Automated build and deployment pipeline using GitHub Actions.
+      - **Projects:** A projects section to showcase my projects.
+      - **About:** An about section to showcase my about me.
+      - **Contact:** A contact section to showcase my contact information.
+    `,
+    technologies: ['Next.js', 'Tailwind CSS', 'React', 'TypeScript', 'Framer Motion'],
+    githubLink: 'https://github.com/nlaratta/personal-website'
   }
 ]
 

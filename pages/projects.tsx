@@ -3,6 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Layout from '../components/Layout'
 import { Project, getAllProjects, getAllTechnologies } from '../lib/projects'
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 }
+}
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [selectedTech, setSelectedTech] = useState<string[]>([])
@@ -26,7 +32,12 @@ export default function Projects() {
 
   return (
     <Layout title="Projects | Noah Laratta">
-      <div className="max-w-7xl mx-auto px-4">
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={fadeInUp}
+        className="max-w-7xl mx-auto"
+      >
         <h1 className="text-4xl font-bold text-gray-900 mb-8">
           My <span className="text-sage">Projects</span>
         </h1>
@@ -51,46 +62,48 @@ export default function Projects() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[calc(100vh-24rem)]">
           {/* Projects list */}
-          <div className="space-y-4 max-h-[800px] overflow-y-auto pr-4">
-            {filteredProjects.map(project => (
-              <motion.div
-                key={project.id}
-                layoutId={`project-${project.id}`}
-                onClick={() => setSelectedProject(project)}
-                className={`p-6 rounded-lg shadow-md cursor-pointer transition-colors duration-300 ${
-                  selectedProject?.id === project.id
-                    ? 'bg-sage text-white'
-                    : 'bg-white hover:bg-sage/5'
-                }`}
-              >
-                <h3 className={`text-xl font-semibold mb-2 ${
-                  selectedProject?.id === project.id ? 'text-white' : 'text-sage'
-                }`}>
-                  {project.title}
-                </h3>
-                <p className={`mb-4 ${
-                  selectedProject?.id === project.id ? 'text-white/90' : 'text-gray-600'
-                }`}>
-                  {project.summary}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map(tech => (
-                    <span
-                      key={tech}
-                      className={`text-sm px-2 py-1 rounded ${
-                        selectedProject?.id === project.id
-                          ? 'bg-white/20 text-white'
-                          : 'bg-sage/10 text-sage'
-                      }`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+          <div className="relative">
+            <div className="space-y-4 max-h-[800px] overflow-y-auto pr-2 mr-2 scrollbar-thin scrollbar-thumb-sage scrollbar-track-transparent">
+              {filteredProjects.map(project => (
+                <motion.div
+                  key={project.id}
+                  layoutId={`project-${project.id}`}
+                  onClick={() => setSelectedProject(project)}
+                  className={`p-6 rounded-lg shadow-md cursor-pointer transition-colors duration-300 ${
+                    selectedProject?.id === project.id
+                      ? 'bg-sage text-white'
+                      : 'bg-white hover:bg-sage/5'
+                  }`}
+                >
+                  <h3 className={`text-xl font-semibold mb-2 ${
+                    selectedProject?.id === project.id ? 'text-white' : 'text-sage'
+                  }`}>
+                    {project.title}
+                  </h3>
+                  <p className={`mb-4 ${
+                    selectedProject?.id === project.id ? 'text-white/90' : 'text-gray-600'
+                  }`}>
+                    {project.summary}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map(tech => (
+                      <span
+                        key={tech}
+                        className={`text-sm px-2 py-1 rounded ${
+                          selectedProject?.id === project.id
+                            ? 'bg-white/20 text-white'
+                            : 'bg-sage/10 text-sage'
+                        }`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
           {/* Project details */}
@@ -151,7 +164,7 @@ export default function Projects() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Layout>
   )
 } 
