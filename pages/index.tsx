@@ -163,7 +163,7 @@ export default function Home() {
         </section>
 
         {/* Latest Blog Posts Section */}
-        <section className="py-16">
+        {/* <section className="py-16">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
               Latest <span className="text-sage">Blog Posts</span>
@@ -211,7 +211,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </section>
+        </section> */}
       </div>
     </Layout>
   )
