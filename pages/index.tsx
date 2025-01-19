@@ -61,12 +61,12 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <a
-                    href="/resume.pdf"
+                    href="/about"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block bg-white text-sage border-2 border-sage px-10 py-4 text-lg rounded-lg font-semibold hover:bg-sage hover:text-white hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
                   >
-                    Download Resume
+                    View Resume
                   </a>
                 </motion.div>
               </div>
