@@ -48,14 +48,19 @@ export const projects: Project[] = [
   },
   {
     id: 'project3',
-    title: 'Placeholder',
-    summary: 'Placeholder',
+    title: 'Personal Website',
+    summary: 'Personal website built with Next.js and Tailwind CSS',
     description: `
-      Placeholder
+      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and blog posts.
 
+      **Key Features:**
+
+      - **Blog:** A blog section to showcase my blog posts.
+      - **Projects:** A projects section to showcase my projects.
+      - **About:** An about section to showcase my about me.
     `,
-    technologies: [''],
-    githubLink: 'https://github.com/nlaratta'
+    technologies: ['Next.js', 'Tailwind CSS', 'React', 'TypeScript', 'Framer Motion'],
+    githubLink: 'https://github.com/nlaratta/personal-website'
   }
 ]
 
