@@ -2,17 +2,6 @@
 
 A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features include a projects showcase, technical blog, and contact form.
 
-## Features
-
-- 🎨 Modern, responsive design with sage green theme
-- 🚀 Built with Next.js, TypeScript, and Tailwind CSS
-- ✨ Smooth animations using Framer Motion
-- 📱 Mobile-friendly navigation
-- 📝 Technical blog with Markdown support
-- 🔍 Project and blog post filtering
-- 📬 Contact form with email integration
-- 🌟 SEO optimized
-
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) - React framework
@@ -65,45 +54,6 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
 - `/public` - Static assets
 - `/styles` - Global styles and Tailwind configuration
 
-## Deployment
-
-### AWS Deployment
-
-1. Set up an AWS account if you haven't already.
-
-2. Install the AWS CLI and configure your credentials:
-   ```bash
-   aws configure
-   ```
-
-3. Create an S3 bucket for hosting:
-   ```bash
-   aws s3 mb s3://your-bucket-name
-   ```
-
-4. Enable static website hosting:
-   ```bash
-   aws s3 website s3://your-bucket-name --index-document index.html --error-document 404.html
-   ```
-
-5. Build the project:
-   ```bash
-   npm run build
-   ```
-
-6. Deploy to S3:
-   ```bash
-   aws s3 sync out/ s3://your-bucket-name
-   ```
-
-7. Set up CloudFront for CDN (recommended).
-
-### Alternative Deployment Options
-
-- [Vercel](https://vercel.com/) - Easiest deployment option for Next.js
-- [Netlify](https://www.netlify.com/) - Great for static sites
-- [AWS Amplify](https://aws.amazon.com/amplify/) - Full-stack deployment on AWS
-
 ## Customization
 
 1. Update personal information:
@@ -132,4 +82,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 Noah Laratta - [noahlaratta@gmail.com](mailto:noahlaratta@gmail.com)
 
-Project Link: [https://github.com/yourusername/portfolio](https://github.com/yourusername/portfolio)
+Project Link: [https://github.com/nlaratta/portfolio](https://github.com/nlaratta/portfolio)
