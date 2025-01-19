@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getAllProjects } from '../lib/projects'
-import { getAllPosts } from '../lib/posts'
+// import { getAllPosts } from '../lib/posts'
 
 export default function Home() {
   const featuredProjects = getAllProjects().slice(0, 3)
