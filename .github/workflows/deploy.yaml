@@ -36,21 +36,16 @@ jobs:
       # 5) Deploy only if this is the main branch
       - name: Deploy via FTP
         if: github.ref == 'refs/heads/main'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: pressidium/lftp-mirror-action@v1
         with:
-          server: sftp://home298430343.1and1-data.host
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          host: sftp://home298430343.1and1-data.host
+          user: ${{ secrets.FTP_USERNAME }}
+          pass: ${{ secrets.FTP_PASSWORD }}
           # If needed, specify port (21 is default for FTP):
           port: ${{ secrets.FTP_PORT || 22 }}
-          protocol: sftp
           # The local directory to deploy - adjust if your build outputs to a different folder
-          local-dir: out/
+          localDir: out/
           # Remote directory on the server where you want to deploy your build artifacts
-          server-dir: /
-          # Additional options
-          method: auto  # Or 'ftp'/'ftps'/'sftp' if you need to force one or the other
-          # Clean older files on remote if they are no longer in local-dir
-          cleanup: true
-          # Log more details for debugging (optional)
-          debug: false
+          remoteDir: /
+          # Copy from local to remote
+          reverse: true
