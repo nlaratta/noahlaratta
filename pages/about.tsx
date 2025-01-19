@@ -44,7 +44,7 @@ export default function About() {
               <ul className="space-y-2 text-gray-600">
                 <li>JavaScript/TypeScript (React, Node.js)</li>
                 <li>Python (Django, Flask)</li>
-                <li>Java/Kotlin</li>
+                <li>Java/C#</li>
                 <li>SQL & NoSQL Databases</li>
               </ul>
             </div>
@@ -86,11 +86,7 @@ export default function About() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Interests & Hobbies</h2>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-gray-600 leading-relaxed">
-              Beyond coding, I&apos;m passionate about continuous learning and staying up-to-date with 
-              the latest technology trends. I enjoy contributing to open-source projects, writing 
-              technical blog posts, and participating in developer communities. In my free time, 
-              I love exploring new technologies, reading tech blogs, and working on side projects 
-              that challenge my skills and creativity.
+              Placeholder
             </p>
           </div>
         </motion.div>
