@@ -70,14 +70,6 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
    - Update meta tags in `pages/_app.tsx`
    - Modify page content in respective page components
 
-## Contributing
-
-Feel free to submit issues and enhancement requests!
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 ## Contact
 
 Noah Laratta - [noahlaratta@gmail.com](mailto:noahlaratta@gmail.com)
