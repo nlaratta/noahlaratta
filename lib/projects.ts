@@ -55,9 +55,10 @@ export const projects: Project[] = [
 
       **Key Features:**
 
-      - **Blog:** A blog section to showcase my blog posts.
+      - **CI/CD:** Automated build and deployment pipeline using GitHub Actions.
       - **Projects:** A projects section to showcase my projects.
       - **About:** An about section to showcase my about me.
+      - **Contact:** A contact section to showcase my contact information.
     `,
     technologies: ['Next.js', 'Tailwind CSS', 'React', 'TypeScript', 'Framer Motion'],
     githubLink: 'https://github.com/nlaratta/personal-website'
