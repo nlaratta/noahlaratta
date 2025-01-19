@@ -7,17 +7,17 @@ import { getAllPosts } from '../lib/posts'
 
 export default function Home() {
   const featuredProjects = getAllProjects().slice(0, 3)
-  const latestPosts = getAllPosts()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
+  // const latestPosts = getAllPosts()
+  //   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  //   .slice(0, 3)
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: 'long',
+  //     day: 'numeric'
+  //   })
+  // }
 
   return (
     <Layout>
