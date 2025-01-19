@@ -38,7 +38,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: pressidium/lftp-mirror-action@v1
         with:
-          host: sftp://home298430343.1and1-data.host
+          host: home298430343.1and1-data.host
           user: ${{ secrets.FTP_USERNAME }}
           pass: ${{ secrets.FTP_PASSWORD }}
           # If needed, specify port (21 is default for FTP):
