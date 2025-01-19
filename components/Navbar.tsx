@@ -10,8 +10,8 @@ export default function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
+    // { name: 'Blog', href: '/blog' },
+    // { name: 'Contact', href: '/contact' },
   ]
 
   const isActive = (path: string) => router.pathname === path
@@ -43,7 +43,7 @@ export default function Navbar() {
                     {item.name}
                   </Link>
                 ))}
-                <motion.a
+                {/* <motion.a
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   href="/resume.pdf"
@@ -52,7 +52,7 @@ export default function Navbar() {
                   className="text-white bg-sage hover:bg-sage-dark px-4 py-2 rounded shadow-md hover:shadow-lg transition-all duration-300"
                 >
                   Resume
-                </motion.a>
+                </motion.a> */}
               </div>
 
               {/* Mobile menu button */}
@@ -95,7 +95,7 @@ export default function Navbar() {
                   {item.name}
                 </Disclosure.Button>
               ))}
-              <motion.a
+              {/* <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/resume.pdf"
@@ -104,7 +104,7 @@ export default function Navbar() {
                 className="block px-3 py-2 rounded-md text-base text-white bg-sage hover:bg-sage-dark shadow-md hover:shadow-lg transition-all duration-300"
               >
                 Resume
-              </motion.a>
+              </motion.a> */}
             </motion.div>
           </Disclosure.Panel>
         </>
