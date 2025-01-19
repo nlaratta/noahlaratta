@@ -1,0 +1,56 @@
+name: Build and Deploy
+
+on:
+  # Trigger this workflow on pushes to main
+  push:
+    branches:
+      - main
+  # If you also want to trigger on pull requests merged into main, you can add:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Check out the repository
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      # 2) Set up Node
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  # or whatever version you need
+
+      # 3) Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4) Build your project
+      - name: Build project
+        run: npm run build
+
+      # 5) Deploy only if this is the main branch
+      - name: Deploy via FTP
+        if: github.ref == 'refs/heads/main'
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # If needed, specify port (21 is default for FTP):
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ftp
+          # The local directory to deploy - adjust if your build outputs to a different folder
+          local-dir: build
+          # Remote directory on the server where you want to deploy your build artifacts
+          server-dir: /
+          # Additional options
+          method: auto  # Or 'ftp'/'ftps' if you need to force one or the other
+          # Clean older files on remote if they are no longer in local-dir
+          cleanup: true
+          # Log more details for debugging (optional)
+          debug: false
