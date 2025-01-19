@@ -38,7 +38,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_HOST }}
+          server: sftp://home298430343.1and1-data.host
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           # If needed, specify port (21 is default for FTP):
