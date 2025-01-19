@@ -45,7 +45,7 @@ jobs:
           port: ${{ secrets.FTP_PORT || 21 }}
           protocol: ftp
           # The local directory to deploy - adjust if your build outputs to a different folder
-          local-dir: build
+          local-dir: out
           # Remote directory on the server where you want to deploy your build artifacts
           server-dir: /
           # Additional options
