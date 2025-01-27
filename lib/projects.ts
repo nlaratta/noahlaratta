@@ -26,7 +26,7 @@ export const projects: Project[] = [
       - **Responsive Design:** The interface is designed to be user-friendly and accessible across various devices. 
       - **Nutrition Data:** The application uses the USDA Food Composition Database to get the nutritional information for the foods.
     `,
-    technologies: ['Flask', 'SQL', 'Docker', 'Kubernetes', 'Python', 'HTML/CSS/JS'],
+    technologies: ['Flask', 'SQL', 'Docker', 'Kubernetes', 'Python', 'HTML/CSS', 'Travis CI'],
     githubLink: 'https://github.com/ClusterberrySquirrels/NutritionTracker',
     // demoLink: 'https://demo-ecommerce.example.com'
   },
@@ -51,16 +51,16 @@ export const projects: Project[] = [
     title: 'Personal Website',
     summary: 'Personal website built with Next.js and Tailwind CSS',
     description: `
-      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and blog posts.
+      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and resume.
 
       **Key Features:**
 
       - **CI/CD:** Automated build and deployment pipeline using GitHub Actions.
-      - **Projects:** A projects section to showcase my projects.
-      - **About:** An about section to showcase my about me.
+      - **Projects:** A projects section to showcase my side projects.
+      - **About:** An about section to showcase my skills and experience.
       - **Contact:** A contact section to showcase my contact information.
     `,
-    technologies: ['Next.js', 'Tailwind CSS', 'React', 'TypeScript', 'Framer Motion'],
+    technologies: ['Next.js', 'HTLM/CSS', 'React', 'TypeScript'],
     githubLink: 'https://github.com/nlaratta/personal-website'
   }
 ]
