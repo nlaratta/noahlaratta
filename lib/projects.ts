@@ -60,7 +60,7 @@ export const projects: Project[] = [
       - **About:** An about section to showcase my skills and experience.
       - **Contact:** A contact section to showcase my contact information.
     `,
-    technologies: ['Next.js', 'HTLM/CSS', 'React', 'TypeScript'],
+    technologies: ['Next.js', 'HTLM/CSS', 'React', 'TypeScript', 'Tailwind CSS'],
     githubLink: 'https://github.com/nlaratta/personal-website'
   }
 ]
