@@ -66,7 +66,6 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
    - Update global styles in `styles/globals.css`
 
 3. Content:
-   - Add your resume to `public/resume.pdf`
    - Update meta tags in `pages/_app.tsx`
    - Modify page content in respective page components
 
@@ -74,4 +73,4 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
 
 Noah Laratta - [noahlaratta@gmail.com](mailto:noahlaratta@gmail.com)
 
-Project Link: [https://github.com/nlaratta/portfolio](https://github.com/nlaratta/portfolio)
+Project Link: [https://www.noahlaratta.com](https://www.noahlaratta.com)
