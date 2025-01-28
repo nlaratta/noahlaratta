@@ -38,9 +38,8 @@ export default function Home() {
 
               <p className="text-lg md:text-xl text-gray-600 hover:text-gray-800 mb-8 leading-relaxed transition-colors duration-300">
                 Hi, I&apos;m Noah Laratta. I&apos;m a software engineer passionate about creating efficient, 
-                scalable solutions and sharing knowledge through technical writing. 
-                I specialize in full-stack development, cloud architecture, and building 
-                high-performance applications.
+                scalable solutions. I specialize in full-stack development, cloud architecture, and implementing DevOps 
+                principles streamline development and deployment processes.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
