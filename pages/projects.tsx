@@ -65,7 +65,7 @@ export default function Projects() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[calc(100vh-24rem)]">
           {/* Projects list */}
           <div className="relative">
-            <div className="space-y-4 max-h-[800px] overflow-y-auto pr-2 mr-2 scrollbar-thin scrollbar-thumb-sage scrollbar-track-transparent">
+            <div className="pb-6 space-y-4 max-h-[800px] overflow-y-auto scrollbar-thin scrollbar-thumb-sage scrollbar-track-transparent">
               {filteredProjects.map(project => (
                 <motion.div
                   key={project.id}
