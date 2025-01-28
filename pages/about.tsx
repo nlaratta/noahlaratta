@@ -103,7 +103,7 @@ export default function About() {
                     Modified, built and deployed internal and open source Dockerfiles, eliminating vulnerabilities and increasing security.
                   </li>
                   <li>
-                    Enhanced GitLab CI/CD multi-step pipelines by modifying testing and deployment stages, increasing security anddeployment efficiency.
+                    Enhanced GitLab CI/CD multi-step pipelines by modifying testing and deployment stages, increasing security and deployment efficiency.
                   </li>
                   <li>
                     Collaborated in an Agile environment, contributing to the C# development, debugging and testing of a Unity app, ensuring timely and efficient project progression.
