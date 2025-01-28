@@ -54,7 +54,6 @@ export default function About() {
                 <li>Docker & Kubernetes</li>
                 <li>AWS (EC2, S3, Lambda)</li>
                 <li>CI/CD Pipelines (GitLab, GitHub Actions)</li>
-                <li>DevSecOps</li>
               </ul>
             </div>
           </div>
