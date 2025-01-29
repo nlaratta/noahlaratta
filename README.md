@@ -8,8 +8,6 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [Framer Motion](https://www.framer.com/motion/) - Animations
-- [MDX Remote](https://github.com/hashicorp/next-mdx-remote) - Markdown rendering
-- [Nodemailer](https://nodemailer.com/) - Email sending
 
 ## Getting Started
 
@@ -24,27 +22,12 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
    npm install
    ```
 
-3. Create a `.env.local` file in the root directory:
-   ```env
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_SECURE=false
-   SMTP_USER=your-email@gmail.com
-   SMTP_PASS=your-app-specific-password
-   ```
-
-4. Configure email settings:
-   - Go to your Google Account settings
-   - Enable 2-Step Verification
-   - Generate an App Password for the contact form
-   - Update the `.env.local` file with your email and app password
-
-5. Run the development server:
+3. Run the development server:
    ```bash
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
