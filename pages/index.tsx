@@ -79,7 +79,7 @@ export default function Home() {
             >
               <div className="relative w-[280px] h-[280px] md:w-[520px] md:h-[520px] rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <Image
-                  src="/me.jpg"
+                  src="/logo.png"
                   alt="Noah Laratta"
                   fill
                   style={{ objectFit: 'cover' }}
