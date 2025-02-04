@@ -65,13 +65,13 @@ export default function Home() {
                     // rel="noopener noreferrer"
                     className="inline-block bg-white text-sage border-2 border-sage px-10 py-4 text-lg rounded-lg font-semibold hover:bg-sage hover:text-white hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
                   >
-                    View Resume
+                    About Me
                   </Link>
                 </motion.div>
               </div>
             </div>
 
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -87,7 +87,7 @@ export default function Home() {
                   className="hover:scale-110 transition-transform duration-500 ease-in-out"
                 />
               </div>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
 
