@@ -87,31 +87,31 @@ export default function About() {
             <ul className="space-y-2 text-gray-600">
               <li>
                 <strong  className="text-xl font-semibold text-sage mb-3">Lockheed Martin</strong> - <em>Aug. 2022 - August 2024</em><br />
-                <strong  className="text-xl font-semibold text-sage mb-3">Software Engineer Asc.</strong>, Littleton, CO
+                <strong  className="text-xl font-semibold text-sage mb-3">Software Engineer</strong>, Littleton, CO
                 <ul className="list-disc pl-5 mt-2 space-y-1">
                   <li>
-                    Deployed and managed a Kubernetes cluster utilizing Rancher on AWS EC2 instances, orchestrating a robust and scalable environment for Docker containerized application deployment.
+                    Deployed and managed an internal Kubernetes cluster using Rancher on AWS EC2 instances, orchestrating a robust and scalable environment for Docker containerized applications utilized by our team.
                   </li>
                   <li>
-                    Spearheaded the development of HELM charts, facilitating the streamlined deployment of backend containers and integration of frontends across multiple projects.
+                    Took ownership of HELM charts for internal deployments, becoming the go-to resource for resolving deployment issues, implementing updates, and developing new charts.
                   </li>
                   <li>
-                    Set up and managed PostgreSQL databases, schemas, and connections, supporting seamless data access and integration in applications.
+                    Optimized GitLab CI/CD multi-step pipelines by refining deployment stages, accelerating the process of pushing newly built Docker images to the Kubernetes cluster.
                   </li>
                   <li>
                     Modified, built and deployed internal and open source Dockerfiles, eliminating vulnerabilities and increasing security.
                   </li>
                   <li>
-                    Enhanced GitLab CI/CD multi-step pipelines by modifying testing and deployment stages, increasing security and deployment efficiency.
+                    Deployed Docker and Kubernetes (k3s) within air-gapped Red Hat Linux environments, leveraging VirtualBox and KVM virtualization platforms to support development and testing.
                   </li>
                   <li>
-                    Collaborated in an Agile environment, contributing to the C# development, debugging and testing of a Unity app, ensuring timely and efficient project progression.
+                    Authored comprehensive documentation covering software installation, dependency management, and cluster configuration, ensuring seamless containerized application deployments in restricted network conditions.
                   </li>
                   <li>
-                    Built and modified bash and Python scripts to automate and streamline development processes.
+                    Collaborated in an Agile environment across multiple projects, contributing to the Python development of several apps, ensuring timely and efficient project progression.
                   </li>
                   <li>
-                    Thrived in a small team setting, starting as the sole junior member of a team and coaching multiple new hires to integrate seamlessly and accelerate their learning curve.
+                    Thrived in a small team setting, starting as the sole junior software engineer on our team and mentoring multiple new hires to integrate seamlessly and accelerate their learning curve.
                   </li>
                 </ul>
               </li>
