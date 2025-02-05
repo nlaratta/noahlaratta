@@ -51,7 +51,8 @@ export const projects: Project[] = [
     title: 'Personal Website',
     summary: 'Personal website built with Next.js and Tailwind CSS',
     description: `
-      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and resume.
+      The Personal Website is a Next.js and Tailwind CSS-based website built to showcase my projects and resume, integrating
+      GitHub Actions for automated FTP deployments to my web host.
 
       **Key Features:**
 
