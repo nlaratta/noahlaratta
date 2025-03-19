@@ -42,11 +42,9 @@ A modern, responsive portfolio website built with Next.js, TypeScript, and Tailw
 1. Update personal information:
    - Edit social links in `components/Layout.tsx`
    - Modify project data in `lib/projects.ts`
-   - Update blog posts in `lib/posts.ts`
 
 2. Styling:
    - Modify the color scheme in `tailwind.config.ts`
-   - Update global styles in `styles/globals.css`
 
 3. Content:
    - Update meta tags in `pages/_app.tsx`
