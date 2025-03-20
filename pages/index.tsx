@@ -25,7 +25,7 @@ export default function Home() {
               </h1>
 
               <p className="text-lg md:text-xl text-gray-600 hover:text-gray-800 mb-8 leading-relaxed transition-colors duration-300">
-                Hi, I&apos;m Noah Laratta. I&apos;m a software engineer passionate about creating efficient, 
+                Hi, I&apos;m Noah Laratta. I&apos;m a software engineer experienced in creating efficient, 
                 scalable solutions. I specialize in full-stack development, cloud architecture, and implementing DevOps 
                 principles to streamline development and deployment processes.
               </p>

@@ -23,10 +23,10 @@ export default function About() {
 
           <div className="prose prose-lg max-w-none">
             <p className="text-gray-600 leading-relaxed mb-8">
-              I&apos;m a software engineer with a passion for building scalable, efficient solutions
-              to complex problems. With a background in Computer Science and years of hands-on
+              I&apos;m a software engineer experienced in building scalable, efficient solutions
+              to complex problems. With a bachelor&apos;s degree in Computer Science and years of hands-on
               experience, I&apos;ve developed a deep understanding of software architecture, cloud
-              computing, and modern development practices.
+              computing, and modern DevOps practices.
             </p>
           </div>
         </motion.div>
@@ -45,14 +45,13 @@ export default function About() {
                 <li>Java/C#</li>
                 <li>SQL</li>
                 <li>Scripting (Python, Bash)</li>
-                <li>JavaScript/TypeScript (React, Node.js)</li>
               </ul>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold text-sage mb-3">Cloud & DevOps</h3>
               <ul className="space-y-2 text-gray-600">
                 <li>Docker & Kubernetes</li>
-                <li>AWS (EC2, S3, Lambda)</li>
+                <li>AWS</li>
                 <li>CI/CD Pipelines (GitLab, GitHub Actions)</li>
               </ul>
             </div>
@@ -90,28 +89,34 @@ export default function About() {
                 <strong  className="text-xl font-semibold text-sage mb-3">Software Engineer</strong>, Littleton, CO
                 <ul className="list-disc pl-5 mt-2 space-y-1">
                   <li>
-                    Deployed and managed an internal Kubernetes cluster using Rancher on AWS EC2 instances, orchestrating a robust and scalable environment for Docker containerized applications utilized by our team.
+                    Deployed and managed an internal Kubernetes cluster utilizing Rancher on AWS GovCloud EC2 instances, creating a robust, scalable environment for Docker containerized applications used by our team.
                   </li>
                   <li>
-                    Took ownership of HELM charts for internal deployments, becoming the go-to resource for resolving deployment issues, implementing updates, and developing new charts.
+                    Monitored cluster health and performance using Grafana and Longhorn, responding to incidents with prompt troubleshooting and resolution.
                   </li>
                   <li>
-                    Optimized GitLab CI/CD multi-step pipelines by refining deployment stages, accelerating the process of pushing newly built Docker images to the Kubernetes cluster.
+                    Took ownership of software and SQL database deployments to the cluster, becoming the go-to resource for resolving deployment issues, implementing updates, and developing new HELM charts.
                   </li>
                   <li>
-                    Modified, built and deployed internal and open source Dockerfiles, eliminating vulnerabilities and increasing security.
+                    Implemented user-configurable data filtering in a C# Unity app, enabling users to customize visual outputs based on selected preferences.
+                  </li>
+                  <li>
+                    Enhanced multi-step GitLab CI/CD pipelines by automating Helm chart linting and deployment, improving deployment consistency and efficiency.
+                  </li>
+                  <li>
+                    Deployed, configured, and managed a Keycloak instance and realm to enforce role-based access control for a Python application.
+                  </li>
+                  <li>
+                    Modified, built and deployed internal and open source Dockerfiles, eliminating vulnerabilities detected by SAST scans, thus ensuring security compliance.
                   </li>
                   <li>
                     Deployed Docker and Kubernetes (k3s) within air-gapped Red Hat Linux environments, leveraging VirtualBox and KVM virtualization platforms to support development and testing.
                   </li>
                   <li>
-                    Authored comprehensive documentation covering software installation, dependency management, and cluster configuration, ensuring seamless containerized application deployments in restricted network conditions.
+                    Authored Linux scripts and Confluence documentation covering software installation, dependency management, and cluster configuration, ensuring seamless containerized application deployments in restricted network conditions.
                   </li>
                   <li>
-                    Collaborated in an Agile environment across multiple projects, contributing to the Python development of several apps, ensuring timely and efficient project progression.
-                  </li>
-                  <li>
-                    Thrived in a small team setting, starting as the sole junior software engineer on our team and mentoring multiple new hires to integrate seamlessly and accelerate their learning curve.
+                    Thrived in a small Agile team setting, starting as the sole junior engineer on our IRAD team and mentoring multiple new hires to integrate seamlessly and accelerate their learning curve.
                   </li>
                 </ul>
               </li>
@@ -120,7 +125,7 @@ export default function About() {
         </motion.div>
 
 
-        <motion.div
+        {/* <motion.div
           initial="initial"
           animate="animate"
           variants={fadeInUp}
@@ -135,7 +140,7 @@ export default function About() {
               <li>Collaborative team player with experience mentoring junior developers</li>
             </ul>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         <motion.div
           initial="initial"
@@ -145,7 +150,7 @@ export default function About() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Interests & Hobbies</h2>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-gray-600 leading-relaxed">
-              In my spare time, I enjoy exploring new technologies and tinkering with side projects.
+              In my spare time, I enjoy exploring new technologies, tinkering with side projects, and finding new creative outlets to explore.
               Beyond the screen, I love spending time with my family and friends, and when summer arrives,
               I head outdoors to hike scenic trails and tend to my garden.
             </p>
