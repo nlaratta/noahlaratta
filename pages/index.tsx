@@ -1,11 +1,16 @@
 import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
 import Link from 'next/link'
-import { getAllProjects } from '../lib/projects'
+import { getAllProjects, Project } from '../lib/projects'
 // import Image from 'next/image'
 
 export default function Home() {
-  const featuredProjects = getAllProjects().slice(0, 3)
+  const allProjects = getAllProjects()
+  const featuredProjects = [
+    allProjects.find(p => p.id === 'project9'), // SquadUp
+    allProjects.find(p => p.id === 'project6'), // Database Analytics Dashboard
+    allProjects.find(p => p.id === 'project1'), // Nutrition Tracker
+  ].filter((project): project is Project => project !== undefined)
 
   return (
     <Layout>
