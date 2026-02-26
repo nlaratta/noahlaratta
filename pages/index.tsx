@@ -74,8 +74,7 @@ export default function Home() {
         <section className="py-16">
           <motion.div
             initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
+            animate="animate"
             variants={stagger}
           >
             <motion.div variants={fadeUp} className="mb-8">
@@ -158,8 +157,7 @@ export default function Home() {
         <section className="py-16">
           <motion.div
             initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
+            animate="animate"
             variants={stagger}
           >
             <motion.div variants={fadeUp} className="mb-8">

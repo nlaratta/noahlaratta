@@ -46,8 +46,7 @@ export default function About() {
         {/* Skills — Tag Layout */}
         <motion.section
           initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
+          animate="animate"
           variants={stagger}
           className="mb-16"
         >
@@ -80,8 +79,7 @@ export default function About() {
         {/* Work Experience — Vertical Timeline */}
         <motion.section
           initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
+          animate="animate"
           variants={stagger}
           className="mb-16"
         >
@@ -121,8 +119,7 @@ export default function About() {
         {/* Education */}
         <motion.section
           initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
+          animate="animate"
           variants={stagger}
           className="mb-16"
         >
@@ -147,8 +144,7 @@ export default function About() {
         {/* Interests */}
         <motion.section
           initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
+          animate="animate"
           variants={stagger}
         >
           <motion.div variants={fadeUp} className="mb-6">

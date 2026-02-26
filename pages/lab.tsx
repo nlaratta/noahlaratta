@@ -112,8 +112,7 @@ export default function Lab() {
 
         <motion.div
           initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
+          animate="animate"
           variants={stagger}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
