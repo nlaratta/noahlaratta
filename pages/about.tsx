@@ -1,162 +1,168 @@
 import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
 
-const fadeInUp = {
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+}
+
+const fadeUp = {
   initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+}
+
+const skills = {
+  'Languages': ['Java', 'C#', 'Python', 'SQL', 'Bash', 'TypeScript'],
+  'Cloud & DevOps': ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'GitLab', 'GitHub Actions'],
+  'Tools & Platforms': ['Rancher', 'Helm', 'Grafana', 'Keycloak', 'Unity'],
 }
 
 export default function About() {
   return (
     <Layout title="About Me | Noah Laratta">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-3xl mx-auto">
+        {/* Intro */}
         <motion.div
           initial="initial"
           animate="animate"
-          variants={fadeInUp}
-          className="mb-12"
+          variants={stagger}
+          className="mb-16"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            About <span className="text-sage">Me</span>
-          </h1>
+          <motion.h1 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            About <span className="font-serif text-primary">Me</span>
+          </motion.h1>
 
-          <div className="prose prose-lg max-w-none">
-            <p className="text-gray-600 leading-relaxed mb-8">
-              I&apos;m a software engineer experienced in building scalable, efficient solutions
-              to complex problems. With a bachelor&apos;s degree in Computer Science and years of hands-on
-              experience, I&apos;ve developed a deep understanding of software architecture, cloud
-              computing, and modern DevOps practices.
-            </p>
-          </div>
+          <motion.p variants={fadeUp} className="text-text-secondary leading-relaxed">
+            I&apos;m a software engineer experienced in building scalable, efficient solutions
+            to complex problems. With a bachelor&apos;s degree in Computer Science and years of hands-on
+            experience, I&apos;ve developed a deep understanding of software architecture, cloud
+            computing, and modern DevOps practices.
+          </motion.p>
         </motion.div>
 
-        <motion.div
+        {/* Skills — Tag Layout */}
+        <motion.section
           initial="initial"
-          animate="animate"
-          variants={fadeInUp}
-          className="mb-12"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="mb-16"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Technical Expertise</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-sage mb-3">Languages & Frameworks</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>Java/C#</li>
-                <li>SQL</li>
-                <li>Scripting (Python, Bash)</li>
+          <motion.div variants={fadeUp} className="mb-6">
+            <h2 className="text-xl font-bold text-foreground">Technical Expertise</h2>
+            <div className="w-10 h-0.5 bg-primary mt-2" />
+          </motion.div>
+
+          <div className="space-y-5">
+            {Object.entries(skills).map(([category, items]) => (
+              <motion.div key={category} variants={fadeUp}>
+                <h3 className="text-sm font-medium text-text-secondary mb-2 uppercase tracking-wider">
+                  {category}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((skill) => (
+                    <span
+                      key={skill}
+                      className="text-sm px-3 py-1.5 rounded-lg bg-primary-lighter text-primary-dark font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Work Experience — Vertical Timeline */}
+        <motion.section
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="mb-16"
+        >
+          <motion.div variants={fadeUp} className="mb-6">
+            <h2 className="text-xl font-bold text-foreground">Experience</h2>
+            <div className="w-10 h-0.5 bg-primary mt-2" />
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="border-l-2 border-border pl-6 ml-2 relative">
+            {/* Green dot */}
+            <div className="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-primary" />
+
+            <div>
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3 mb-1">
+                <h3 className="text-lg font-semibold text-foreground">Software Engineer</h3>
+                <span className="text-sm text-text-secondary">at Lockheed Martin</span>
+              </div>
+              <p className="text-sm text-text-secondary mb-4">
+                Aug 2022 &ndash; Aug 2024 &middot; Littleton, CO
+              </p>
+              <ul className="space-y-3 text-text-secondary text-sm leading-relaxed">
+                <li>Deployed and managed an internal Kubernetes cluster utilizing Rancher on AWS GovCloud EC2 instances, creating a scalable environment for Docker containerized applications.</li>
+                <li>Monitored cluster health using Grafana and Longhorn, responding to incidents with prompt troubleshooting and resolution.</li>
+                <li>Took ownership of software and SQL database deployments, becoming the go-to resource for deployment issues and developing new Helm charts.</li>
+                <li>Implemented user-configurable data filtering in a C# Unity app, enabling users to customize visual outputs.</li>
+                <li>Enhanced GitLab CI/CD pipelines by automating Helm chart linting and deployment, improving consistency and efficiency.</li>
+                <li>Deployed and managed Keycloak for role-based access control on a Python application.</li>
+                <li>Modified and deployed Dockerfiles eliminating vulnerabilities detected by SAST scans, ensuring security compliance.</li>
+                <li>Deployed Docker and Kubernetes (k3s) within air-gapped Red Hat Linux environments using VirtualBox and KVM.</li>
+                <li>Authored Linux scripts and documentation for software installation, dependency management, and cluster configuration in restricted networks.</li>
+                <li>Thrived in a small Agile team, starting as the sole junior engineer and mentoring multiple new hires.</li>
               </ul>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-sage mb-3">Cloud & DevOps</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>Docker & Kubernetes</li>
-                <li>AWS</li>
-                <li>CI/CD Pipelines (GitLab, GitHub Actions)</li>
-              </ul>
-            </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </motion.section>
 
-        <motion.div
+        {/* Education */}
+        <motion.section
           initial="initial"
-          animate="animate"
-          variants={fadeInUp}
-          className="mb-12"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="mb-16"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Education</h2>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <ul className="space-y-2 text-gray-600">
-              <strong  className="text-xl font-semibold text-sage mb-3">Metropolitan State University of Denver</strong> - <em>2021</em><br />
-              <li>Bachelor of Science in Computer Science</li>
-              <li>Minor in Mathematics</li>
-            </ul>
-          </div>
-        </motion.div>
+          <motion.div variants={fadeUp} className="mb-6">
+            <h2 className="text-xl font-bold text-foreground">Education</h2>
+            <div className="w-10 h-0.5 bg-primary mt-2" />
+          </motion.div>
 
-
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={fadeInUp}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Work Experience</h2>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <ul className="space-y-2 text-gray-600">
-              <li>
-                <strong  className="text-xl font-semibold text-sage mb-3">Lockheed Martin</strong> - <em>Aug. 2022 - August 2024</em><br />
-                <strong  className="text-xl font-semibold text-sage mb-3">Software Engineer</strong>, Littleton, CO
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>
-                    Deployed and managed an internal Kubernetes cluster utilizing Rancher on AWS GovCloud EC2 instances, creating a robust, scalable environment for Docker containerized applications used by our team.
-                  </li>
-                  <li>
-                    Monitored cluster health and performance using Grafana and Longhorn, responding to incidents with prompt troubleshooting and resolution.
-                  </li>
-                  <li>
-                    Took ownership of software and SQL database deployments to the cluster, becoming the go-to resource for resolving deployment issues, implementing updates, and developing new HELM charts.
-                  </li>
-                  <li>
-                    Implemented user-configurable data filtering in a C# Unity app, enabling users to customize visual outputs based on selected preferences.
-                  </li>
-                  <li>
-                    Enhanced multi-step GitLab CI/CD pipelines by automating Helm chart linting and deployment, improving deployment consistency and efficiency.
-                  </li>
-                  <li>
-                    Deployed, configured, and managed a Keycloak instance and realm to enforce role-based access control for a Python application.
-                  </li>
-                  <li>
-                    Modified, built and deployed internal and open source Dockerfiles, eliminating vulnerabilities detected by SAST scans, thus ensuring security compliance.
-                  </li>
-                  <li>
-                    Deployed Docker and Kubernetes (k3s) within air-gapped Red Hat Linux environments, leveraging VirtualBox and KVM virtualization platforms to support development and testing.
-                  </li>
-                  <li>
-                    Authored Linux scripts and Confluence documentation covering software installation, dependency management, and cluster configuration, ensuring seamless containerized application deployments in restricted network conditions.
-                  </li>
-                  <li>
-                    Thrived in a small Agile team setting, starting as the sole junior engineer on our IRAD team and mentoring multiple new hires to integrate seamlessly and accelerate their learning curve.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </motion.div>
-
-
-        {/* <motion.div
-          initial="initial"
-          animate="animate"
-          variants={fadeInUp}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Soft Skills</h2>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <ul className="space-y-2 text-gray-600">
-              <li>Strong problem-solving and analytical abilities</li>
-              <li>Excellent written and verbal communication</li>
-              <li>Agile methodology and project management</li>
-              <li>Collaborative team player with experience mentoring junior developers</li>
-            </ul>
-          </div>
-        </motion.div> */}
-
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={fadeInUp}
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Interests & Hobbies</h2>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <p className="text-gray-600 leading-relaxed">
-              In my spare time, I enjoy exploring new technologies, tinkering with side projects, and finding new creative outlets to explore.
-              Beyond the screen, I love spending time with my family and friends, and when summer arrives,
-              I head outdoors to hike scenic trails and tend to my garden.
+          <motion.div
+            variants={fadeUp}
+            className="border border-border bg-surface rounded-xl p-6 border-l-4 border-l-primary"
+          >
+            <h3 className="text-lg font-semibold text-foreground">
+              Metropolitan State University of Denver
+            </h3>
+            <p className="text-sm text-text-secondary mt-1">
+              Bachelor of Science in Computer Science &middot; Minor in Mathematics &middot; 2021
             </p>
-          </div>
-        </motion.div>
+          </motion.div>
+        </motion.section>
+
+        {/* Interests */}
+        <motion.section
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={stagger}
+        >
+          <motion.div variants={fadeUp} className="mb-6">
+            <h2 className="text-xl font-bold text-foreground">Beyond the Screen</h2>
+            <div className="w-10 h-0.5 bg-primary mt-2" />
+          </motion.div>
+
+          <motion.p variants={fadeUp} className="text-text-secondary leading-relaxed">
+            In my spare time, I enjoy exploring new technologies, tinkering with side projects, and finding new creative outlets.
+            Beyond the screen, I love spending time with family and friends, and when summer arrives,
+            I head outdoors to hike scenic trails and tend to my garden.
+          </motion.p>
+        </motion.section>
       </div>
     </Layout>
   )
-} 
+}

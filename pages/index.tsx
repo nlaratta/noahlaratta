@@ -2,10 +2,24 @@ import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
 import Link from 'next/link'
 import { getAllProjects, Project } from '../lib/projects'
-// import Image from 'next/image'
+import { getAllLabEntries } from '../lib/lab'
+
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+}
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+}
 
 export default function Home() {
   const allProjects = getAllProjects()
+  const featuredLab = getAllLabEntries()[0]
   const featuredProjects = [
     allProjects.find(p => p.id === 'project9'), // SquadUp
     allProjects.find(p => p.id === 'project6'), // Database Analytics Dashboard
@@ -15,142 +29,219 @@ export default function Home() {
   return (
     <Layout>
       <div className="flex flex-col">
-        <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8"
+        {/* Hero Section */}
+        <motion.section
+          initial="initial"
+          animate="animate"
+          variants={stagger}
+          className="py-24 md:py-32 flex flex-col items-center text-center"
+        >
+          <motion.h1
+            variants={fadeUp}
+            className="text-4xl md:text-6xl font-bold text-foreground mb-6 max-w-3xl"
           >
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-                <span className="text-sage hover:text-sage-dark transition-colors duration-300">Software Engineer</span>
-                <br />
-                Building Scalable Solutions with Precision
-              </h1>
+            Hi, I&apos;m{' '}
+            <span className="font-serif text-primary">Noah</span>
+          </motion.h1>
 
-              <p className="text-lg md:text-xl text-gray-600 hover:text-gray-800 mb-8 leading-relaxed transition-colors duration-300">
-                Hi, I&apos;m Noah Laratta. I&apos;m a software engineer experienced in creating efficient, 
-                scalable solutions. I specialize in full-stack development, cloud architecture, and implementing DevOps 
-                principles to streamline development and deployment processes.
-              </p>
+          <motion.p
+            variants={fadeUp}
+            className="text-lg md:text-xl text-text-secondary mb-10 max-w-2xl leading-relaxed"
+          >
+            Software engineer building scalable solutions with full-stack development, cloud architecture, and DevOps.
+          </motion.p>
 
-              <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href="/projects"
-                    className="inline-block bg-sage text-white px-10 py-4 text-lg rounded-lg font-semibold hover:bg-sage-dark hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-                  >
-                    View My Projects
-                  </Link>
-                </motion.div>
-
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href="/about"
-                    className="inline-block bg-white text-sage border-2 border-sage px-10 py-4 text-lg rounded-lg font-semibold hover:bg-sage hover:text-white hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-                  >
-                    About Me
-                  </Link>
-                </motion.div>
-              </div>
-            </div>
-            {/* <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex-shrink-0"
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-col sm:flex-row gap-4"
+          >
+            <Link
+              href="/projects"
+              className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200"
             >
-              <div className="relative w-[280px] h-[280px] md:w-[520px] md:h-[520px] rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <Image
-                  src="/logo.png"
-                  alt="Noah Laratta"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  priority
-                  className="hover:scale-110 transition-transform duration-500 ease-in-out"
-                />
-              </div>
-            </motion.div> */}
+              View Projects
+            </Link>
+            <Link
+              href="/about"
+              className="inline-block border border-border text-foreground px-8 py-3 rounded-lg font-medium hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
+            >
+              About Me
+            </Link>
           </motion.div>
-        </div>
+        </motion.section>
 
-        {/* Featured Projects Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Featured <span className="text-sage">Projects</span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProjects.map((project) => (
+        {/* Featured Projects — Bento Grid */}
+        <section className="py-16">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp} className="mb-8">
+              <h2 className="text-2xl font-bold text-foreground">
+                Featured Projects
+              </h2>
+              <div className="w-12 h-0.5 bg-primary mt-3" />
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {featuredProjects.map((project, i) => (
                 <motion.div
                   key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  variants={fadeUp}
+                  whileHover={{ scale: 1.01 }}
+                  className={`border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-all duration-200 ${
+                    i === 0 ? 'md:col-span-2 md:row-span-2 bg-primary-lighter/20' : ''
+                  }`}
                 >
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-sage mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      {project.summary}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.slice(0, 3).map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-sm px-2 py-1 rounded bg-sage/10 text-sage"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                  <div className={i === 0 ? 'flex flex-col h-full justify-between' : ''}>
+                    <div>
+                      <h3 className="text-lg font-semibold text-foreground mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-text-secondary mb-4 leading-relaxed">
+                        {project.summary}
+                      </p>
                     </div>
-                    <div className="flex gap-4">
-                      {project.githubLink && (
-                        <a
-                          href={project.githubLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sage hover:text-sage-dark font-medium"
-                        >
-                          View Code →
-                        </a>
-                      )}
-                      {project.demoLink && (
-                        <a
-                          href={project.demoLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sage hover:text-sage-dark font-medium"
-                        >
-                          Live Demo →
-                        </a>
-                      )}
+                    <div>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.technologies.slice(0, i === 0 ? 5 : 3).map((tech) => (
+                          <span
+                            key={tech}
+                            className="text-xs px-2 py-1 rounded-md bg-primary-lighter text-primary-dark"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex gap-4">
+                        {project.githubLink && (
+                          <a
+                            href={project.githubLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
+                          >
+                            View Code &rarr;
+                          </a>
+                        )}
+                        {project.demoLink && (
+                          <a
+                            href={project.demoLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
+                          >
+                            Live Demo &rarr;
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-            <div className="text-center mt-8">
+
+            <motion.div variants={fadeUp} className="mt-8 text-center">
               <Link
                 href="/projects"
-                className="inline-block bg-sage text-white px-8 py-3 rounded-lg font-semibold hover:bg-sage-dark transition-colors duration-300"
+                className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200"
               >
                 View All Projects
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Latest from the Lab — Green Border Callout */}
+        <section className="py-16">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp} className="mb-8">
+              <h2 className="text-2xl font-bold text-foreground">
+                Latest from the Lab
+              </h2>
+              <div className="w-12 h-0.5 bg-primary mt-3" />
+            </motion.div>
+
+            <motion.p
+              variants={fadeUp}
+              className="text-text-secondary mb-8 max-w-2xl"
+            >
+              Research, learning explorations, and development workflows
+              worth sharing.
+            </motion.p>
+
+            {featuredLab && (
+              <motion.div
+                variants={fadeUp}
+                className="border border-border bg-surface rounded-xl p-6 max-w-lg border-l-4 border-l-primary hover:shadow-sm transition-all duration-200"
+              >
+                <span className="text-xs text-text-secondary uppercase tracking-wider">
+                  {featuredLab.date}
+                </span>
+                <h3 className="text-lg font-semibold text-foreground mt-2 mb-2">
+                  {featuredLab.title}
+                </h3>
+                <p className="text-text-secondary mb-4 text-sm leading-relaxed">
+                  {featuredLab.summary}
+                </p>
+
+                {featuredLab.highlights && (
+                  <div className="grid grid-cols-2 gap-3 mb-4 bg-primary-lighter/30 rounded-lg p-4">
+                    {featuredLab.highlights.map((h) => (
+                      <div key={h.label}>
+                        <span className="text-xl font-bold text-primary">
+                          {h.value}
+                        </span>
+                        <span className="block text-xs text-text-secondary uppercase">
+                          {h.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {featuredLab.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-primary-lighter text-primary-dark text-xs px-2 py-1 rounded-md"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {featuredLab.demoLink && (
+                  <a
+                    href={featuredLab.demoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
+                  >
+                    View Dashboard &rarr;
+                  </a>
+                )}
+              </motion.div>
+            )}
+
+            <motion.div variants={fadeUp} className="mt-8">
+              <Link
+                href="/lab"
+                className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200"
+              >
+                View the Lab
+              </Link>
+            </motion.div>
+          </motion.div>
         </section>
       </div>
     </Layout>
   )
-} 
+}

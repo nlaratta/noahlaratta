@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trend Research Dashboard — App Opportunity Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #131929;
+    --surface2: #1a2236;
+    --border: #252d44;
+    --text: #e2e8f0;
+    --text-muted: #8892a8;
+    --accent: #6366f1;
+    --accent2: #818cf8;
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,.15);
+    --yellow: #eab308;
+    --yellow-dim: rgba(234,179,8,.15);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,.15);
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --purple: #a855f7;
+    --pink: #ec4899;
+    --orange: #f97316;
+    --radius: 12px;
+    --max-w: 1200px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .hero {
+    min-height: 60vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 80px 24px 60px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(99,102,241,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--accent2); font-size: 13px; font-weight: 600; padding: 6px 16px;
+    border-radius: 99px; margin-bottom: 24px; letter-spacing: .5px; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.15; margin-bottom: 16px;
+    background: linear-gradient(135deg, #e2e8f0 30%, var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero p { color: var(--text-muted); font-size: 18px; max-width: 600px; }
+  .hero-stats { display: flex; gap: 32px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 36px; font-weight: 800; color: var(--accent2); }
+  .hero-stat .label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+
+  section { padding: 80px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  .section-header { margin-bottom: 40px; }
+  .section-header h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .section-header p { color: var(--text-muted); font-size: 15px; max-width: 700px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; position: relative; overflow: hidden;
+  }
+  .stat-card .icon { font-size: 28px; margin-bottom: 12px; display: block; }
+  .stat-card .value { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+  .stat-card .desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+  .stat-card.green .value { color: var(--green); }
+  .stat-card.purple .value { color: var(--purple); font-size: 20px; }
+  .stat-card.blue .value { color: var(--blue); font-size: 20px; }
+  .stat-card.orange .value { color: var(--orange); }
+
+  .chart-wrap {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; position: relative;
+  }
+  .chart-wrap canvas { max-height: 600px; }
+
+  .table-controls { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+  .table-controls select, .table-controls input {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    padding: 8px 14px; border-radius: 8px; font-size: 14px; outline: none;
+  }
+  .table-controls select:focus, .table-controls input:focus { border-color: var(--accent); }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table thead th {
+    text-align: left; padding: 12px 14px; background: var(--surface2); color: var(--text-muted);
+    font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .5px;
+    cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border);
+  }
+  .data-table thead th:hover { color: var(--text); }
+  .data-table tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .data-table tbody tr:hover { background: rgba(99,102,241,.06); }
+
+  .signal-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  .signal-green { background: var(--green-dim); color: var(--green); }
+  .signal-yellow { background: var(--yellow-dim); color: var(--yellow); }
+  .signal-red { background: var(--red-dim); color: var(--red); }
+  .signal-gray { background: rgba(136,146,168,.15); color: var(--text-muted); }
+
+  .bar-cell { display: flex; align-items: center; gap: 8px; }
+  .bar-cell .bar { height: 6px; border-radius: 3px; background: var(--accent); transition: width .3s; }
+
+  .accordion { display: flex; flex-direction: column; gap: 12px; }
+  .accordion-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .accordion-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 24px; cursor: pointer; transition: background .2s;
+  }
+  .accordion-header:hover { background: var(--surface2); }
+  .accordion-header h3 { font-size: 16px; font-weight: 600; }
+  .accordion-header .meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); }
+  .accordion-header .chevron { transition: transform .2s; color: var(--text-muted); }
+  .accordion-item.open .chevron { transform: rotate(180deg); }
+  .accordion-body { display: none; padding: 0 24px 24px; }
+  .accordion-item.open .accordion-body { display: block; }
+  .accordion-chart { height: 260px; margin-top: 12px; }
+
+  .matrix-wrap canvas { max-height: 500px; }
+
+  .decline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .decline-card {
+    background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--red);
+    border-radius: var(--radius); padding: 20px;
+  }
+  .decline-card .kw { font-weight: 600; margin-bottom: 4px; }
+  .decline-card .cat { font-size: 13px; color: var(--text-muted); }
+  .decline-card .stats { font-size: 13px; color: var(--red); margin-top: 8px; }
+
+  .tier-grid { display: flex; flex-direction: column; gap: 24px; }
+  .tier-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .tier-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .tier-card .tier-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .tier-card ul { list-style: none; }
+  .tier-card ul li {
+    padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+    display: flex; justify-content: space-between;
+  }
+  .tier-card ul li:last-child { border-bottom: none; }
+  .tier-card ul li .score { color: var(--accent2); font-weight: 600; }
+  .tier-1 { border-left: 4px solid var(--green); }
+  .tier-2 { border-left: 4px solid var(--yellow); }
+  .tier-3 { border-left: 4px solid var(--blue); }
+
+  .ai-pairs-note { font-size: 13px; color: var(--text-muted); margin-top: 12px; }
+
+  footer { text-align: center; padding: 40px 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 768px) {
+    .hero-stats { gap: 20px; }
+    .hero-stat .num { font-size: 28px; }
+    section { padding: 48px 0; }
+    .chart-wrap { padding: 16px; }
+    .data-table { font-size: 12px; }
+    .data-table thead th, .data-table tbody td { padding: 8px; }
+    .accordion-header { padding: 14px 16px; }
+    .accordion-header .meta { display: none; }
+  }
+
+  .dd-tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+  .dd-tab {
+    flex: 1; padding: 14px 20px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius) var(--radius) 0 0; cursor: pointer; text-align: center;
+    font-weight: 600; font-size: 14px; color: var(--text-muted); transition: all .2s;
+  }
+  .dd-tab:hover { background: var(--surface2); color: var(--text); }
+  .dd-tab.active { background: var(--surface2); color: var(--accent2); border-bottom-color: var(--accent); }
+  .dd-panel { display: none; }
+  .dd-panel.active { display: block; }
+  .dd-panel-inner {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 0 0 var(--radius) var(--radius);
+    padding: 28px;
+  }
+  .dd-insight {
+    display: flex; gap: 20px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .dd-insight-card {
+    flex: 1; min-width: 200px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px; border-left: 4px solid var(--accent);
+  }
+  .dd-insight-card.green-border { border-left-color: var(--green); }
+  .dd-insight-card.purple-border { border-left-color: var(--purple); }
+  .dd-insight-card.blue-border { border-left-color: var(--blue); }
+  .dd-insight-card .dd-label { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 6px; }
+  .dd-insight-card .dd-value { font-size: 20px; font-weight: 700; }
+  .dd-insight-card .dd-detail { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .dd-subgroup-chart { height: 320px; margin-bottom: 24px; }
+  .dd-rising { margin-top: 20px; }
+  .dd-rising h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); }
+  .dd-rising-item {
+    display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 99px; font-size: 13px; margin: 4px 4px 4px 0;
+  }
+
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* Product Research Divider */
+  .pr-divider { text-align: center; padding: 60px 24px 20px; }
+  .pr-divider h2 { font-size: 24px; font-weight: 700; color: var(--accent2); letter-spacing: .5px; }
+  .pr-divider p { color: var(--text-muted); font-size: 14px; margin-top: 8px; }
+  .pr-divider hr { border: none; border-top: 2px solid var(--accent); width: 80px; margin: 20px auto 0; }
+
+  /* Decision Matrix */
+  .dm-score-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+  .dm-score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+  .dm-score-card.winner { border-color: var(--accent); box-shadow: 0 0 20px rgba(99,102,241,.15); }
+  .dm-weighted { font-size: 36px; font-weight: 800; margin: 8px 0; }
+  .dm-dim-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
+  .dm-dim-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; padding: 3px 10px; font-size: 11px; color: var(--text-muted); }
+
+  /* Market Size */
+  .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .market-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; border-top: 4px solid var(--accent); }
+  .market-tam { font-size: 28px; font-weight: 800; margin: 8px 0; }
+  .market-cagr { font-size: 14px; color: var(--green); margin-bottom: 12px; }
+  .market-search { background: var(--surface2); border-radius: 8px; padding: 12px; margin: 12px 0; font-size: 13px; }
+  .market-stat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .market-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; padding: 4px 12px; font-size: 12px; color: var(--text-muted); }
+
+  /* Persona Cards */
+  .persona-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .persona-filter-btn { padding: 8px 16px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; font-size: 13px; font-weight: 600; transition: all .2s; }
+  .persona-filter-btn:hover, .persona-filter-btn.active { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+  .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .persona-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: transform .2s; }
+  .persona-card:hover { transform: translateY(-2px); }
+  .persona-strip { height: 6px; }
+  .persona-body { padding: 20px; }
+  .persona-name { font-size: 16px; font-weight: 700; }
+  .persona-role { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+  .persona-wtp { display: flex; gap: 12px; margin: 10px 0; }
+  .persona-wtp span { background: var(--surface2); padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+  .persona-feature { background: var(--green-dim); border-left: 3px solid var(--green); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 13px; margin: 10px 0; }
+  .persona-pain { font-style: italic; font-size: 13px; color: var(--text-muted); margin: 8px 0; }
+  .persona-barriers { list-style: disc; padding-left: 18px; font-size: 12px; color: var(--text-muted); }
+
+  /* MVP Features */
+  .mvp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .mvp-col h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 12px; }
+  .mvp-feature { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 8px; font-size: 14px; }
+  .mvp-feature.must { border-left: 4px solid var(--green); }
+  .mvp-feature.nice { border-left: 4px solid var(--blue); }
+  .mvp-rationale { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* AI Map */
+  .ai-section-label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 16px; margin-top: 32px; }
+  .ai-section-label:first-child { margin-top: 0; }
+  .ai-genuine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .ai-genuine-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .ai-genuine-card .ai-app { font-weight: 600; margin-bottom: 6px; }
+  .ai-tiers { display: flex; gap: 8px; margin-top: 8px; }
+  .ai-tier { font-size: 11px; padding: 2px 8px; border-radius: 99px; }
+  .ai-tier.high { background: var(--green-dim); color: var(--green); }
+  .ai-tier.medium { background: var(--yellow-dim); color: var(--yellow); }
+  .ai-gimmick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+
+  /* GTM */
+  .gtm-factors { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .gtm-factor { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .gtm-factor-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .gtm-factor-detail { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+  /* Rating Stars */
+  .rating-stars { color: #eab308; letter-spacing: 1px; }
+
+  @media (max-width: 768px) {
+    .dm-score-row { grid-template-columns: 1fr; }
+    .persona-grid { grid-template-columns: 1fr; }
+    .mvp-cols { grid-template-columns: 1fr; }
+    .market-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="hero-badge">Google Trends Research Report</span>
+  <h1>App Opportunity<br>Intelligence</h1>
+  <p>A data-driven analysis of 116 keywords across 23 categories, revealing where user demand is surging and where it's fading.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">116</div><div class="label">Keywords Analyzed</div></div>
+    <div class="hero-stat"><div class="num">23</div><div class="label">Categories</div></div>
+    <div class="hero-stat"><div class="num" id="greenCount"></div><div class="label">Green Light Signals</div></div>
+    <div class="hero-stat"><div class="num" id="topScore"></div><div class="label">Top Composite Score</div></div>
+  </div>
+</header>
+
+<section id="summary">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Executive Summary</h2><p>Four headline findings from the research.</p></div>
+    <div class="stat-grid fade-in" id="execCards"></div>
+  </div>
+</section>
+
+<section id="bigpicture">
+  <div class="container">
+    <div class="section-header fade-in"><h2>The Big Picture</h2><p>Average composite score by category. Higher means stronger combined signal of interest, growth, and momentum.</p></div>
+    <div class="chart-wrap fade-in"><canvas id="categoryChart"></canvas></div>
+  </div>
+</section>
+
+<section id="top30">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Top 30 Keywords</h2><p>The highest-scoring keywords across both datasets. Sort and filter to explore.</p></div>
+    <div class="fade-in">
+      <div class="table-controls">
+        <select id="catFilter"><option value="">All Categories</option></select>
+        <select id="signalFilter">
+          <option value="">All Signals</option>
+          <option value="GREEN LIGHT">Green Light</option>
+          <option value="PROMISING">Promising</option>
+          <option value="STABLE">Stable</option>
+          <option value="DECLINING">Declining</option>
+        </select>
+        <input id="kwSearch" type="text" placeholder="Search keyword..." />
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="topTable">
+          <thead><tr>
+            <th data-key="rank">#</th>
+            <th data-key="keyword">Keyword</th>
+            <th data-key="category">Category</th>
+            <th data-key="composite">Score</th>
+            <th data-key="avg">Avg Interest</th>
+            <th data-key="growth_pct">Growth %</th>
+            <th data-key="momentum">Momentum</th>
+            <th data-key="signal">Signal</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="aidisrupt">
+  <div class="container">
+    <div class="section-header fade-in"><h2>AI Disruption Index</h2><p>Comparing AI-powered keywords against their traditional counterparts. Where is AI creating new demand?</p></div>
+    <div class="chart-wrap fade-in"><canvas id="aiChart"></canvas>
+      <p class="ai-pairs-note">Pairs matched by domain. Bar length = composite score.</p>
+    </div>
+  </div>
+</section>
+
+<section id="deepdive-top3">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Deep Dive: Top 3 Categories</h2>
+      <p>Granular keyword research across 9 sub-groups within Elder Care, Pet Tracking, and Wedding Planning — the three highest-performing categories from the broad scan.</p>
+    </div>
+    <div class="fade-in">
+      <div class="dd-tabs" id="ddTabs"></div>
+      <div id="ddPanels"></div>
+    </div>
+  </div>
+</section>
+
+<div class="pr-divider fade-in">
+  <h2>Product Research</h2>
+  <p>Competitive audits, user personas, MVP features, AI integration analysis, and go-to-market assessment for the top 3 categories.</p>
+  <hr>
+</div>
+
+<section id="decision-matrix">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Decision Matrix</h2><p>Weighted scoring across 6 dimensions. Each category rated 1–10, then multiplied by dimension weight.</p></div>
+    <div class="chart-wrap fade-in"><canvas id="radarChart"></canvas></div>
+    <div class="dm-score-row fade-in" id="dmScores"></div>
+  </div>
+</section>
+
+<section id="market-size">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Market Size &amp; Growth</h2><p>Total addressable market, growth rates, and search demand signals for each category.</p></div>
+    <div class="market-grid fade-in" id="marketGrid"></div>
+  </div>
+</section>
+
+<section id="competitors">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Competitor Landscape</h2><p>Key players in each category — their strengths, pricing, AI status, and gaps.</p></div>
+    <div class="fade-in">
+      <div class="dd-tabs" id="compTabs"></div>
+      <div id="compPanels"></div>
+    </div>
+  </div>
+</section>
+
+<section id="personas">
+  <div class="container">
+    <div class="section-header fade-in"><h2>User Personas</h2><p>9 simulated user interviews revealing pain points, willingness to pay, and killer features.</p></div>
+    <div class="fade-in">
+      <div class="persona-filters" id="personaFilters"></div>
+      <div class="persona-grid" id="personaGrid"></div>
+    </div>
+  </div>
+</section>
+
+<section id="mvp-matrix">
+  <div class="container">
+    <div class="section-header fade-in"><h2>MVP Feature Matrix</h2><p>Must-have vs. nice-to-have features for each category's minimum viable product.</p></div>
+    <div class="fade-in">
+      <div class="dd-tabs" id="mvpTabs"></div>
+      <div id="mvpPanels"></div>
+    </div>
+  </div>
+</section>
+
+<section id="ai-map">
+  <div class="container">
+    <div class="section-header fade-in"><h2>AI Integration Map</h2><p>Where AI creates genuine value vs. where it's just a gimmick.</p></div>
+    <div class="fade-in" id="aiMapContent"></div>
+  </div>
+</section>
+
+<section id="gtm">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Go-to-Market Assessment</h2><p>Timing, distribution, monetization, regulatory, virality, and key risks for each category.</p></div>
+    <div class="accordion fade-in" id="gtmAccordion"></div>
+  </div>
+</section>
+
+<section id="deepdives">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Category Deep Dives</h2><p>Expand any category to see keyword-level detail and a bubble chart of average interest vs. growth.</p></div>
+    <div class="accordion fade-in" id="accordionWrap"></div>
+  </div>
+</section>
+
+<section id="matrix">
+  <div class="container">
+    <div class="section-header fade-in"><h2>The Opportunity Matrix</h2><p>Each bubble is a keyword. X = average search interest (market size), Y = growth % (trajectory), size = composite score, color = category.</p></div>
+    <div class="chart-wrap matrix-wrap fade-in"><canvas id="matrixChart"></canvas></div>
+  </div>
+</section>
+
+<section id="declining">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Declining Signals</h2><p>Keywords showing negative growth. Areas to approach with caution or avoid entirely.</p></div>
+    <div class="decline-grid fade-in" id="declineGrid"></div>
+  </div>
+</section>
+
+<section id="recs">
+  <div class="container">
+    <div class="section-header fade-in"><h2>Recommendations</h2><p>Keywords grouped into priority tiers based on composite score.</p></div>
+    <div class="tier-grid fade-in" id="tierGrid"></div>
+  </div>
+</section>
+
+<footer><div class="container">Generated from Google Trends data &middot; February 2026 &middot; Trend Research Dashboard</div></footer>
+
+<script>
+const DATA=[{"category":"Fitness + Social","keyword":"gym tracking app","avg":8,"growth_pct":296.6,"volatility":1.32,"momentum":43.8,"signal":"GREEN LIGHT","composite":95.54,"source":"focused"},{"category":"Fitness + Social","keyword":"fitness community app","avg":11.1,"growth_pct":385.3,"volatility":1.4,"momentum":31.2,"signal":"GREEN LIGHT","composite":92.69,"source":"focused"},{"category":"Dev Tools","keyword":"AI code review","avg":37.3,"growth_pct":243.4,"volatility":0.88,"momentum":-14.8,"signal":"PROMISING","composite":86.75,"source":"focused"},{"category":"Content Automation","keyword":"YouTube shorts automation","avg":2.5,"growth_pct":363,"volatility":1.27,"momentum":0.7,"signal":"PROMISING","composite":80.96,"source":"focused"},{"category":"Trading + AI","keyword":"trading journal app","avg":5.6,"growth_pct":283.9,"volatility":1.19,"momentum":-5.5,"signal":"PROMISING","composite":80.03,"source":"focused"},{"category":"Content Automation","keyword":"TikTok automation","avg":23.2,"growth_pct":165.3,"volatility":0.81,"momentum":-24.6,"signal":"PROMISING","composite":65.7,"source":"focused"},{"category":"AI Agents","keyword":"autonomous AI","avg":7.5,"growth_pct":115.5,"volatility":0.58,"momentum":22.7,"signal":"GREEN LIGHT","composite":55.26,"source":"focused"},{"category":"AI Agents","keyword":"AI agents","avg":39.3,"growth_pct":77.1,"volatility":0.47,"momentum":28,"signal":"GREEN LIGHT","composite":51.03,"source":"focused"},{"category":"Dev Tools","keyword":"PR automation","avg":2.2,"growth_pct":137.1,"volatility":0.8,"momentum":-19.9,"signal":"PROMISING","composite":49.53,"source":"focused"},{"category":"Trading + AI","keyword":"trading analytics","avg":37.9,"growth_pct":117.1,"volatility":0.7,"momentum":-32,"signal":"PROMISING","composite":48.61,"source":"focused"},{"category":"Content Automation","keyword":"content repurposing","avg":5.3,"growth_pct":110.9,"volatility":0.65,"momentum":8.6,"signal":"PROMISING","composite":48.53,"source":"focused"},{"category":"Fitness + Social","keyword":"workout tracker app","avg":34.4,"growth_pct":59.6,"volatility":0.53,"momentum":33.8,"signal":"GREEN LIGHT","composite":44.3,"source":"focused"},{"category":"Content Automation","keyword":"AI video editor","avg":58.3,"growth_pct":56.6,"volatility":0.38,"momentum":-3.4,"signal":"PROMISING","composite":39.11,"source":"focused"},{"category":"AI Agents","keyword":"AI workflow automation","avg":3.6,"growth_pct":107.8,"volatility":0.73,"momentum":-17.8,"signal":"PROMISING","composite":38.86,"source":"focused"},{"category":"Trading + AI","keyword":"day trading tools","avg":13.5,"growth_pct":107.1,"volatility":0.76,"momentum":-33.5,"signal":"PROMISING","composite":36.84,"source":"focused"},{"category":"Content Automation","keyword":"short form video tools","avg":0.3,"growth_pct":55.6,"volatility":0.88,"momentum":47.2,"signal":"GREEN LIGHT","composite":36.49,"source":"focused"},{"category":"AI Agents","keyword":"AI automation tools","avg":10,"growth_pct":106.3,"volatility":0.85,"momentum":-39.9,"signal":"PROMISING","composite":33.55,"source":"focused"},{"category":"Dev Tools","keyword":"developer productivity tools","avg":1.5,"growth_pct":100,"volatility":0.87,"momentum":-33.3,"signal":"PROMISING","composite":30.46,"source":"focused"},{"category":"AI Agents","keyword":"AI business automation","avg":6.8,"growth_pct":93.6,"volatility":0.72,"momentum":-44.8,"signal":"PROMISING","composite":26.04,"source":"focused"},{"category":"Dev Tools","keyword":"AI debugging","avg":4,"growth_pct":54.1,"volatility":0.52,"momentum":-6.2,"signal":"PROMISING","composite":20.98,"source":"focused"},{"category":"Fitness + Social","keyword":"fitness accountability app","avg":0,"growth_pct":7.4,"volatility":0.19,"momentum":46.3,"signal":"STABLE","composite":16.85,"source":"focused"},{"category":"Trading + AI","keyword":"algo trading software","avg":0.2,"growth_pct":7.4,"volatility":0.78,"momentum":31.5,"signal":"STABLE","composite":12.47,"source":"focused"},{"category":"Trading + AI","keyword":"AI trading bot","avg":30.2,"growth_pct":11.8,"volatility":0.32,"momentum":-13.9,"signal":"PROMISING","composite":9.61,"source":"focused"},{"category":"Dev Tools","keyword":"codebase analysis tool","avg":0,"growth_pct":3.7,"volatility":0.14,"momentum":-1.9,"signal":"STABLE","composite":0.91,"source":"focused"},{"category":"Senior Care","keyword":"elder care app","avg":1.6,"growth_pct":329.6,"volatility":2.91,"momentum":142.7,"signal":"GREEN LIGHT","composite":110.48,"source":"broad"},{"category":"Pet Care","keyword":"pet tracker app","avg":1.9,"growth_pct":222.2,"volatility":2.02,"momentum":68.8,"signal":"GREEN LIGHT","composite":101.21,"source":"broad"},{"category":"Productivity + Life Org","keyword":"second brain app","avg":1.6,"growth_pct":281.5,"volatility":1.81,"momentum":68.8,"signal":"GREEN LIGHT","composite":101.12,"source":"broad"},{"category":"Weddings + Events","keyword":"AI wedding planner","avg":6.8,"growth_pct":496.2,"volatility":1.48,"momentum":28,"signal":"GREEN LIGHT","composite":90.44,"source":"broad"},{"category":"Weddings + Events","keyword":"party planning app","avg":9.6,"growth_pct":230.6,"volatility":1.21,"momentum":24.4,"signal":"GREEN LIGHT","composite":90.2,"source":"broad"},{"category":"Gardening","keyword":"plant watering app","avg":2.1,"growth_pct":145.5,"volatility":2.04,"momentum":219.7,"signal":"GREEN LIGHT","composite":88.83,"source":"broad"},{"category":"Education + Study","keyword":"AI study tool","avg":23.7,"growth_pct":243.6,"volatility":0.83,"momentum":1.1,"signal":"PROMISING","composite":87.44,"source":"broad"},{"category":"Weddings + Events","keyword":"guest list app","avg":27.3,"growth_pct":189.7,"volatility":1.1,"momentum":9.1,"signal":"PROMISING","composite":86.8,"source":"broad"},{"category":"Travel","keyword":"travel budget app","avg":23.7,"growth_pct":385.4,"volatility":1.18,"momentum":-3.1,"signal":"PROMISING","composite":86.18,"source":"broad"},{"category":"Education + Study","keyword":"study planner app","avg":1.7,"growth_pct":200,"volatility":1.46,"momentum":17.4,"signal":"GREEN LIGHT","composite":85.73,"source":"broad"},{"category":"Productivity + Life Org","keyword":"goal setting app","avg":4,"growth_pct":414.3,"volatility":1.3,"momentum":13,"signal":"GREEN LIGHT","composite":85.1,"source":"broad"},{"category":"Travel","keyword":"travel itinerary app","avg":12.2,"growth_pct":211.2,"volatility":1.14,"momentum":4.6,"signal":"PROMISING","composite":85.04,"source":"broad"},{"category":"Parenting","keyword":"homework help app","avg":2.4,"growth_pct":303.7,"volatility":1.09,"momentum":14.2,"signal":"GREEN LIGHT","composite":84.98,"source":"broad"},{"category":"Senior Care","keyword":"fall detection app","avg":4.5,"growth_pct":488.6,"volatility":1.46,"momentum":12,"signal":"GREEN LIGHT","composite":84.95,"source":"broad"},{"category":"Pet Care","keyword":"pet health app","avg":19.3,"growth_pct":256.1,"volatility":0.94,"momentum":-11.7,"signal":"PROMISING","composite":82.28,"source":"broad"},{"category":"Pet Care","keyword":"AI pet health","avg":35,"growth_pct":236.5,"volatility":0.84,"momentum":-28.6,"signal":"PROMISING","composite":81.92,"source":"broad"},{"category":"Senior Care","keyword":"senior care app","avg":17.9,"growth_pct":200.8,"volatility":0.88,"momentum":-13.4,"signal":"PROMISING","composite":81.35,"source":"broad"},{"category":"Weddings + Events","keyword":"event planning app","avg":20.1,"growth_pct":166.3,"volatility":0.83,"momentum":3,"signal":"PROMISING","composite":73.45,"source":"broad"},{"category":"Fashion + Styling","keyword":"wardrobe app","avg":3.8,"growth_pct":156.9,"volatility":0.79,"momentum":23.9,"signal":"GREEN LIGHT","composite":71.07,"source":"broad"},{"category":"Senior Care","keyword":"medication reminder app","avg":4.8,"growth_pct":114.6,"volatility":1.55,"momentum":51.7,"signal":"GREEN LIGHT","composite":62.79,"source":"broad"},{"category":"Real Estate","keyword":"rental property app","avg":2.8,"growth_pct":145.5,"volatility":0.79,"momentum":-11.2,"signal":"PROMISING","composite":55.68,"source":"broad"},{"category":"Small Business Tools","keyword":"small business app","avg":48,"growth_pct":114.7,"volatility":0.57,"momentum":-17.2,"signal":"PROMISING","composite":55.12,"source":"broad"},{"category":"Parenting","keyword":"kids screen time app","avg":1.8,"growth_pct":97,"volatility":1.27,"momentum":51.5,"signal":"GREEN LIGHT","composite":54.79,"source":"broad"},{"category":"Gardening","keyword":"AI plant care","avg":15.2,"growth_pct":130.5,"volatility":0.76,"momentum":-11.4,"signal":"PROMISING","composite":53.34,"source":"broad"},{"category":"Meal Planning","keyword":"meal prep app","avg":21.2,"growth_pct":101.3,"volatility":0.55,"momentum":19.1,"signal":"GREEN LIGHT","composite":52.61,"source":"broad"},{"category":"Fashion + Styling","keyword":"fashion app","avg":28.1,"growth_pct":98.2,"volatility":0.75,"momentum":15.6,"signal":"GREEN LIGHT","composite":52.39,"source":"broad"},{"category":"Local + Neighborhood","keyword":"community app","avg":40.6,"growth_pct":94,"volatility":0.62,"momentum":7.1,"signal":"PROMISING","composite":51.91,"source":"broad"},{"category":"Local + Neighborhood","keyword":"local services app","avg":4.2,"growth_pct":149.2,"volatility":0.71,"momentum":-34.6,"signal":"PROMISING","composite":50.56,"source":"broad"},{"category":"Real Estate","keyword":"AI real estate","avg":50.8,"growth_pct":106.8,"volatility":0.59,"momentum":-28.6,"signal":"PROMISING","composite":49.38,"source":"broad"},{"category":"Mental Health","keyword":"therapy app","avg":36,"growth_pct":98,"volatility":0.66,"momentum":-5.5,"signal":"PROMISING","composite":48.35,"source":"broad"},{"category":"Productivity + Life Org","keyword":"AI scheduling app","avg":16.4,"growth_pct":146.1,"volatility":0.81,"momentum":-51.2,"signal":"PROMISING","composite":48,"source":"broad"},{"category":"Senior Care","keyword":"caregiver app","avg":45.2,"growth_pct":89.1,"volatility":0.57,"momentum":-8.7,"signal":"PROMISING","composite":46.59,"source":"broad"},{"category":"Weddings + Events","keyword":"wedding planner app","avg":5.3,"growth_pct":70.8,"volatility":1.69,"momentum":55.2,"signal":"GREEN LIGHT","composite":46.47,"source":"broad"},{"category":"Education + Study","keyword":"language learning app","avg":41.8,"growth_pct":65,"volatility":0.49,"momentum":20.2,"signal":"GREEN LIGHT","composite":44.6,"source":"broad"},{"category":"Personal Finance","keyword":"budget app","avg":38.8,"growth_pct":81.8,"volatility":0.6,"momentum":0.6,"signal":"PROMISING","composite":44.54,"source":"broad"},{"category":"Dating + Relationships","keyword":"AI dating app","avg":7.7,"growth_pct":116.8,"volatility":0.56,"momentum":-15.4,"signal":"PROMISING","composite":44.41,"source":"broad"},{"category":"Meal Planning","keyword":"grocery list app","avg":44.7,"growth_pct":77.4,"volatility":0.5,"momentum":-1.5,"signal":"PROMISING","composite":43.92,"source":"broad"},{"category":"Small Business Tools","keyword":"AI marketing tool","avg":16.1,"growth_pct":112.2,"volatility":0.7,"momentum":-28.7,"signal":"PROMISING","composite":41.1,"source":"broad"},{"category":"Real Estate","keyword":"property management app","avg":5.5,"growth_pct":118.1,"volatility":0.67,"momentum":-27.8,"signal":"PROMISING","composite":40.55,"source":"broad"},{"category":"Productivity + Life Org","keyword":"AI personal assistant","avg":49.1,"growth_pct":65.9,"volatility":0.46,"momentum":-1.8,"signal":"PROMISING","composite":40.55,"source":"broad"},{"category":"Small Business Tools","keyword":"appointment scheduling app","avg":2.2,"growth_pct":105.1,"volatility":0.73,"momentum":-9.2,"signal":"PROMISING","composite":39.94,"source":"broad"},{"category":"Mental Health","keyword":"anxiety app","avg":11.6,"growth_pct":87.2,"volatility":0.61,"momentum":5.2,"signal":"PROMISING","composite":39.92,"source":"broad"},{"category":"Dating + Relationships","keyword":"relationship app","avg":36.8,"growth_pct":76.6,"volatility":0.62,"momentum":-6.2,"signal":"PROMISING","composite":39.82,"source":"broad"},{"category":"Dating + Relationships","keyword":"AI matchmaking","avg":1.4,"growth_pct":107.4,"volatility":0.77,"momentum":-12.3,"signal":"PROMISING","composite":39.69,"source":"broad"},{"category":"Personal Finance","keyword":"AI financial advisor","avg":2.8,"growth_pct":112.2,"volatility":0.57,"momentum":-20.6,"signal":"PROMISING","composite":39.54,"source":"broad"},{"category":"Pet Care","keyword":"dog training app","avg":28.4,"growth_pct":67.8,"volatility":0.53,"momentum":12.8,"signal":"GREEN LIGHT","composite":39.48,"source":"broad"},{"category":"Meal Planning","keyword":"calorie tracker app","avg":50.7,"growth_pct":20.6,"volatility":0.33,"momentum":46.9,"signal":"PROMISING","composite":37.52,"source":"broad"},{"category":"Home Improvement","keyword":"AI interior design","avg":49.3,"growth_pct":50.7,"volatility":0.39,"momentum":-5.6,"signal":"PROMISING","composite":33.39,"source":"broad"},{"category":"Parenting","keyword":"AI tutor","avg":44.8,"growth_pct":49.3,"volatility":0.37,"momentum":-0.1,"signal":"PROMISING","composite":33.13,"source":"broad"},{"category":"Education + Study","keyword":"AI homework helper","avg":33,"growth_pct":51.4,"volatility":0.49,"momentum":6.2,"signal":"PROMISING","composite":32.32,"source":"broad"},{"category":"Parenting","keyword":"parenting app","avg":28.8,"growth_pct":61.4,"volatility":0.45,"momentum":-6.1,"signal":"PROMISING","composite":31.37,"source":"broad"},{"category":"Productivity + Life Org","keyword":"habit tracker app","avg":21.1,"growth_pct":66.5,"volatility":0.71,"momentum":-8.7,"signal":"PROMISING","composite":30.32,"source":"broad"},{"category":"Home Improvement","keyword":"interior design app","avg":26.2,"growth_pct":52.9,"volatility":0.48,"momentum":3.9,"signal":"PROMISING","composite":30.19,"source":"broad"},{"category":"Home Improvement","keyword":"home renovation app","avg":3.1,"growth_pct":93,"volatility":0.75,"momentum":-27.2,"signal":"PROMISING","composite":29.97,"source":"broad"},{"category":"Mental Health","keyword":"AI therapist","avg":10.7,"growth_pct":58.3,"volatility":0.4,"momentum":7.8,"signal":"PROMISING","composite":28.87,"source":"broad"},{"category":"Small Business Tools","keyword":"AI bookkeeping","avg":9.6,"growth_pct":89.9,"volatility":0.59,"momentum":-39.8,"signal":"PROMISING","composite":26.9,"source":"broad"},{"category":"Gardening","keyword":"gardening app","avg":14.9,"growth_pct":29.9,"volatility":0.49,"momentum":33.8,"signal":"PROMISING","composite":26.57,"source":"broad"},{"category":"Small Business Tools","keyword":"invoice app","avg":24.3,"growth_pct":48.1,"volatility":0.39,"momentum":-8.3,"signal":"PROMISING","composite":24.04,"source":"broad"},{"category":"Local + Neighborhood","keyword":"neighborhood app","avg":8.7,"growth_pct":57.1,"volatility":0.4,"momentum":-4.8,"signal":"PROMISING","composite":24.01,"source":"broad"},{"category":"Dating + Relationships","keyword":"couples app","avg":18.2,"growth_pct":45.9,"volatility":0.38,"momentum":-0.9,"signal":"PROMISING","composite":23.55,"source":"broad"},{"category":"Travel","keyword":"AI travel planner","avg":9.8,"growth_pct":64.2,"volatility":0.57,"momentum":-21.2,"signal":"PROMISING","composite":22.26,"source":"broad"},{"category":"Mental Health","keyword":"mood tracker app","avg":0.4,"growth_pct":48.1,"volatility":0.57,"momentum":7.4,"signal":"PROMISING","composite":21.58,"source":"broad"},{"category":"Mental Health","keyword":"meditation app","avg":9.3,"growth_pct":30.1,"volatility":0.34,"momentum":1.8,"signal":"PROMISING","composite":15.37,"source":"broad"},{"category":"Education + Study","keyword":"flashcard app","avg":7.9,"growth_pct":41.8,"volatility":0.3,"momentum":-14.8,"signal":"PROMISING","composite":14.65,"source":"broad"},{"category":"Home Improvement","keyword":"DIY home projects","avg":9.1,"growth_pct":15.8,"volatility":0.38,"momentum":15.2,"signal":"PROMISING","composite":13.61,"source":"broad"},{"category":"Meal Planning","keyword":"meal planning app","avg":28.6,"growth_pct":25.4,"volatility":0.35,"momentum":-19.6,"signal":"PROMISING","composite":12.86,"source":"broad"},{"category":"Parenting","keyword":"baby tracker app","avg":7.7,"growth_pct":25.4,"volatility":0.34,"momentum":0.4,"signal":"PROMISING","composite":12.59,"source":"broad"},{"category":"Meal Planning","keyword":"AI recipe generator","avg":16.6,"growth_pct":49,"volatility":0.55,"momentum":-41.1,"signal":"PROMISING","composite":12.25,"source":"broad"},{"category":"Local + Neighborhood","keyword":"local deals app","avg":0.7,"growth_pct":59.3,"volatility":0.67,"momentum":-41.7,"signal":"PROMISING","composite":11.42,"source":"broad"},{"category":"Travel","keyword":"road trip app","avg":25.3,"growth_pct":12.8,"volatility":0.49,"momentum":-9.1,"signal":"PROMISING","composite":9.98,"source":"broad"},{"category":"Personal Finance","keyword":"debt payoff app","avg":0.2,"growth_pct":18.5,"volatility":0.38,"momentum":8.3,"signal":"PROMISING","composite":9.95,"source":"broad"},{"category":"Personal Finance","keyword":"investment tracker app","avg":0.3,"growth_pct":22.2,"volatility":0.46,"momentum":-4.6,"signal":"PROMISING","composite":7.59,"source":"broad"},{"category":"Fashion + Styling","keyword":"virtual try on","avg":14.2,"growth_pct":7.3,"volatility":0.17,"momentum":-1.4,"signal":"STABLE","composite":6.76,"source":"broad"},{"category":"Astrology + Horoscopes","keyword":"tarot app","avg":2,"growth_pct":32.6,"volatility":0.72,"momentum":-24.3,"signal":"PROMISING","composite":6.35,"source":"broad"},{"category":"Real Estate","keyword":"house hunting app","avg":0,"growth_pct":7.4,"volatility":0.19,"momentum":-3.7,"signal":"STABLE","composite":1.85,"source":"broad"},{"category":"Home Improvement","keyword":"home remodel cost estimator","avg":0,"growth_pct":0,"volatility":0,"momentum":0,"signal":"STABLE","composite":0,"source":"broad"},{"category":"Fashion + Styling","keyword":"personal stylist app","avg":0,"growth_pct":0,"volatility":0,"momentum":0,"signal":"STABLE","composite":0,"source":"broad"},{"category":"Dating + Relationships","keyword":"dating profile helper","avg":0,"growth_pct":0,"volatility":0,"momentum":0,"signal":"STABLE","composite":0,"source":"broad"},{"category":"Fashion + Styling","keyword":"AI outfit planner","avg":0,"growth_pct":0,"volatility":0,"momentum":0,"signal":"STABLE","composite":0,"source":"broad"},{"category":"Local + Neighborhood","keyword":"handyman app","avg":2,"growth_pct":22.9,"volatility":0.43,"momentum":-36.9,"signal":"PROMISING","composite":-1.31,"source":"broad"},{"category":"Personal Finance","keyword":"expense tracker app","avg":1.1,"growth_pct":21.4,"volatility":0.52,"momentum":-34.7,"signal":"PROMISING","composite":-1.52,"source":"broad"},{"category":"Astrology + Horoscopes","keyword":"daily horoscope","avg":36.1,"growth_pct":-20.3,"volatility":0.34,"momentum":-17.5,"signal":"DECLINING","composite":-2.54,"source":"broad"},{"category":"Travel","keyword":"trip planner app","avg":13,"growth_pct":-14.1,"volatility":0.28,"momentum":-11.4,"signal":"DECLINING","composite":-5.16,"source":"broad"},{"category":"Real Estate","keyword":"home value estimator","avg":4.4,"growth_pct":-13.5,"volatility":0.14,"momentum":-8.1,"signal":"DECLINING","composite":-6.51,"source":"broad"},{"category":"Astrology + Horoscopes","keyword":"birth chart app","avg":0.8,"growth_pct":25.9,"volatility":1.04,"momentum":-58.3,"signal":"PROMISING","composite":-6.89,"source":"broad"},{"category":"Astrology + Horoscopes","keyword":"astrology compatibility","avg":4.5,"growth_pct":-14.6,"volatility":0.51,"momentum":-16,"signal":"DECLINING","composite":-9.29,"source":"broad"},{"category":"Gardening","keyword":"garden planner app","avg":1.1,"growth_pct":-55.8,"volatility":2.51,"momentum":30.6,"signal":"DECLINING","composite":-12.81,"source":"broad"},{"category":"Pet Care","keyword":"vet appointment app","avg":0.1,"growth_pct":-29.6,"volatility":1.09,"momentum":-14.8,"signal":"DECLINING","composite":-16.25,"source":"broad"},{"category":"Astrology + Horoscopes","keyword":"horoscope app","avg":2.2,"growth_pct":-21.2,"volatility":1.31,"momentum":-42.8,"signal":"DECLINING","composite":-20.66,"source":"broad"},{"category":"Gardening","keyword":"plant identifier app","avg":38,"growth_pct":-64.5,"volatility":0.67,"momentum":-72.3,"signal":"DECLINING","composite":-36.09,"source":"broad"}];
+
+// Helpers
+const sorted = [...DATA].sort((a,b) => b.composite - a.composite);
+const categories = [...new Set(DATA.map(d => d.category))].sort();
+const palette = ['#6366f1','#22c55e','#eab308','#3b82f6','#ef4444','#06b6d4','#a855f7','#ec4899','#f97316','#14b8a6','#f43f5e','#8b5cf6','#0ea5e9','#84cc16','#d946ef','#fb923c','#2dd4bf','#facc15','#38bdf8','#c084fc','#4ade80','#fbbf24','#e879f9'];
+const catColors = {};
+categories.forEach((c,i) => catColors[c] = palette[i % palette.length]);
+const dataMap = {};
+DATA.forEach(d => dataMap[d.keyword] = d);
+
+function signalClass(s) {
+  if (s.includes('GREEN')) return 'signal-green';
+  if (s === 'PROMISING') return 'signal-yellow';
+  if (s === 'DECLINING') return 'signal-red';
+  return 'signal-gray';
+}
+function signalLabel(s) {
+  if (s.includes('GREEN')) return 'Green Light';
+  if (s === 'PROMISING') return 'Promising';
+  if (s === 'DECLINING') return 'Declining';
+  return 'Stable';
+}
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Hero counters
+const greenCount = DATA.filter(d => d.signal.includes('GREEN')).length;
+document.getElementById('greenCount').textContent = greenCount;
+document.getElementById('topScore').textContent = sorted[0].composite.toFixed(1);
+
+// Executive Summary — use DOM methods
+(function buildExecCards() {
+  const topCat = (() => {
+    const m = {};
+    DATA.forEach(d => { m[d.category] = m[d.category] || []; m[d.category].push(d.composite); });
+    let best = '', bestAvg = -Infinity;
+    for (const [c,arr] of Object.entries(m)) {
+      const a = arr.reduce((s,v) => s+v,0)/arr.length;
+      if (a > bestAvg) { bestAvg = a; best = c; }
+    }
+    return best;
+  })();
+  const decliningCount = DATA.filter(d => d.signal === 'DECLINING').length;
+
+  const cards = [
+    { cls: 'green', icon: '\u25B2', value: String(greenCount), desc: 'Keywords with "Green Light" signal \u2014 strong upward trajectory with positive momentum' },
+    { cls: 'purple', icon: '\u2605', value: sorted[0].keyword, desc: 'Highest composite score (' + sorted[0].composite.toFixed(1) + ') \u2014 combining growth, volume, and momentum' },
+    { cls: 'blue', icon: '\u2637', value: topCat, desc: 'Strongest category by average composite score across all its keywords' },
+    { cls: 'orange', icon: '\u25BC', value: String(decliningCount), desc: 'Declining keywords \u2014 markets losing interest, avoid building here' },
+  ];
+  const container = document.getElementById('execCards');
+  cards.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'stat-card ' + c.cls;
+    const icon = document.createElement('span');
+    icon.className = 'icon';
+    icon.textContent = c.icon;
+    const val = document.createElement('div');
+    val.className = 'value';
+    val.textContent = c.value;
+    const desc = document.createElement('div');
+    desc.className = 'desc';
+    desc.textContent = c.desc;
+    card.appendChild(icon);
+    card.appendChild(val);
+    card.appendChild(desc);
+    container.appendChild(card);
+  });
+})();
+
+// Category Bar Chart
+const catAvg = {};
+DATA.forEach(d => {
+  catAvg[d.category] = catAvg[d.category] || { sum: 0, count: 0 };
+  catAvg[d.category].sum += d.composite;
+  catAvg[d.category].count++;
+});
+const catEntries = Object.entries(catAvg).map(([c, v]) => ({ cat: c, avg: v.sum / v.count, count: v.count })).sort((a,b) => b.avg - a.avg);
+
+new Chart(document.getElementById('categoryChart'), {
+  type: 'bar',
+  data: {
+    labels: catEntries.map(e => e.cat),
+    datasets: [{
+      label: 'Avg Composite Score',
+      data: catEntries.map(e => +e.avg.toFixed(1)),
+      backgroundColor: catEntries.map(e => {
+        if (e.avg >= 60) return 'rgba(34,197,94,.7)';
+        if (e.avg >= 30) return 'rgba(234,179,8,.7)';
+        if (e.avg >= 0) return 'rgba(99,102,241,.7)';
+        return 'rgba(239,68,68,.7)';
+      }),
+      borderRadius: 4, barThickness: 22,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: ctx => catEntries[ctx.dataIndex].count + ' keywords in this category' } } },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8892a8' } },
+      y: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 12 } } }
+    }
+  }
+});
+document.getElementById('categoryChart').parentElement.style.height = (catEntries.length * 36 + 60) + 'px';
+
+// Top 30 Table — use DOM methods
+const catFilterEl = document.getElementById('catFilter');
+categories.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; catFilterEl.appendChild(o); });
+
+let tableSortKey = 'composite', tableSortDir = -1;
+function renderTable() {
+  const catVal = catFilterEl.value;
+  const sigVal = document.getElementById('signalFilter').value;
+  const search = document.getElementById('kwSearch').value.toLowerCase();
+  let filtered = sorted.filter(d => {
+    if (catVal && d.category !== catVal) return false;
+    const ns = d.signal.includes('GREEN') ? 'GREEN LIGHT' : d.signal;
+    if (sigVal && ns !== sigVal) return false;
+    if (search && !d.keyword.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  filtered.sort((a,b) => {
+    let av = a[tableSortKey], bv = b[tableSortKey];
+    if (tableSortKey === 'keyword' || tableSortKey === 'category' || tableSortKey === 'signal') return tableSortDir * String(av).localeCompare(String(bv));
+    return tableSortDir * (av - bv);
+  });
+  const maxC = sorted[0].composite;
+  const show = filtered.slice(0, 30);
+  const tbody = document.querySelector('#topTable tbody');
+  tbody.textContent = '';
+  show.forEach((d, i) => {
+    const tr = document.createElement('tr');
+    const td = (text) => { const t = document.createElement('td'); t.textContent = text; return t; };
+
+    tr.appendChild(td(i + 1));
+
+    const kwTd = document.createElement('td');
+    const strong = document.createElement('strong');
+    strong.textContent = d.keyword;
+    kwTd.appendChild(strong);
+    tr.appendChild(kwTd);
+
+    const catTd = document.createElement('td');
+    catTd.textContent = d.category;
+    catTd.style.color = catColors[d.category];
+    tr.appendChild(catTd);
+
+    const scoreTd = document.createElement('td');
+    const barDiv = document.createElement('div');
+    barDiv.className = 'bar-cell';
+    const scoreSpan = document.createElement('span');
+    scoreSpan.textContent = d.composite.toFixed(1);
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.width = Math.max(0, d.composite / maxC * 80) + 'px';
+    bar.style.background = catColors[d.category];
+    barDiv.appendChild(scoreSpan);
+    barDiv.appendChild(bar);
+    scoreTd.appendChild(barDiv);
+    tr.appendChild(scoreTd);
+
+    tr.appendChild(td(d.avg));
+
+    const growthTd = td((d.growth_pct > 0 ? '+' : '') + d.growth_pct.toFixed(1) + '%');
+    growthTd.style.color = d.growth_pct >= 0 ? 'var(--green)' : 'var(--red)';
+    tr.appendChild(growthTd);
+
+    const momTd = td((d.momentum > 0 ? '+' : '') + d.momentum.toFixed(1));
+    momTd.style.color = d.momentum >= 0 ? 'var(--green)' : 'var(--red)';
+    tr.appendChild(momTd);
+
+    const sigTd = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'signal-badge ' + signalClass(d.signal);
+    badge.textContent = signalLabel(d.signal);
+    sigTd.appendChild(badge);
+    tr.appendChild(sigTd);
+
+    tbody.appendChild(tr);
+  });
+}
+renderTable();
+catFilterEl.addEventListener('change', renderTable);
+document.getElementById('signalFilter').addEventListener('change', renderTable);
+document.getElementById('kwSearch').addEventListener('input', renderTable);
+document.querySelectorAll('#topTable thead th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (!key) return;
+    if (tableSortKey === key) tableSortDir *= -1;
+    else { tableSortKey = key; tableSortDir = key === 'keyword' || key === 'category' || key === 'signal' ? 1 : -1; }
+    renderTable();
+  });
+});
+
+// AI Disruption Chart
+const aiPairs = [
+  { ai: 'AI wedding planner', trad: 'wedding planner app', domain: 'Wedding Planning' },
+  { ai: 'AI travel planner', trad: 'trip planner app', domain: 'Travel Planning' },
+  { ai: 'AI study tool', trad: 'flashcard app', domain: 'Study' },
+  { ai: 'AI pet health', trad: 'pet health app', domain: 'Pet Health' },
+  { ai: 'AI real estate', trad: 'property management app', domain: 'Real Estate' },
+  { ai: 'AI therapist', trad: 'therapy app', domain: 'Mental Health' },
+  { ai: 'AI dating app', trad: 'relationship app', domain: 'Dating' },
+  { ai: 'AI financial advisor', trad: 'budget app', domain: 'Finance' },
+  { ai: 'AI tutor', trad: 'homework help app', domain: 'Tutoring' },
+  { ai: 'AI code review', trad: 'developer productivity tools', domain: 'Dev Tools' },
+  { ai: 'AI interior design', trad: 'interior design app', domain: 'Interior Design' },
+  { ai: 'AI trading bot', trad: 'day trading tools', domain: 'Trading' },
+];
+const validPairs = aiPairs.filter(p => dataMap[p.ai] && dataMap[p.trad]);
+
+new Chart(document.getElementById('aiChart'), {
+  type: 'bar',
+  data: {
+    labels: validPairs.map(p => p.domain),
+    datasets: [
+      { label: 'AI Version', data: validPairs.map(p => dataMap[p.ai].composite), backgroundColor: 'rgba(99,102,241,.8)', borderRadius: 4 },
+      { label: 'Traditional', data: validPairs.map(p => dataMap[p.trad].composite), backgroundColor: 'rgba(136,146,168,.4)', borderRadius: 4 }
+    ]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#e2e8f0', usePointStyle: true, pointStyle: 'rectRounded' } },
+      tooltip: { callbacks: { afterLabel: ctx => { const p = validPairs[ctx.dataIndex]; const d = ctx.datasetIndex === 0 ? dataMap[p.ai] : dataMap[p.trad]; return 'Growth: ' + d.growth_pct.toFixed(1) + '% | Momentum: ' + d.momentum.toFixed(1); } } }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8892a8' }, title: { display: true, text: 'Composite Score', color: '#8892a8' } },
+      y: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 12 } } }
+    }
+  }
+});
+document.getElementById('aiChart').parentElement.style.height = (validPairs.length * 50 + 80) + 'px';
+
+// Accordion Deep Dives — use DOM methods
+const catGroups = {};
+DATA.forEach(d => { catGroups[d.category] = catGroups[d.category] || []; catGroups[d.category].push(d); });
+const accWrap = document.getElementById('accordionWrap');
+const sortedCats = Object.entries(catGroups).sort((a,b) => {
+  const avgA = a[1].reduce((s,d) => s+d.composite,0)/a[1].length;
+  const avgB = b[1].reduce((s,d) => s+d.composite,0)/b[1].length;
+  return avgB - avgA;
+});
+
+sortedCats.forEach(([cat, items], idx) => {
+  const avg = (items.reduce((s,d) => s+d.composite,0)/items.length).toFixed(1);
+  const greens = items.filter(d => d.signal.includes('GREEN')).length;
+  const sortedItems = [...items].sort((a,b) => b.composite - a.composite);
+
+  const div = document.createElement('div');
+  div.className = 'accordion-item';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'accordion-header';
+  header.addEventListener('click', function() {
+    div.classList.toggle('open');
+    const c = div.querySelector('canvas');
+    if (c && !c.dataset.rendered) { renderBubble(c, cat); c.dataset.rendered = '1'; }
+  });
+
+  const h3 = document.createElement('h3');
+  const dot = document.createElement('span');
+  dot.style.color = catColors[cat];
+  dot.textContent = '\u25CF ';
+  h3.appendChild(dot);
+  h3.appendChild(document.createTextNode(cat));
+  header.appendChild(h3);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const s1 = document.createElement('span'); s1.textContent = items.length + ' keywords'; meta.appendChild(s1);
+  const s2 = document.createElement('span'); s2.textContent = 'Avg: ' + avg; meta.appendChild(s2);
+  if (greens) { const s3 = document.createElement('span'); s3.style.color = 'var(--green)'; s3.textContent = greens + ' green'; meta.appendChild(s3); }
+  header.appendChild(meta);
+
+  const chevron = document.createElement('span');
+  chevron.className = 'chevron';
+  chevron.textContent = '\u25BC';
+  header.appendChild(chevron);
+  div.appendChild(header);
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'accordion-body';
+
+  const table = document.createElement('table');
+  table.className = 'data-table';
+  const thead = document.createElement('thead');
+  const headRow = document.createElement('tr');
+  ['Keyword','Score','Growth','Momentum','Signal'].forEach(t => { const th = document.createElement('th'); th.textContent = t; headRow.appendChild(th); });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  sortedItems.forEach(d => {
+    const tr = document.createElement('tr');
+    const td = (text) => { const t = document.createElement('td'); t.textContent = text; return t; };
+    tr.appendChild(td(d.keyword));
+    tr.appendChild(td(d.composite.toFixed(1)));
+    const gTd = td((d.growth_pct > 0 ? '+' : '') + d.growth_pct.toFixed(1) + '%');
+    gTd.style.color = d.growth_pct >= 0 ? 'var(--green)' : 'var(--red)';
+    tr.appendChild(gTd);
+    const mTd = td((d.momentum > 0 ? '+' : '') + d.momentum.toFixed(1));
+    mTd.style.color = d.momentum >= 0 ? 'var(--green)' : 'var(--red)';
+    tr.appendChild(mTd);
+    const sTd = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'signal-badge ' + signalClass(d.signal);
+    badge.textContent = signalLabel(d.signal);
+    sTd.appendChild(badge);
+    tr.appendChild(sTd);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  body.appendChild(table);
+
+  const chartDiv = document.createElement('div');
+  chartDiv.className = 'accordion-chart';
+  const canvas = document.createElement('canvas');
+  canvas.id = 'bubble-' + idx;
+  chartDiv.appendChild(canvas);
+  body.appendChild(chartDiv);
+
+  div.appendChild(body);
+  accWrap.appendChild(div);
+});
+
+function renderBubble(canvas, cat) {
+  const items = catGroups[cat];
+  new Chart(canvas, {
+    type: 'bubble',
+    data: {
+      datasets: [{
+        label: cat,
+        data: items.map(d => ({ x: d.avg, y: d.growth_pct, r: Math.max(4, Math.min(30, Math.abs(d.momentum) / 2 + 4)), keyword: d.keyword, composite: d.composite })),
+        backgroundColor: catColors[cat] + '99', borderColor: catColors[cat], borderWidth: 1,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const p = ctx.raw; return [p.keyword, 'Avg interest: ' + p.x, 'Growth: ' + p.y.toFixed(1) + '%', 'Score: ' + p.composite.toFixed(1)]; } } } },
+      scales: {
+        x: { title: { display: true, text: 'Avg Search Interest', color: '#8892a8' }, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8892a8' } },
+        y: { title: { display: true, text: 'Growth %', color: '#8892a8' }, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8892a8' } }
+      }
+    }
+  });
+}
+
+// Opportunity Matrix
+const matrixData = DATA.filter(d => d.composite > 0);
+const catDatasets = {};
+matrixData.forEach(d => {
+  if (!catDatasets[d.category]) catDatasets[d.category] = [];
+  catDatasets[d.category].push({ x: d.avg, y: d.growth_pct, r: Math.max(4, Math.min(25, d.composite / 4)), keyword: d.keyword, composite: d.composite });
+});
+
+new Chart(document.getElementById('matrixChart'), {
+  type: 'bubble',
+  data: {
+    datasets: Object.entries(catDatasets).map(([cat, pts]) => ({
+      label: cat, data: pts, backgroundColor: catColors[cat] + '77', borderColor: catColors[cat], borderWidth: 1,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#e2e8f0', usePointStyle: true, pointStyle: 'circle', padding: 14, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => { const p = ctx.raw; return [p.keyword, 'Avg: ' + p.x + ' | Growth: ' + p.y.toFixed(1) + '%', 'Score: ' + p.composite.toFixed(1)]; } } }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Average Search Interest (Market Size)', color: '#8892a8' }, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8892a8' } },
+      y: { title: { display: true, text: 'Growth % (Trajectory)', color: '#8892a8' }, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8892a8' } }
+    }
+  }
+});
+document.getElementById('matrixChart').parentElement.style.height = '550px';
+
+// Declining Signals — use DOM methods
+const declining = DATA.filter(d => d.signal === 'DECLINING').sort((a,b) => a.composite - b.composite);
+const declineGrid = document.getElementById('declineGrid');
+declining.forEach(d => {
+  const card = document.createElement('div');
+  card.className = 'decline-card';
+  const kw = document.createElement('div'); kw.className = 'kw'; kw.textContent = d.keyword;
+  const cat = document.createElement('div'); cat.className = 'cat'; cat.textContent = d.category;
+  const stats = document.createElement('div'); stats.className = 'stats';
+  stats.textContent = 'Growth: ' + d.growth_pct.toFixed(1) + '% \u00B7 Momentum: ' + d.momentum.toFixed(1) + ' \u00B7 Score: ' + d.composite.toFixed(1);
+  card.appendChild(kw); card.appendChild(cat); card.appendChild(stats);
+  declineGrid.appendChild(card);
+});
+
+// Recommendations — use DOM methods
+const tier1 = sorted.filter(d => d.composite >= 80);
+const tier2 = sorted.filter(d => d.composite >= 45 && d.composite < 80);
+const tier3 = sorted.filter(d => d.composite >= 25 && d.composite < 45);
+const tierGrid = document.getElementById('tierGrid');
+
+function buildTierCard(title, sub, tierClass, items) {
+  const card = document.createElement('div');
+  card.className = 'tier-card ' + tierClass;
+  const h3 = document.createElement('h3'); h3.textContent = title; card.appendChild(h3);
+  const subEl = document.createElement('div'); subEl.className = 'tier-sub'; subEl.textContent = sub; card.appendChild(subEl);
+  const ul = document.createElement('ul');
+  items.forEach(d => {
+    const li = document.createElement('li');
+    const left = document.createElement('span');
+    left.textContent = d.keyword + ' ';
+    const small = document.createElement('small');
+    small.style.color = 'var(--text-muted)';
+    small.textContent = d.category;
+    left.appendChild(small);
+    const right = document.createElement('span');
+    right.className = 'score';
+    right.textContent = d.composite.toFixed(1);
+    li.appendChild(left);
+    li.appendChild(right);
+    ul.appendChild(li);
+  });
+  card.appendChild(ul);
+  return card;
+}
+
+tierGrid.appendChild(buildTierCard('Tier 1 \u2014 High Conviction', 'Composite score \u2265 80. Strong growth, momentum, and/or volume.', 'tier-1', tier1));
+tierGrid.appendChild(buildTierCard('Tier 2 \u2014 Strong Potential', 'Composite score 45\u201379. Solid signals but may need differentiation.', 'tier-2', tier2));
+tierGrid.appendChild(buildTierCard('Tier 3 \u2014 Worth Watching', 'Composite score 25\u201344. Early or moderate signals \u2014 monitor for acceleration.', 'tier-3', tier3));
+
+// ── Deep Dive: Top 3 Categories ─────────────────────────────
+const DEEPDIVE_DATA=[{"category":"Pet Tracking: Training & Behavior","keyword":"cat behavior app","avg":9.9,"growth_pct":1135.0,"volatility":2.14,"momentum":104.8,"signal":"GREEN LIGHT","composite":112.97,"parent_category":"Pet Tracking","sub_group":"Training & Behavior"},{"category":"Wedding Planning: Budget & Logistics","keyword":"wedding timeline app","avg":1.3,"growth_pct":259.3,"volatility":2.24,"momentum":189.3,"signal":"GREEN LIGHT","composite":110.39,"parent_category":"Wedding Planning","sub_group":"Budget & Logistics"},{"category":"Elder Care: Caregiving Logistics","keyword":"aging in place technology","avg":1.1,"growth_pct":211.1,"volatility":4.8,"momentum":1250.0,"signal":"GREEN LIGHT","composite":110.33,"parent_category":"Elder Care","sub_group":"Caregiving Logistics"},{"category":"Wedding Planning: AI & Creative","keyword":"AI wedding invitations","avg":2.1,"growth_pct":237.0,"volatility":2.16,"momentum":92.9,"signal":"GREEN LIGHT","composite":108.5,"parent_category":"Wedding Planning","sub_group":"AI & Creative"},{"category":"Pet Tracking: Training & Behavior","keyword":"AI dog trainer","avg":9.9,"growth_pct":982.2,"volatility":1.9,"momentum":82.7,"signal":"GREEN LIGHT","composite":107.78,"parent_category":"Pet Tracking","sub_group":"Training & Behavior"},{"category":"Wedding Planning: Day-of & Guests","keyword":"wedding day app","avg":30.7,"growth_pct":192.4,"volatility":0.97,"momentum":36.1,"signal":"GREEN LIGHT","composite":97.0,"parent_category":"Wedding Planning","sub_group":"Day-of & Guests"},{"category":"Elder Care: Caregiving Logistics","keyword":"senior living finder","avg":1.2,"growth_pct":240.7,"volatility":4.61,"momentum":45.4,"signal":"GREEN LIGHT","composite":93.98,"parent_category":"Elder Care","sub_group":"Caregiving Logistics"},{"category":"Elder Care: Health Monitoring","keyword":"dementia care app","avg":2.8,"growth_pct":374.1,"volatility":1.52,"momentum":43.0,"signal":"GREEN LIGHT","composite":93.74,"parent_category":"Elder Care","sub_group":"Health Monitoring"},{"category":"Elder Care: Family Coordination","keyword":"elderly safety app","avg":8.0,"growth_pct":361.0,"volatility":1.73,"momentum":37.5,"signal":"GREEN LIGHT","composite":93.65,"parent_category":"Elder Care","sub_group":"Family Coordination"},{"category":"Elder Care: Family Coordination","keyword":"care planning app","avg":32.2,"growth_pct":291.0,"volatility":0.93,"momentum":-3.7,"signal":"PROMISING","composite":88.55,"parent_category":"Elder Care","sub_group":"Family Coordination"},{"category":"Wedding Planning: Day-of & Guests","keyword":"wedding countdown app","avg":1.0,"growth_pct":192.6,"volatility":4.5,"momentum":28.7,"signal":"GREEN LIGHT","composite":85.95,"parent_category":"Wedding Planning","sub_group":"Day-of & Guests"},{"category":"Elder Care: Caregiving Logistics","keyword":"elder care management","avg":13.7,"growth_pct":166.3,"volatility":1.39,"momentum":45.9,"signal":"GREEN LIGHT","composite":84.4,"parent_category":"Elder Care","sub_group":"Caregiving Logistics"},{"category":"Wedding Planning: AI & Creative","keyword":"wedding photo editor","avg":0.6,"growth_pct":118.5,"volatility":2.5,"momentum":365.7,"signal":"GREEN LIGHT","composite":77.58,"parent_category":"Wedding Planning","sub_group":"AI & Creative"},{"category":"Pet Tracking: Training & Behavior","keyword":"puppy training app","avg":21.3,"growth_pct":163.3,"volatility":1.26,"momentum":12.9,"signal":"GREEN LIGHT","composite":75.58,"parent_category":"Pet Tracking","sub_group":"Training & Behavior"},{"category":"Wedding Planning: Day-of & Guests","keyword":"bridesmaid app","avg":4.4,"growth_pct":109.2,"volatility":2.34,"momentum":261.9,"signal":"GREEN LIGHT","composite":75.0,"parent_category":"Wedding Planning","sub_group":"Day-of & Guests"},{"category":"Wedding Planning: AI & Creative","keyword":"AI wedding dress","avg":38.4,"growth_pct":117.9,"volatility":0.69,"momentum":45.7,"signal":"GREEN LIGHT","composite":72.39,"parent_category":"Wedding Planning","sub_group":"AI & Creative"},{"category":"Pet Tracking: GPS & Safety","keyword":"lost pet app","avg":0.8,"growth_pct":100.0,"volatility":2.59,"momentum":245.4,"signal":"GREEN LIGHT","composite":70.24,"parent_category":"Pet Tracking","sub_group":"GPS & Safety"},{"category":"Elder Care: Caregiving Logistics","keyword":"home care scheduling","avg":39.8,"growth_pct":124.9,"volatility":0.7,"momentum":-8.4,"signal":"PROMISING","composite":59.38,"parent_category":"Elder Care","sub_group":"Caregiving Logistics"},{"category":"Elder Care: Family Coordination","keyword":"senior emergency alert","avg":0.3,"growth_pct":59.3,"volatility":1.57,"momentum":370.4,"signal":"GREEN LIGHT","composite":53.81,"parent_category":"Elder Care","sub_group":"Family Coordination"},{"category":"Pet Tracking: Health & Wellness","keyword":"pet wellness app","avg":0.7,"growth_pct":140.7,"volatility":2.78,"momentum":-20.4,"signal":"PROMISING","composite":50.37,"parent_category":"Pet Tracking","sub_group":"Health & Wellness"},{"category":"Elder Care: Family Coordination","keyword":"senior care coordination","avg":0.2,"growth_pct":48.1,"volatility":1.27,"momentum":300.9,"signal":"GREEN LIGHT","composite":49.3,"parent_category":"Elder Care","sub_group":"Family Coordination"},{"category":"Pet Tracking: GPS & Safety","keyword":"pet microchip app","avg":0.2,"growth_pct":33.3,"volatility":0.97,"momentum":208.3,"signal":"GREEN LIGHT","composite":43.38,"parent_category":"Pet Tracking","sub_group":"GPS & Safety"},{"category":"Pet Tracking: GPS & Safety","keyword":"GPS pet tracker","avg":16.6,"growth_pct":56.1,"volatility":0.44,"momentum":51.7,"signal":"GREEN LIGHT","composite":42.93,"parent_category":"Pet Tracking","sub_group":"GPS & Safety"},{"category":"Wedding Planning: Day-of & Guests","keyword":"wedding RSVP app","avg":0.1,"growth_pct":29.6,"volatility":0.76,"momentum":185.2,"signal":"PROMISING","composite":41.87,"parent_category":"Wedding Planning","sub_group":"Day-of & Guests"},{"category":"Pet Tracking: Health & Wellness","keyword":"pet insurance app","avg":42.7,"growth_pct":89.4,"volatility":0.67,"momentum":-29.1,"signal":"PROMISING","composite":39.84,"parent_category":"Pet Tracking","sub_group":"Health & Wellness"},{"category":"Elder Care: Family Coordination","keyword":"family caregiver app","avg":5.4,"growth_pct":120.9,"volatility":2.29,"momentum":-49.1,"signal":"PROMISING","composite":35.25,"parent_category":"Elder Care","sub_group":"Family Coordination"},{"category":"Wedding Planning: AI & Creative","keyword":"AI wedding registry","avg":4.3,"growth_pct":81.9,"volatility":1.92,"momentum":-1.9,"signal":"PROMISING","composite":33.48,"parent_category":"Wedding Planning","sub_group":"AI & Creative"},{"category":"Pet Tracking: GPS & Safety","keyword":"dog GPS collar","avg":71.6,"growth_pct":9.5,"volatility":0.14,"momentum":17.4,"signal":"PROMISING","composite":30.5,"parent_category":"Pet Tracking","sub_group":"GPS & Safety"},{"category":"Pet Tracking: Training & Behavior","keyword":"dog behavior tracker","avg":0.1,"growth_pct":11.1,"volatility":0.41,"momentum":69.4,"signal":"PROMISING","composite":25.29,"parent_category":"Pet Tracking","sub_group":"Training & Behavior"},{"category":"Pet Tracking: GPS & Safety","keyword":"pet finder app","avg":0.4,"growth_pct":11.1,"volatility":1.47,"momentum":64.8,"signal":"PROMISING","composite":24.0,"parent_category":"Pet Tracking","sub_group":"GPS & Safety"},{"category":"Wedding Planning: Budget & Logistics","keyword":"wedding checklist app","avg":0.2,"growth_pct":33.3,"volatility":0.97,"momentum":33.3,"signal":"GREEN LIGHT","composite":23.37,"parent_category":"Wedding Planning","sub_group":"Budget & Logistics"},{"category":"Wedding Planning: Budget & Logistics","keyword":"wedding budget tracker","avg":0.0,"growth_pct":7.4,"volatility":0.19,"momentum":46.3,"signal":"STABLE","composite":16.85,"parent_category":"Wedding Planning","sub_group":"Budget & Logistics"},{"category":"Pet Tracking: Health & Wellness","keyword":"pet medication tracker","avg":0.0,"growth_pct":7.4,"volatility":0.19,"momentum":46.3,"signal":"STABLE","composite":16.85,"parent_category":"Pet Tracking","sub_group":"Health & Wellness"},{"category":"Elder Care: Health Monitoring","keyword":"remote patient monitoring","avg":49.4,"growth_pct":-1.4,"volatility":0.32,"momentum":2.3,"signal":"STABLE","composite":14.95,"parent_category":"Elder Care","sub_group":"Health Monitoring"},{"category":"Elder Care: Health Monitoring","keyword":"senior health tracker","avg":0.0,"growth_pct":3.7,"volatility":0.14,"momentum":23.1,"signal":"STABLE","composite":8.41,"parent_category":"Elder Care","sub_group":"Health Monitoring"},{"category":"Wedding Planning: Budget & Logistics","keyword":"wedding seating chart","avg":69.0,"growth_pct":-26.0,"volatility":0.26,"momentum":-9.8,"signal":"PROMISING","composite":7.36,"parent_category":"Wedding Planning","sub_group":"Budget & Logistics"},{"category":"Elder Care: Health Monitoring","keyword":"vital signs monitor app","avg":0.1,"growth_pct":25.9,"volatility":0.95,"momentum":-13.0,"signal":"PROMISING","composite":6.49,"parent_category":"Elder Care","sub_group":"Health Monitoring"},{"category":"Wedding Planning: Budget & Logistics","keyword":"wedding vendor app","avg":0.3,"growth_pct":7.4,"volatility":1.25,"momentum":-0.9,"signal":"VOLATILE","composite":2.78,"parent_category":"Wedding Planning","sub_group":"Budget & Logistics"},{"category":"Pet Tracking: Health & Wellness","keyword":"pet diet tracker","avg":0.0,"growth_pct":0.0,"volatility":0.0,"momentum":0.0,"signal":"STABLE","composite":0.0,"parent_category":"Pet Tracking","sub_group":"Health & Wellness"},{"category":"Pet Tracking: Training & Behavior","keyword":"pet socialization app","avg":0.0,"growth_pct":0.0,"volatility":0.0,"momentum":0.0,"signal":"STABLE","composite":0.0,"parent_category":"Pet Tracking","sub_group":"Training & Behavior"},{"category":"Wedding Planning: AI & Creative","keyword":"wedding mood board app","avg":0.0,"growth_pct":0.0,"volatility":0.0,"momentum":0.0,"signal":"STABLE","composite":0.0,"parent_category":"Wedding Planning","sub_group":"AI & Creative"},{"category":"Pet Tracking: Health & Wellness","keyword":"pet first aid app","avg":0.0,"growth_pct":0.0,"volatility":0.0,"momentum":0.0,"signal":"STABLE","composite":0.0,"parent_category":"Pet Tracking","sub_group":"Health & Wellness"},{"category":"Elder Care: Caregiving Logistics","keyword":"senior transportation app","avg":0.7,"growth_pct":-81.8,"volatility":4.51,"momentum":77.8,"signal":"DECLINING","composite":-9.17,"parent_category":"Elder Care","sub_group":"Caregiving Logistics"},{"category":"Elder Care: Health Monitoring","keyword":"wearable for elderly","avg":1.3,"growth_pct":-25.0,"volatility":2.5,"momentum":-22.9,"signal":"DECLINING","composite":-16.48,"parent_category":"Elder Care","sub_group":"Health Monitoring"},{"category":"Wedding Planning: Day-of & Guests","keyword":"wedding hashtag generator","avg":33.5,"growth_pct":-55.3,"volatility":0.63,"momentum":-61.9,"signal":"DECLINING","composite":-30.64,"parent_category":"Wedding Planning","sub_group":"Day-of & Guests"}];
+
+const DD_RISING = {"senior health tracker":[{"query":"senior health tracker app","value":"3228500"}]};
+
+const DD_PARENT_CATS = ['Elder Care', 'Pet Tracking', 'Wedding Planning'];
+const DD_PARENT_COLORS = { 'Elder Care': '#22c55e', 'Pet Tracking': '#3b82f6', 'Wedding Planning': '#ec4899' };
+const DD_SUBGROUP_COLORS = {
+  'Caregiving Logistics': '#22c55e', 'Health Monitoring': '#4ade80', 'Family Coordination': '#86efac',
+  'Health & Wellness': '#3b82f6', 'GPS & Safety': '#60a5fa', 'Training & Behavior': '#93c5fd',
+  'Budget & Logistics': '#ec4899', 'AI & Creative': '#f472b6', 'Day-of & Guests': '#f9a8d4'
+};
+
+// ── Product Research Data ─────────────────────────────
+const DECISION_MATRIX = {
+  dimensions: ['Market Gap','Feasibility','Revenue Potential','Speed to MVP','AI Differentiation','Defensibility'],
+  weights: [0.20, 0.20, 0.15, 0.15, 0.15, 0.15],
+  categories: [
+    { name: 'Elder Care', color: '#22c55e', scores: [8,6,7,5,7,7], weighted: 6.7 },
+    { name: 'Pet Training', color: '#3b82f6', scores: [10,9,7,9,9,9], weighted: 9.1 },
+    { name: 'Wedding Planning', color: '#ec4899', scores: [7,7,7,7,6,6], weighted: 6.7 }
+  ]
+};
+
+const MARKET_DATA = [
+  { cat: 'Elder Care', color: '#22c55e', tam: '$1.5T', tamNote: 'Global elderly care market (2025)', cagr: '8.1%', searchKeyword: 'aging in place', searchGrowth: '+1,250%', stats: ['63M US caregivers','90% smartphone adoption 50+','45% caregiver increase over decade'] },
+  { cat: 'Pet Training', color: '#3b82f6', tam: '$15.6B', tamNote: 'Global pet tech market (2025 → $47.9B by 2033)', cagr: '15.18%', searchKeyword: 'cat behavior app', searchGrowth: '+1,135%', stats: ['49M US cat households','$300-350M dog training apps','Zero cat-specific competitors'] },
+  { cat: 'Wedding Planning', color: '#ec4899', tam: '$100B', tamNote: 'US wedding industry', cagr: '7.27%', searchKeyword: 'AI wedding planner', searchGrowth: '+496%', stats: ['2M couples/year','54% using AI in planning','Avg wedding cost $34,200'] }
+];
+
+const COMPETITORS = {
+  'Elder Care': [
+    ['CareZone','Medication mgmt','4.6','Free (Walmart)','None','No care coordination beyond meds'],
+    ['Lotsa Helping Hands','Volunteer coord','3.5','Free','None','Outdated UI, no med tracking'],
+    ['CaringBridge','Health updates','4.9','Free (nonprofit)','None','Broadcast-only, not coordination'],
+    ['Caring Village','Family coord','4.0','Free–$19.97/mo','Basic','Premium pricing, limited free tier'],
+    ['Medisafe','Med reminders','4.7','Free–$4.99/mo','Limited','Med-only, paywall backlash'],
+    ['Care.com','Marketplace','2.3','$12.95–38.95/mo','None','Terrible trust, marketplace-only'],
+    ['ianacare','Caregiver support','4.5','Free (B2B)','None','No health/med tracking']
+  ],
+  'Pet Training': [
+    ['Dogo','Dog only','4.7','$9.99/wk–$49.99/qtr','None','No cats, no AI analysis'],
+    ['Puppr','Dog only','4.8','$12.99–22.99/mo','None','No cats, basic content'],
+    ['Woofz','Dog only','4.7','$9.99/mo or $29.99/yr','AI assistant','No cats, billing complaints'],
+    ['GoodPup','Dog only','4.8','$29–34/wk','None','Very expensive ($306 total)'],
+    ['Petcube','Both (monitoring)','4.5','Hardware + $3.99–7/mo','AI alerts','Monitoring only, no training'],
+    ['Meowz','Cat only','4.3','$3.99–4.99/wk','AI breed ID','Predatory billing, thin content'],
+    ['Companion','Dog AI','4.2','$9.99/mo','AI behavior','Dog-only, no cat support']
+  ],
+  'Wedding Planning': [
+    ['The Knot','Full platform','4.8','Free','ChatGPT (2026)','No creative tools, no day-of'],
+    ['Zola','Planning + commerce','4.8','Free–$19.99/mo','AI thank-yous','No AI creative, no day-of'],
+    ['Joy','Free website + registry','4.7','Free','AI thank-yous','No day-of, poor mobile UX'],
+    ['Pearl (David\'s Bridal)','AI-first planning','New','Free','Agentic AI','Tied to DB ecosystem'],
+    ['Nupt.ai','AI-native startup','New','Free–$20/mo','AI mood boards','Very early (500 users)'],
+    ['Canva','Design tool','4.8','Free–$12.99/mo','Magic Studio','Not wedding-specific'],
+    ['Appy Couple','Wedding app','4.5','$39–69 one-time','None','No AI, limited design']
+  ]
+};
+
+const PERSONAS = [
+  { name:'Sarah', age:'43', role:'Marketing Director', cat:'Elder Care', color:'#22c55e', wtpMonthly:'$9.99/mo', wtpOneTime:null, killerFeature:'Daily parent-initiated check-in with passive alert', topPain:'Fragmented coordination, invisible mental load', barriers:['Privacy concerns','Ad-driven models erode trust'] },
+  { name:'James', age:'58', role:'Retired Teacher', cat:'Elder Care', color:'#22c55e', wtpMonthly:'$9.99/mo', wtpOneTime:'$79 one-time', killerFeature:'90-day exportable symptom trend report', topPain:"Can't organize symptoms for neurologist visits", barriers:['Prefers one-time purchase $79–99'] },
+  { name:'Maria', age:'35', role:'Home Health Aide', cat:'Elder Care', color:'#22c55e', wtpMonthly:'$9.99/mo', wtpOneTime:null, killerFeature:'Post-once, notify-all with inbox protection', topPain:'Repeating same update to multiple family members', barriers:['Professional needs differ from family'] },
+  { name:'Alex', age:'27', role:'Software Engineer', cat:'Pet Training', color:'#3b82f6', wtpMonthly:'$9.99/mo', wtpOneTime:null, killerFeature:'AI camera feedback during training', topPain:'Conflicting advice, no structured curriculum', barriers:['Would pay $20–30/session for live trainer'] },
+  { name:'Priya', age:'34', role:'UX Designer', cat:'Pet Training', color:'#3b82f6', wtpMonthly:'$9.99/mo', wtpOneTime:null, killerFeature:'Behavior log with AI pattern detection', topPain:'No personalized, adaptive guidance for cats', barriers:['Rejects any "all pets!" app — cat-first required'] },
+  { name:'Tom & Lisa', age:'40s', role:'Family', cat:'Pet Training', color:'#3b82f6', wtpMonthly:'$9.99/mo', wtpOneTime:null, killerFeature:'Multi-dog coordinated training plans', topPain:"New puppy undermining older dog's training", barriers:['Budget-conscious, prefer one-time $40–60'] },
+  { name:'Jess', age:'29', role:'Teacher / Bride', cat:'Wedding Planning', color:'#ec4899', wtpMonthly:'$9.99/mo', wtpOneTime:'$50 one-time', killerFeature:'Full cohesive design suite from one input', topPain:'Vision-to-execution gap in design', barriers:['AI output must not look "AI-generated"','Print-readiness required'] },
+  { name:'David', age:'31', role:'Engineer / Groom', cat:'Wedding Planning', color:'#ec4899', wtpMonthly:'$9.99/mo', wtpOneTime:'$60 one-time', killerFeature:'Groomsmen delegation with auto-nudge', topPain:'No task ownership or accountability', barriers:['Wants standalone tool, not partner-dependent'] },
+  { name:'Carmen', age:'38', role:'Part-time Planner', cat:'Wedding Planning', color:'#ec4899', wtpMonthly:'$19.99/mo', wtpOneTime:null, killerFeature:'One-click master timeline to vendor versions', topPain:'Timeline creation + vendor distribution', barriers:['Higher WTP ($19.99–29.99/mo), ROI-driven'] }
+];
+
+const MVP_FEATURES = {
+  'Elder Care': [
+    { feature:'Daily check-in (elder-initiated, one tap)', tier:'must' },
+    { feature:'Medication tracking with confirmation', tier:'must' },
+    { feature:'Shared care dashboard (calendar, tasks, contacts)', tier:'must' },
+    { feature:'Broadcast care updates (post once → notify all)', tier:'must' },
+    { feature:'Symptom/behavior log with trend reports', tier:'must' },
+    { feature:'Emergency contact tree with escalation', tier:'nice' },
+    { feature:'Document vault (medications, insurance, POA)', tier:'nice' },
+    { feature:'Caregiver community/forum', tier:'nice' },
+    { feature:'AI care plan recommendations', tier:'nice' }
+  ],
+  'Pet Training': [
+    { feature:'Cat-specific behavior assessment + protocols', tier:'must' },
+    { feature:'Behavior incident log (1–2 taps)', tier:'must' },
+    { feature:'AI pattern detection on logged behaviors', tier:'must' },
+    { feature:'Personalized training curriculum', tier:'must' },
+    { feature:'Multi-pet household support', tier:'must' },
+    { feature:'AI camera feedback during training', tier:'nice' },
+    { feature:'Progress tracking with visual metrics', tier:'nice' },
+    { feature:'Live trainer video sessions (marketplace)', tier:'nice' },
+    { feature:'Family/shared training log', tier:'nice' }
+  ],
+  'Wedding Planning': [
+    { feature:'AI cohesive design suite (invitations, programs, menus, signage)', tier:'must' },
+    { feature:'Print-ready export (correct resolution, color format)', tier:'must' },
+    { feature:'Master timeline with vendor-specific versions', tier:'must' },
+    { feature:'Wedding party task delegation with auto-nudge', tier:'must' },
+    { feature:'Day-of real-time timeline (push notifications)', tier:'nice' },
+    { feature:'AI dress try-on', tier:'nice' },
+    { feature:'Live photo collection via QR code', tier:'nice' },
+    { feature:'Guest-facing schedule push', tier:'nice' }
+  ]
+};
+
+const AI_MAP = {
+  genuine: [
+    { cat:'Elder Care', app:'Symptom pattern recognition from logs', value:'High', feasibility:'High' },
+    { cat:'Elder Care', app:'Predictive health alerts (behavior change → potential issue)', value:'High', feasibility:'Medium' },
+    { cat:'Elder Care', app:'Natural language care journaling → structured data', value:'Medium', feasibility:'High' },
+    { cat:'Pet Training', app:'Behavior pattern detection (incident clustering)', value:'High', feasibility:'High' },
+    { cat:'Pet Training', app:'Cat body language analysis via phone camera', value:'High', feasibility:'Medium' },
+    { cat:'Pet Training', app:'Training technique feedback via camera', value:'High', feasibility:'Medium' },
+    { cat:'Pet Training', app:'Personalized curriculum generation', value:'Medium', feasibility:'High' },
+    { cat:'Wedding Planning', app:'Cohesive design suite from style description', value:'High', feasibility:'High' },
+    { cat:'Wedding Planning', app:'AI timeline generation (ceremony → full schedule)', value:'High', feasibility:'High' },
+    { cat:'Wedding Planning', app:'Auto-updating vendor-specific timeline versions', value:'High', feasibility:'Medium' }
+  ],
+  gimmick: [
+    { app:'AI vow/speech writing', reason:'90% of couples reject it — feels inauthentic' },
+    { app:'Pet "translator" (bark/meow → words)', reason:'Entertainment only, not scientifically valid' },
+    { app:'AI vendor matching without transparency', reason:"Feels like sponsored results" },
+    { app:'Generic "AI assistant" chatbot', reason:'Undifferentiated — every app has one' }
+  ]
+};
+
+const GTM = [
+  { cat:'Elder Care', color:'#22c55e', factors: [
+    { name:'Timing', signal:'green', detail:'63M caregivers, aging in place is #1 healthcare trend of 2026' },
+    { name:'Distribution', signal:'yellow', detail:'Peer word-of-mouth, caregiver support groups, neurologist/PCP referrals, employer benefits' },
+    { name:'Monetization', signal:'yellow', detail:'B2C $9.99/mo + B2B employer/health plan contracts. Pure consumer is hard' },
+    { name:'Regulatory', signal:'yellow', detail:'Full HIPAA compliance chosen as moat. Adds $5-15K upfront but blocks competitors without it' },
+    { name:'Virality', signal:'yellow', detail:'Moderate — care circles are small (2–5 people) but emotionally sticky' },
+    { name:'Key Risk', signal:'red', detail:'Apple Health already has med tracking, fall detection, health sharing — could expand' }
+  ]},
+  { cat:'Pet Training', color:'#3b82f6', factors: [
+    { name:'Timing', signal:'green', detail:'49M cat households, +1,135% search growth, zero competition, 15.18% CAGR' },
+    { name:'Distribution', signal:'green', detail:'Cat communities (Reddit, Instagram), vet referrals, App Store SEO (empty results)' },
+    { name:'Monetization', signal:'green', detail:'Freemium $7.99–9.99/mo. Generous free tier builds trust (competitor weakness is billing)' },
+    { name:'Regulatory', signal:'green', detail:'None — no health data regulations for pet apps' },
+    { name:'Virality', signal:'green', detail:'Very high — cat content dominates social media. Behavior analysis is inherently shareable' },
+    { name:'Key Risk', signal:'yellow', detail:'A well-funded dog app (Dogo, Woofz) adds cat support. First-mover data advantage mitigates' }
+  ]},
+  { cat:'Wedding Planning', color:'#ec4899', factors: [
+    { name:'Timing', signal:'green', detail:'54% of couples using AI, strong search growth. The Knot just launched ChatGPT integration' },
+    { name:'Distribution', signal:'green', detail:'Instagram/TikTok social proof, bridesmaids group chats (viral loop), planner B2B2C' },
+    { name:'Monetization', signal:'yellow', detail:'Couples prefer one-time $35–60. Planners pay $19.99/mo. Mixed model needed' },
+    { name:'Regulatory', signal:'green', detail:'None' },
+    { name:'Virality', signal:'green', detail:'High — wedding party network (6+ bridesmaids → future brides) is a powerful organic loop' },
+    { name:'Key Risk', signal:'red', detail:'The Knot ($500M+ revenue) could build AI creative tools. Canva could add wedding features' }
+  ]}
+];
+
+(function buildDeepDive() {
+  const tabsWrap = document.getElementById('ddTabs');
+  const panelsWrap = document.getElementById('ddPanels');
+
+  DD_PARENT_CATS.forEach((parentCat, idx) => {
+    // Tab
+    const tab = document.createElement('div');
+    tab.className = 'dd-tab' + (idx === 0 ? ' active' : '');
+    tab.textContent = parentCat;
+    tab.dataset.idx = idx;
+    tab.addEventListener('click', function() {
+      tabsWrap.querySelectorAll('.dd-tab').forEach(t => t.classList.remove('active'));
+      panelsWrap.querySelectorAll('.dd-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const panel = document.getElementById('dd-panel-' + idx);
+      panel.classList.add('active');
+      const canvas = panel.querySelector('canvas');
+      if (canvas && !canvas.dataset.rendered) {
+        renderDDChart(canvas, parentCat);
+        canvas.dataset.rendered = '1';
+      }
+    });
+    tabsWrap.appendChild(tab);
+
+    // Panel
+    const items = DEEPDIVE_DATA.filter(d => d.parent_category === parentCat);
+    const sortedItems = [...items].sort((a, b) => b.composite - a.composite);
+    const subGroups = [...new Set(items.map(d => d.sub_group))];
+
+    const sgAvg = {};
+    subGroups.forEach(sg => {
+      const sgItems = items.filter(d => d.sub_group === sg);
+      sgAvg[sg] = sgItems.reduce((s, d) => s + d.composite, 0) / sgItems.length;
+    });
+    const bestSG = Object.entries(sgAvg).sort((a, b) => b[1] - a[1])[0];
+    const topKw = sortedItems[0];
+    const ddGreenCount = items.filter(d => d.signal.includes('GREEN')).length;
+
+    const panel = document.createElement('div');
+    panel.className = 'dd-panel' + (idx === 0 ? ' active' : '');
+    panel.id = 'dd-panel-' + idx;
+
+    const inner = document.createElement('div');
+    inner.className = 'dd-panel-inner';
+
+    // Insight cards
+    const insightRow = document.createElement('div');
+    insightRow.className = 'dd-insight';
+
+    function makeInsightCard(borderClass, label, value, detail) {
+      const card = document.createElement('div');
+      card.className = 'dd-insight-card ' + borderClass;
+      const lbl = document.createElement('div'); lbl.className = 'dd-label'; lbl.textContent = label; card.appendChild(lbl);
+      const val = document.createElement('div'); val.className = 'dd-value'; val.textContent = value; card.appendChild(val);
+      const det = document.createElement('div'); det.className = 'dd-detail'; det.textContent = detail; card.appendChild(det);
+      return card;
+    }
+
+    insightRow.appendChild(makeInsightCard('green-border', 'Top Keyword', topKw.keyword, 'Score: ' + topKw.composite.toFixed(1) + ' | Growth: +' + topKw.growth_pct.toFixed(0) + '%'));
+    insightRow.appendChild(makeInsightCard('purple-border', 'Best Sub-Group', bestSG[0], 'Avg composite: ' + bestSG[1].toFixed(1)));
+    insightRow.appendChild(makeInsightCard('blue-border', 'Green Lights', ddGreenCount + ' / ' + items.length, 'Keywords with strong upward trajectory'));
+    inner.appendChild(insightRow);
+
+    // Sub-group bar chart
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'dd-subgroup-chart';
+    const canvas = document.createElement('canvas');
+    canvas.id = 'dd-chart-' + idx;
+    chartDiv.appendChild(canvas);
+    inner.appendChild(chartDiv);
+
+    // Keywords table
+    const table = document.createElement('table');
+    table.className = 'data-table';
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    ['Keyword', 'Sub-Group', 'Score', 'Growth', 'Momentum', 'Signal'].forEach(t => {
+      const th = document.createElement('th'); th.textContent = t; headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    sortedItems.forEach(d => {
+      const tr = document.createElement('tr');
+      const td = (text) => { const t = document.createElement('td'); t.textContent = text; return t; };
+
+      const kwTd = document.createElement('td');
+      const strong = document.createElement('strong');
+      strong.textContent = d.keyword;
+      kwTd.appendChild(strong);
+      tr.appendChild(kwTd);
+
+      const sgTd = td(d.sub_group);
+      sgTd.style.color = DD_SUBGROUP_COLORS[d.sub_group] || 'var(--text-muted)';
+      tr.appendChild(sgTd);
+
+      const scoreTd = document.createElement('td');
+      const barDiv = document.createElement('div');
+      barDiv.className = 'bar-cell';
+      const scoreSpan = document.createElement('span');
+      scoreSpan.textContent = d.composite.toFixed(1);
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.width = Math.max(0, d.composite / 113 * 80) + 'px';
+      bar.style.background = DD_PARENT_COLORS[parentCat];
+      barDiv.appendChild(scoreSpan);
+      barDiv.appendChild(bar);
+      scoreTd.appendChild(barDiv);
+      tr.appendChild(scoreTd);
+
+      const gTd = td((d.growth_pct > 0 ? '+' : '') + d.growth_pct.toFixed(1) + '%');
+      gTd.style.color = d.growth_pct >= 0 ? 'var(--green)' : 'var(--red)';
+      tr.appendChild(gTd);
+
+      const mTd = td((d.momentum > 0 ? '+' : '') + d.momentum.toFixed(1));
+      mTd.style.color = d.momentum >= 0 ? 'var(--green)' : 'var(--red)';
+      tr.appendChild(mTd);
+
+      const sTd = document.createElement('td');
+      const badge = document.createElement('span');
+      badge.className = 'signal-badge ' + signalClass(d.signal);
+      badge.textContent = signalLabel(d.signal);
+      sTd.appendChild(badge);
+      tr.appendChild(sTd);
+
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    inner.appendChild(table);
+
+    // Rising queries
+    const risingKwMap = {
+      'Elder Care': ['elder care app', 'senior health tracker'],
+      'Pet Tracking': ['GPS pet tracker', 'AI dog trainer'],
+      'Wedding Planning': ['AI wedding planner', 'wedding budget tracker']
+    };
+    const risingKws = (risingKwMap[parentCat] || []).filter(k => DD_RISING[k]);
+    if (risingKws.length > 0) {
+      const risingDiv = document.createElement('div');
+      risingDiv.className = 'dd-rising';
+      const h4 = document.createElement('h4');
+      h4.textContent = 'Rising Related Queries';
+      risingDiv.appendChild(h4);
+      risingKws.forEach(kw => {
+        DD_RISING[kw].forEach(r => {
+          const item = document.createElement('span');
+          item.className = 'dd-rising-item';
+          item.textContent = r.query;
+          risingDiv.appendChild(item);
+        });
+      });
+      inner.appendChild(risingDiv);
+    }
+
+    panel.appendChild(inner);
+    panelsWrap.appendChild(panel);
+  });
+
+  // Render first tab chart immediately
+  const firstCanvas = document.querySelector('#dd-panel-0 canvas');
+  if (firstCanvas) { renderDDChart(firstCanvas, DD_PARENT_CATS[0]); firstCanvas.dataset.rendered = '1'; }
+})();
+
+function renderDDChart(canvas, parentCat) {
+  const items = DEEPDIVE_DATA.filter(d => d.parent_category === parentCat);
+  const subGroups = [...new Set(items.map(d => d.sub_group))];
+
+  const sgData = {};
+  subGroups.forEach(sg => {
+    sgData[sg] = items.filter(d => d.sub_group === sg).sort((a, b) => b.composite - a.composite);
+  });
+
+  const maxKws = Math.max(...subGroups.map(sg => sgData[sg].length));
+  const datasets = [];
+  for (let i = 0; i < maxKws; i++) {
+    const data = subGroups.map(sg => sgData[sg][i] ? sgData[sg][i].composite : null);
+    const labels = subGroups.map(sg => sgData[sg][i] ? sgData[sg][i].keyword : '');
+    const opacity = 1 - (i * 0.15);
+    datasets.push({
+      label: '#' + (i + 1) + ' keyword',
+      data: data,
+      backgroundColor: DD_PARENT_COLORS[parentCat] + Math.round(opacity * 255).toString(16).padStart(2, '0'),
+      borderRadius: 4,
+      barThickness: 14,
+      _labels: labels,
+    });
+  }
+
+  new Chart(canvas, {
+    type: 'bar',
+    data: { labels: subGroups, datasets: datasets },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              const kw = ctx.dataset._labels[ctx.dataIndex];
+              return kw + ': ' + (ctx.raw !== null ? ctx.raw.toFixed(1) : 'N/A');
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,.06)' },
+          ticks: { color: '#8892a8' },
+          title: { display: true, text: 'Composite Score', color: '#8892a8' }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: '#e2e8f0', font: { size: 12 } }
+        }
+      }
+    }
+  });
+}
+
+// ── Product Research Builders ─────────────────────────────
+
+// 1. Decision Matrix Radar Chart
+(function buildDecisionMatrix() {
+  new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: {
+      labels: DECISION_MATRIX.dimensions,
+      datasets: DECISION_MATRIX.categories.map(c => ({
+        label: c.name,
+        data: c.scores,
+        borderColor: c.color,
+        backgroundColor: c.color + '22',
+        borderWidth: 2,
+        pointBackgroundColor: c.color,
+        pointRadius: 4
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      scales: {
+        r: {
+          beginAtZero: true, max: 10,
+          grid: { color: 'rgba(255,255,255,.08)' },
+          angleLines: { color: 'rgba(255,255,255,.08)' },
+          pointLabels: { color: '#e2e8f0', font: { size: 12 } },
+          ticks: { color: '#8892a8', backdropColor: 'transparent', stepSize: 2 }
+        }
+      },
+      plugins: {
+        legend: { labels: { color: '#e2e8f0', usePointStyle: true, pointStyle: 'circle', padding: 16 } }
+      }
+    }
+  });
+
+  var container = document.getElementById('dmScores');
+  DECISION_MATRIX.categories.forEach(function(c) {
+    var card = document.createElement('div');
+    card.className = 'dm-score-card' + (c.weighted >= 9 ? ' winner' : '');
+    var nameEl = document.createElement('div');
+    nameEl.style.fontWeight = '600';
+    nameEl.style.color = c.color;
+    nameEl.textContent = c.name;
+    card.appendChild(nameEl);
+    var wt = document.createElement('div');
+    wt.className = 'dm-weighted';
+    wt.style.color = c.color;
+    wt.textContent = c.weighted.toFixed(1);
+    card.appendChild(wt);
+    var label = document.createElement('div');
+    label.style.fontSize = '13px';
+    label.style.color = '#8892a8';
+    label.textContent = 'Weighted Total';
+    card.appendChild(label);
+    var pills = document.createElement('div');
+    pills.className = 'dm-dim-pills';
+    DECISION_MATRIX.dimensions.forEach(function(dim, i) {
+      var pill = document.createElement('span');
+      pill.className = 'dm-dim-pill';
+      pill.textContent = dim + ': ' + c.scores[i];
+      pills.appendChild(pill);
+    });
+    card.appendChild(pills);
+    container.appendChild(card);
+  });
+})();
+
+// 2. Market Size
+(function buildMarketSize() {
+  var grid = document.getElementById('marketGrid');
+  MARKET_DATA.forEach(function(m) {
+    var card = document.createElement('div');
+    card.className = 'market-card';
+    card.style.borderTopColor = m.color;
+    var catLabel = document.createElement('div');
+    catLabel.style.cssText = 'font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:' + m.color + ';font-weight:600';
+    catLabel.textContent = m.cat;
+    card.appendChild(catLabel);
+    var tam = document.createElement('div');
+    tam.className = 'market-tam';
+    tam.textContent = m.tam;
+    card.appendChild(tam);
+    var note = document.createElement('div');
+    note.style.cssText = 'font-size:13px;color:#8892a8;margin-bottom:8px';
+    note.textContent = m.tamNote;
+    card.appendChild(note);
+    var cagr = document.createElement('div');
+    cagr.className = 'market-cagr';
+    cagr.textContent = 'CAGR: ' + m.cagr;
+    card.appendChild(cagr);
+    var search = document.createElement('div');
+    search.className = 'market-search';
+    var sk = document.createElement('strong');
+    sk.textContent = m.searchGrowth;
+    sk.style.color = '#22c55e';
+    search.appendChild(sk);
+    search.appendChild(document.createTextNode(' search growth for "' + m.searchKeyword + '"'));
+    card.appendChild(search);
+    var chips = document.createElement('div');
+    chips.className = 'market-stat-chips';
+    m.stats.forEach(function(s) {
+      var chip = document.createElement('span');
+      chip.className = 'market-chip';
+      chip.textContent = s;
+      chips.appendChild(chip);
+    });
+    card.appendChild(chips);
+    grid.appendChild(card);
+  });
+})();
+
+// 3. Competitor Landscape
+(function buildCompetitors() {
+  var tabsWrap = document.getElementById('compTabs');
+  var panelsWrap = document.getElementById('compPanels');
+  var cats = Object.keys(COMPETITORS);
+
+  cats.forEach(function(cat, idx) {
+    var tab = document.createElement('div');
+    tab.className = 'dd-tab' + (idx === 0 ? ' active' : '');
+    tab.textContent = cat;
+    tab.addEventListener('click', function() {
+      tabsWrap.querySelectorAll('.dd-tab').forEach(function(t) { t.classList.remove('active'); });
+      panelsWrap.querySelectorAll('.dd-panel').forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('comp-panel-' + idx).classList.add('active');
+    });
+    tabsWrap.appendChild(tab);
+
+    var panel = document.createElement('div');
+    panel.className = 'dd-panel' + (idx === 0 ? ' active' : '');
+    panel.id = 'comp-panel-' + idx;
+    var inner = document.createElement('div');
+    inner.className = 'dd-panel-inner';
+    inner.style.overflowX = 'auto';
+
+    var table = document.createElement('table');
+    table.className = 'data-table';
+    var thead = document.createElement('thead');
+    var headRow = document.createElement('tr');
+    ['Name','Type','Rating','Pricing','AI Status','Key Gap'].forEach(function(t) {
+      var th = document.createElement('th');
+      th.textContent = t;
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    var tbody = document.createElement('tbody');
+    COMPETITORS[cat].forEach(function(row) {
+      var tr = document.createElement('tr');
+      // Name
+      var nameTd = document.createElement('td');
+      var strong = document.createElement('strong');
+      strong.textContent = row[0];
+      nameTd.appendChild(strong);
+      tr.appendChild(nameTd);
+      // Type
+      var typeTd = document.createElement('td');
+      typeTd.textContent = row[1];
+      tr.appendChild(typeTd);
+      // Rating
+      var ratingTd = document.createElement('td');
+      var stars = document.createElement('span');
+      stars.className = 'rating-stars';
+      var num = parseFloat(row[2]);
+      if (!isNaN(num)) {
+        var fullStars = Math.floor(num);
+        var starText = '';
+        for (var s = 0; s < fullStars; s++) starText += '\u2605';
+        if (num - fullStars >= 0.5) starText += '\u00BD';
+        stars.textContent = starText + ' ' + row[2];
+      } else {
+        stars.textContent = row[2];
+      }
+      ratingTd.appendChild(stars);
+      tr.appendChild(ratingTd);
+      // Pricing
+      var priceTd = document.createElement('td');
+      priceTd.textContent = row[3];
+      priceTd.style.fontSize = '12px';
+      tr.appendChild(priceTd);
+      // AI Status
+      var aiTd = document.createElement('td');
+      var badge = document.createElement('span');
+      badge.className = 'signal-badge ';
+      var aiVal = row[4];
+      if (aiVal === 'None') { badge.className += 'signal-gray'; badge.textContent = 'None'; }
+      else if (aiVal === 'Limited' || aiVal === 'Basic') { badge.className += 'signal-yellow'; badge.textContent = aiVal; }
+      else { badge.className += 'signal-green'; badge.textContent = aiVal; }
+      aiTd.appendChild(badge);
+      tr.appendChild(aiTd);
+      // Key Gap
+      var gapTd = document.createElement('td');
+      gapTd.textContent = row[5];
+      gapTd.style.cssText = 'font-size:12px;color:#8892a8;max-width:200px;white-space:normal';
+      tr.appendChild(gapTd);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    inner.appendChild(table);
+    panel.appendChild(inner);
+    panelsWrap.appendChild(panel);
+  });
+})();
+
+// 4. Persona Cards
+(function buildPersonas() {
+  var filtersWrap = document.getElementById('personaFilters');
+  var grid = document.getElementById('personaGrid');
+  var allCats = ['All','Elder Care','Pet Training','Wedding Planning'];
+  var activeCat = 'All';
+
+  allCats.forEach(function(cat) {
+    var btn = document.createElement('button');
+    btn.className = 'persona-filter-btn' + (cat === 'All' ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', function() {
+      activeCat = cat;
+      filtersWrap.querySelectorAll('.persona-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      grid.querySelectorAll('.persona-card').forEach(function(card) {
+        card.style.display = (cat === 'All' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+    filtersWrap.appendChild(btn);
+  });
+
+  PERSONAS.forEach(function(p) {
+    var card = document.createElement('div');
+    card.className = 'persona-card';
+    card.dataset.cat = p.cat;
+    var strip = document.createElement('div');
+    strip.className = 'persona-strip';
+    strip.style.background = p.color;
+    card.appendChild(strip);
+    var body = document.createElement('div');
+    body.className = 'persona-body';
+    var nameEl = document.createElement('div');
+    nameEl.className = 'persona-name';
+    nameEl.textContent = p.name + ', ' + p.age;
+    body.appendChild(nameEl);
+    var roleEl = document.createElement('div');
+    roleEl.className = 'persona-role';
+    roleEl.textContent = p.role;
+    var catBadge = document.createElement('span');
+    catBadge.className = 'signal-badge';
+    catBadge.style.cssText = 'margin-left:8px;background:' + p.color + '22;color:' + p.color;
+    catBadge.textContent = p.cat;
+    roleEl.appendChild(catBadge);
+    body.appendChild(roleEl);
+    // WTP
+    var wtp = document.createElement('div');
+    wtp.className = 'persona-wtp';
+    var wtpM = document.createElement('span');
+    wtpM.textContent = p.wtpMonthly;
+    wtp.appendChild(wtpM);
+    if (p.wtpOneTime) {
+      var wtpO = document.createElement('span');
+      wtpO.textContent = p.wtpOneTime;
+      wtp.appendChild(wtpO);
+    }
+    body.appendChild(wtp);
+    // Killer feature
+    var feat = document.createElement('div');
+    feat.className = 'persona-feature';
+    var featLabel = document.createElement('strong');
+    featLabel.textContent = 'Killer Feature: ';
+    feat.appendChild(featLabel);
+    feat.appendChild(document.createTextNode(p.killerFeature));
+    body.appendChild(feat);
+    // Pain
+    var pain = document.createElement('div');
+    pain.className = 'persona-pain';
+    pain.textContent = '\u201C' + p.topPain + '\u201D';
+    body.appendChild(pain);
+    // Barriers
+    var ul = document.createElement('ul');
+    ul.className = 'persona-barriers';
+    p.barriers.forEach(function(b) {
+      var li = document.createElement('li');
+      li.textContent = b;
+      ul.appendChild(li);
+    });
+    body.appendChild(ul);
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+})();
+
+// 5. MVP Feature Matrix
+(function buildMVP() {
+  var tabsWrap = document.getElementById('mvpTabs');
+  var panelsWrap = document.getElementById('mvpPanels');
+  var cats = Object.keys(MVP_FEATURES);
+
+  cats.forEach(function(cat, idx) {
+    var tab = document.createElement('div');
+    tab.className = 'dd-tab' + (idx === 0 ? ' active' : '');
+    tab.textContent = cat;
+    tab.addEventListener('click', function() {
+      tabsWrap.querySelectorAll('.dd-tab').forEach(function(t) { t.classList.remove('active'); });
+      panelsWrap.querySelectorAll('.dd-panel').forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('mvp-panel-' + idx).classList.add('active');
+    });
+    tabsWrap.appendChild(tab);
+
+    var panel = document.createElement('div');
+    panel.className = 'dd-panel' + (idx === 0 ? ' active' : '');
+    panel.id = 'mvp-panel-' + idx;
+    var inner = document.createElement('div');
+    inner.className = 'dd-panel-inner';
+    var cols = document.createElement('div');
+    cols.className = 'mvp-cols';
+
+    var mustCol = document.createElement('div');
+    mustCol.className = 'mvp-col';
+    var mustH4 = document.createElement('h4');
+    mustH4.textContent = '\u2705 Must Have';
+    mustCol.appendChild(mustH4);
+
+    var niceCol = document.createElement('div');
+    niceCol.className = 'mvp-col';
+    var niceH4 = document.createElement('h4');
+    niceH4.textContent = '\u2728 Nice to Have';
+    niceCol.appendChild(niceH4);
+
+    MVP_FEATURES[cat].forEach(function(f) {
+      var item = document.createElement('div');
+      item.className = 'mvp-feature ' + f.tier;
+      item.textContent = f.feature;
+      if (f.tier === 'must') mustCol.appendChild(item);
+      else niceCol.appendChild(item);
+    });
+
+    cols.appendChild(mustCol);
+    cols.appendChild(niceCol);
+    inner.appendChild(cols);
+    panel.appendChild(inner);
+    panelsWrap.appendChild(panel);
+  });
+})();
+
+// 6. AI Integration Map
+(function buildAIMap() {
+  var container = document.getElementById('aiMapContent');
+  var catColors = { 'Elder Care': '#22c55e', 'Pet Training': '#3b82f6', 'Wedding Planning': '#ec4899', 'Wedding': '#ec4899' };
+
+  // Genuine Value section
+  var genuineLabel = document.createElement('div');
+  genuineLabel.className = 'ai-section-label';
+  genuineLabel.textContent = '\u2705 Genuine AI Value';
+  container.appendChild(genuineLabel);
+
+  var genuineGrid = document.createElement('div');
+  genuineGrid.className = 'ai-genuine-grid';
+  AI_MAP.genuine.forEach(function(item) {
+    var card = document.createElement('div');
+    card.className = 'ai-genuine-card';
+    var catBadge = document.createElement('span');
+    catBadge.className = 'signal-badge';
+    var cc = catColors[item.cat] || '#6366f1';
+    catBadge.style.cssText = 'background:' + cc + '22;color:' + cc + ';margin-bottom:8px;display:inline-block';
+    catBadge.textContent = item.cat;
+    card.appendChild(catBadge);
+    var appEl = document.createElement('div');
+    appEl.className = 'ai-app';
+    appEl.textContent = item.app;
+    card.appendChild(appEl);
+    var tiers = document.createElement('div');
+    tiers.className = 'ai-tiers';
+    var vTier = document.createElement('span');
+    vTier.className = 'ai-tier ' + item.value.toLowerCase();
+    vTier.textContent = 'Value: ' + item.value;
+    tiers.appendChild(vTier);
+    var fTier = document.createElement('span');
+    fTier.className = 'ai-tier ' + item.feasibility.toLowerCase();
+    fTier.textContent = 'Feasibility: ' + item.feasibility;
+    tiers.appendChild(fTier);
+    card.appendChild(tiers);
+    genuineGrid.appendChild(card);
+  });
+  container.appendChild(genuineGrid);
+
+  // Gimmick section
+  var gimmickLabel = document.createElement('div');
+  gimmickLabel.className = 'ai-section-label';
+  gimmickLabel.style.color = 'var(--red)';
+  gimmickLabel.textContent = '\u26A0 Gimmick / Avoid';
+  container.appendChild(gimmickLabel);
+
+  var gimmickGrid = document.createElement('div');
+  gimmickGrid.className = 'ai-gimmick-grid';
+  AI_MAP.gimmick.forEach(function(item) {
+    var card = document.createElement('div');
+    card.className = 'decline-card';
+    var kw = document.createElement('div');
+    kw.className = 'kw';
+    kw.textContent = item.app;
+    card.appendChild(kw);
+    var reason = document.createElement('div');
+    reason.className = 'cat';
+    reason.textContent = item.reason;
+    card.appendChild(reason);
+    gimmickGrid.appendChild(card);
+  });
+  container.appendChild(gimmickGrid);
+})();
+
+// 7. Go-to-Market Assessment
+(function buildGTM() {
+  var accWrap = document.getElementById('gtmAccordion');
+  var signalMap = { green: 'signal-green', yellow: 'signal-yellow', red: 'signal-red' };
+
+  GTM.forEach(function(g) {
+    var div = document.createElement('div');
+    div.className = 'accordion-item';
+
+    var header = document.createElement('div');
+    header.className = 'accordion-header';
+    header.addEventListener('click', function() { div.classList.toggle('open'); });
+
+    var h3 = document.createElement('h3');
+    var dot = document.createElement('span');
+    dot.style.color = g.color;
+    dot.textContent = '\u25CF ';
+    h3.appendChild(dot);
+    h3.appendChild(document.createTextNode(g.cat));
+    header.appendChild(h3);
+
+    var meta = document.createElement('div');
+    meta.className = 'meta';
+    var greenCount = g.factors.filter(function(f) { return f.signal === 'green'; }).length;
+    var s1 = document.createElement('span');
+    s1.textContent = '6 factors';
+    meta.appendChild(s1);
+    var s2 = document.createElement('span');
+    s2.style.color = 'var(--green)';
+    s2.textContent = greenCount + ' green';
+    meta.appendChild(s2);
+    header.appendChild(meta);
+
+    var chevron = document.createElement('span');
+    chevron.className = 'chevron';
+    chevron.textContent = '\u25BC';
+    header.appendChild(chevron);
+    div.appendChild(header);
+
+    var body = document.createElement('div');
+    body.className = 'accordion-body';
+    var grid = document.createElement('div');
+    grid.className = 'gtm-factors';
+
+    g.factors.forEach(function(f) {
+      var factor = document.createElement('div');
+      factor.className = 'gtm-factor';
+      var nameRow = document.createElement('div');
+      nameRow.className = 'gtm-factor-name';
+      var badge = document.createElement('span');
+      badge.className = 'signal-badge ' + (signalMap[f.signal] || 'signal-gray');
+      badge.textContent = f.signal.charAt(0).toUpperCase() + f.signal.slice(1);
+      nameRow.appendChild(document.createTextNode(f.name));
+      nameRow.appendChild(badge);
+      factor.appendChild(nameRow);
+      var detail = document.createElement('div');
+      detail.className = 'gtm-factor-detail';
+      detail.textContent = f.detail;
+      factor.appendChild(detail);
+      grid.appendChild(factor);
+    });
+
+    body.appendChild(grid);
+    div.appendChild(body);
+    accWrap.appendChild(div);
+  });
+})();
+
+// Scroll Animations
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
