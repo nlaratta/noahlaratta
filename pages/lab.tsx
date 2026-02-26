@@ -28,7 +28,7 @@ function LabCard({ entry }: { entry: LabEntry }) {
     <motion.div
       variants={fadeUp}
       whileHover={{ scale: 1.01 }}
-      className="border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-all duration-200"
+      className="border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow] duration-200"
     >
       <div className="flex items-center gap-2 mb-2">
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badge.bg}`}>
@@ -112,7 +112,8 @@ export default function Lab() {
 
         <motion.div
           initial="initial"
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true }}
           variants={stagger}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >

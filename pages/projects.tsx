@@ -110,7 +110,7 @@ export default function Projects() {
                   variants={fadeUp}
                   whileHover={{ scale: 1.01 }}
                   onClick={() => setSelectedProject(project)}
-                  className={`border bg-surface rounded-xl p-5 cursor-pointer transition-all duration-200 ${
+                  className={`border bg-surface rounded-xl p-5 cursor-pointer transition-[border-color,box-shadow,background-color] duration-200 ${
                     selectedProject?.id === project.id
                       ? 'border-l-2 border-l-primary border-border bg-primary/5'
                       : 'border-border hover:border-primary/30 hover:shadow-sm'
