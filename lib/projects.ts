@@ -11,6 +11,37 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'project9',
+    title: 'SquadUp',
+    summary: 'Social fitness platform connecting gym-goers for workouts and community building',
+    description: `
+      SquadUp is a comprehensive social fitness platform that transforms how people find workout partners and build gym communities.
+      The platform features a native SwiftUI iOS app backed by a sophisticated GraphQL API built with Apollo Server, enabling
+      real-time connections between fitness enthusiasts at local gyms.
+
+      **Technical Architecture:**
+
+      - **GraphQL API:** Apollo Server 4 with 100+ queries/mutations, real-time subscriptions via WebSockets, and type-safe resolvers.
+      - **Real-time Features:** Live session updates, instant messaging with typing indicators, and activity feed powered by Redis PubSub.
+      - **Database Design:** PostgreSQL with Prisma ORM featuring 40+ models, optimized indexes, and complex relationships.
+      - **Authentication:** Phone-based auth with SMS verification, JWT tokens, refresh tokens, and role-based access control.
+      - **Payment System:** Credit-based economy with mock Stripe integration, connected accounts for host payouts, and transaction tracking.
+
+      **Core Features:**
+
+      - **Gym Session Marketplace:** Create/join workouts with real-time participant tracking, waitlists, and live status updates.
+      - **Squad Social Network:** Connect with compatible workout partners based on fitness level, goals, and gym preferences.
+      - **Elite Tier System:** 6-tier progression (Standard to Champion) with subscription benefits and achievement tracking.
+      - **Smart Recommendations:** Location-based session discovery and AI-powered partner matching using compatibility scoring.
+      - **Comprehensive Chat:** Session-based groups, direct messages, media sharing, and read receipts with WebSocket sync.
+      - **Fitness Profiles:** Detailed profiles with certifications, workout history, reviews, and social media integration.
+      - **Gamification:** Workout streaks, weekly progress tracking, badges, and leaderboards to drive engagement.
+      - **Activity Feed:** Squad-based social feed with real-time updates on workouts, achievements, and connections.
+    `,
+    technologies: ['Swift', 'SwiftUI', 'Node.js', 'TypeScript', 'GraphQL', 'Apollo Server', 'PostgreSQL', 'Prisma ORM', 'Redis', 'WebSockets', 'JWT Auth', 'Sharp', 'Mock Services'],
+    demoLink: 'https://www.supsquadup.com/'
+  },
+  {
     id: 'project1',
     title: 'Nutrition Tracker',
     summary: 'Flask app to track users meals and nutrition intake',
@@ -168,37 +199,6 @@ export const projects: Project[] = [
     technologies: ['JavaScript', 'HTML/CSS', 'Game Development'],
     githubLink: 'https://github.com/nlaratta/emoji-clicker'
   },
-  {
-    id: 'project9',
-    title: 'SquadUp',
-    summary: 'Social fitness platform connecting gym-goers for workouts and community building',
-    description: `
-      SquadUp is a comprehensive social fitness platform that transforms how people find workout partners and build gym communities. 
-      The platform features a native SwiftUI iOS app backed by a sophisticated GraphQL API built with Apollo Server, enabling 
-      real-time connections between fitness enthusiasts at local gyms.
-
-      **Technical Architecture:**
-
-      - **GraphQL API:** Apollo Server 4 with 100+ queries/mutations, real-time subscriptions via WebSockets, and type-safe resolvers.
-      - **Real-time Features:** Live session updates, instant messaging with typing indicators, and activity feed powered by Redis PubSub.
-      - **Database Design:** PostgreSQL with Prisma ORM featuring 40+ models, optimized indexes, and complex relationships.
-      - **Authentication:** Phone-based auth with SMS verification, JWT tokens, refresh tokens, and role-based access control.
-      - **Payment System:** Credit-based economy with mock Stripe integration, connected accounts for host payouts, and transaction tracking.
-
-      **Core Features:**
-
-      - **Gym Session Marketplace:** Create/join workouts with real-time participant tracking, waitlists, and live status updates.
-      - **Squad Social Network:** Connect with compatible workout partners based on fitness level, goals, and gym preferences.
-      - **Elite Tier System:** 6-tier progression (Standard to Champion) with subscription benefits and achievement tracking.
-      - **Smart Recommendations:** Location-based session discovery and AI-powered partner matching using compatibility scoring.
-      - **Comprehensive Chat:** Session-based groups, direct messages, media sharing, and read receipts with WebSocket sync.
-      - **Fitness Profiles:** Detailed profiles with certifications, workout history, reviews, and social media integration.
-      - **Gamification:** Workout streaks, weekly progress tracking, badges, and leaderboards to drive engagement.
-      - **Activity Feed:** Squad-based social feed with real-time updates on workouts, achievements, and connections.
-    `,
-    technologies: ['Swift', 'SwiftUI', 'Node.js', 'TypeScript', 'GraphQL', 'Apollo Server', 'PostgreSQL', 'Prisma ORM', 'Redis', 'WebSockets', 'JWT Auth', 'Sharp', 'Mock Services'],
-    demoLink: 'https://www.supsquadup.com/'
-  }
 ]
 
 export const getAllProjects = () => projects

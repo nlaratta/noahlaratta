@@ -132,7 +132,7 @@ export default function Home() {
                             rel="noopener noreferrer"
                             className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
                           >
-                            Live Demo &rarr;
+                            Website &rarr;
                           </a>
                         )}
                       </div>
