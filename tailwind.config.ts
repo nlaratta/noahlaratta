@@ -8,17 +8,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        sage: {
-          DEFAULT: '#94A187',
-          light: '#A5B198',
-          dark: '#839176'
-        }
+        primary: {
+          DEFAULT: '#2D6A4F',
+          light: '#52B788',
+          lighter: '#D8F3DC',
+          dark: '#1B4332',
+        },
+        background: '#FAFAF8',
+        surface: '#FFFFFF',
+        foreground: '#1A1A1A',
+        'text-secondary': '#6B7280',
+        border: '#E5E7EB',
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-playfair)', 'Georgia', 'serif'],
       },
       typography: {
         DEFAULT: {

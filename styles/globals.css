@@ -3,18 +3,45 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #000000;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary-lighter text-primary-dark;
   }
 }
 
 .markdown-content {
   @apply prose prose-lg max-w-none;
-  @apply prose-headings:text-gray-900 prose-headings:font-bold;
-  @apply prose-p:text-gray-600;
-  @apply prose-a:text-sage hover:prose-a:text-sage-dark;
-  @apply prose-code:text-sage-dark prose-code:bg-sage-light/10 prose-code:px-1 prose-code:rounded;
+  @apply prose-headings:text-foreground prose-headings:font-bold;
+  @apply prose-p:text-text-secondary;
+  @apply prose-a:text-primary hover:prose-a:text-primary-dark;
+  @apply prose-code:text-primary-dark prose-code:bg-primary-lighter/30 prose-code:px-1 prose-code:rounded;
   @apply prose-pre:bg-gray-900;
-  @apply prose-strong:text-gray-900;
-} 
+  @apply prose-strong:text-foreground;
+}
+
+/* Custom scrollbar */
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #E5E7EB;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: #2D6A4F;
+  }
+}
