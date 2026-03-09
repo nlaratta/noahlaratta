@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 import { getAllProjects, Project } from '../lib/projects'
 import { getAllLabEntries } from '../lib/lab'
+import { isInternalHref, withBasePath } from '../lib/site'
 
 const stagger = {
   animate: {
@@ -20,6 +21,10 @@ const fadeUp = {
 export default function Home() {
   const allProjects = getAllProjects()
   const featuredLab = getAllLabEntries()[0]
+  const featuredLabHref =
+    featuredLab?.demoLink && isInternalHref(featuredLab.demoLink)
+      ? withBasePath(featuredLab.demoLink)
+      : featuredLab?.demoLink
   const featuredProjects = [
     allProjects.find(p => p.id === 'project9'), // SquadUp
     allProjects.find(p => p.id === 'project6'), // Database Analytics Dashboard
@@ -66,6 +71,16 @@ export default function Home() {
               className="inline-block border border-border text-foreground px-8 py-3 rounded-lg font-medium hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
             >
               About Me
+            </Link>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="mt-6">
+            <Link
+              href="/verdigris-depths"
+              className="inline-flex items-center gap-3 rounded-full border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm font-medium text-primary transition-all duration-200 hover:border-primary/30 hover:bg-primary/10"
+            >
+              Play Verdigris Depths
+              <span className="text-primary-dark">&rarr;</span>
             </Link>
           </motion.div>
         </motion.section>
@@ -218,14 +233,14 @@ export default function Home() {
                   ))}
                 </div>
 
-                {featuredLab.demoLink && (
+                {featuredLabHref && (
                   <a
-                    href={featuredLab.demoLink}
+                    href={featuredLabHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
                   >
-                    View Dashboard &rarr;
+                    {featuredLab.ctaLabel ?? 'Open Demo'} &rarr;
                   </a>
                 )}
               </motion.div>

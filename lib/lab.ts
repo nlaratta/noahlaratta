@@ -10,11 +10,34 @@ export interface LabEntry {
   highlights?: { label: string; value: string }[]
   demoLink?: string
   githubLink?: string
+  ctaLabel?: string
   date: string
   hidden?: boolean
 }
 
 export const labEntries: LabEntry[] = [
+  {
+    id: 'verdigris-depths',
+    title: 'Verdigris Depths',
+    summary:
+      'A handcrafted browser roguelite RPG with five-floor runs, relic drafting, turn-based combat, and a cinematic UI built to ship from a static export.',
+    description: `
+      Verdigris Depths is a lightweight roguelite RPG designed specifically for static hosting. The game uses a deterministic turn loop, procedural chambers, mobile-friendly controls, and a relic system that pushes each run in a different direction without needing any backend infrastructure.
+
+      The goal was to make something that feels richer than a portfolio gimmick: a real playable subpath experience with progression, atmosphere, and repeatable runs.
+    `,
+    tags: ['Next.js', 'TypeScript', 'Roguelite', 'Game Design'],
+    category: 'learning',
+    highlights: [
+      { label: 'Floors', value: '5' },
+      { label: 'Relics', value: '8' },
+      { label: 'Enemy Types', value: '4' },
+      { label: 'Input Modes', value: '2' },
+    ],
+    demoLink: '/verdigris-depths',
+    ctaLabel: 'Enter the Depths',
+    date: 'March 2026',
+  },
   {
     id: 'trend-research',
     title: 'App Opportunity Intelligence',
@@ -34,6 +57,7 @@ export const labEntries: LabEntry[] = [
       { label: 'Deep-Dive Categories', value: '3' },
     ],
     demoLink: '/trend_dashboard.html',
+    ctaLabel: 'View Dashboard',
     date: 'February 2026',
   },
   {

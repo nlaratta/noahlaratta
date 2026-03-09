@@ -1,17 +1,28 @@
 /**
  * Lab navigation — drop-in back button for standalone pages.
  *
- * Usage:  <script src="/lab-nav.js"></script>
+ * Usage:  <script src="./lab-nav.js"></script>
  * Options (via data attributes on the script tag):
  *   data-label="Custom Text"   — override button text  (default: "← Lab")
- *   data-href="/some/path"     — override link target   (default: "/lab")
+ *   data-href="/some/path"     — override link target   (default: "<basePath>/lab/")
  */
 ;(function () {
   var script =
     document.currentScript ||
     document.querySelector('script[src*="lab-nav"]')
   var label = (script && script.getAttribute('data-label')) || '\u2190 Lab'
-  var href = (script && script.getAttribute('data-href')) || '/lab'
+  var fallbackHref = '/lab/'
+
+  if (script && script.src) {
+    try {
+      var scriptUrl = new URL(script.src, window.location.href)
+      fallbackHref = scriptUrl.pathname.replace(/\/lab-nav\.js$/, '/lab/')
+    } catch (error) {
+      fallbackHref = '/lab/'
+    }
+  }
+
+  var href = (script && script.getAttribute('data-href')) || fallbackHref
 
   var style = document.createElement('style')
   style.textContent =

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
 import { getAllLabEntries, LabEntry, LabCategory } from '../lib/lab'
+import { isInternalHref, withBasePath } from '../lib/site'
 
 const stagger = {
   animate: {
@@ -23,6 +24,10 @@ const categoryBadge: Record<LabCategory, { bg: string; label: string }> = {
 
 function LabCard({ entry }: { entry: LabEntry }) {
   const badge = categoryBadge[entry.category]
+  const demoHref =
+    entry.demoLink && isInternalHref(entry.demoLink)
+      ? withBasePath(entry.demoLink)
+      : entry.demoLink
 
   return (
     <motion.div
@@ -69,14 +74,14 @@ function LabCard({ entry }: { entry: LabEntry }) {
         ))}
       </div>
 
-      {entry.demoLink && (
+      {demoHref && (
         <a
-          href={entry.demoLink}
+          href={demoHref}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
         >
-          View Dashboard &rarr;
+          {entry.ctaLabel ?? 'Open Demo'} &rarr;
         </a>
       )}
     </motion.div>

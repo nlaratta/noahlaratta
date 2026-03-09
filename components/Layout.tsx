@@ -1,26 +1,35 @@
 import { ReactNode } from 'react'
 import Head from 'next/head'
 import Navbar from './Navbar'
+import { withBasePath } from '../lib/site'
 
 interface LayoutProps {
   children: ReactNode
   title?: string
   description?: string
+  mainClassName?: string
 }
 
-export default function Layout({ children, title = 'Noah Laratta | Software Engineer', description = 'Software Engineer Portfolio showcasing projects and technical blog posts' }: LayoutProps) {
+const defaultMainClassName = 'flex-grow max-w-5xl w-full mx-auto px-6 sm:px-8 py-12 pt-28'
+
+export default function Layout({
+  children,
+  title = 'Noah Laratta | Software Engineer',
+  description = 'Software Engineer Portfolio showcasing projects and technical blog posts',
+  mainClassName,
+}: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={withBasePath('/favicon.ico')} />
       </Head>
 
       <Navbar />
 
-      <main className="flex-grow max-w-5xl w-full mx-auto px-6 sm:px-8 py-12 pt-28">
+      <main className={mainClassName ?? defaultMainClassName}>
         {children}
       </main>
 
