@@ -44,7 +44,7 @@ const experiences = [
       'Raised the member-portal and admin frontends to >90% test coverage, then gated deployments on those suites in Azure Pipelines with automated test-result comments on pull requests.',
       'Stood up Claude Code–powered automated PR-review pipelines for the .NET backend and Angular frontends.',
       'Refactored and reworked the monolithic backend billing service for maintainability and correctness.',
-      'Shipped a steady stream of security hardening, performance improvements, and bug fixes across the member and admin experiences — improving accounting accuracy and business automation.',
+      'Shipped a steady stream of security hardening, performance improvements, and bug fixes across the member and admin experiences.',
     ],
   },
   {
