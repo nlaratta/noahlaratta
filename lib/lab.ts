@@ -19,13 +19,13 @@ export const labEntries: LabEntry[] = [
     id: 'trend-research',
     title: 'App Opportunity Intelligence',
     summary:
-      'Data-driven market analysis using Google Trends to identify high-potential app and product opportunities across 23 demographic categories.',
+      'Data-driven market analysis of search-interest trends to surface high-potential app and product opportunities across 23 market categories.',
     description: `
-      A three-stage research pipeline that uses the PyTrends API to analyze keyword search interest, score trends, and rank opportunities. The system processes 116 keywords across categories like elder care, pet tech, and wedding planning — scoring each on growth, momentum, and stability to surface actionable signals.
+      A three-stage research pipeline that analyzes keyword search interest, scores trends, and ranks opportunities. The system processes 116 keywords across categories like elder care, pet tech, and wedding planning — scoring each on growth, momentum, and stability to surface actionable signals.
 
       The pipeline identified 26 "green light" opportunities with strong growth trajectories, then deep-dived into the top 3 categories with 15 keywords each. Results are visualized in an interactive Chart.js dashboard.
     `,
-    tags: ['Google Trends', 'Python', 'Chart.js', 'Market Analysis'],
+    tags: ['Python', 'Chart.js', 'Market Analysis', 'Trend Analysis'],
     category: 'research',
     highlights: [
       { label: 'Keywords Analyzed', value: '116' },
