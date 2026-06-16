@@ -48,7 +48,7 @@ export default function Home() {
             variants={fadeUp}
             className="text-lg md:text-xl text-text-secondary mb-10 max-w-2xl leading-relaxed"
           >
-            Software engineer and founder of Laratta Labs, shipping full-stack apps, cloud pipelines, and AI systems.
+            Software engineer and founder of Laratta Labs, shipping full-stack apps, cloud infrastructure, and AI systems.
           </motion.p>
 
           <motion.div
@@ -89,6 +89,8 @@ export default function Home() {
                     <path fill="#B7410E" d="M49 6H33L5 31 3 36v82l2 5 28 25h16v-15H37l-19-18V39l19-18h12V6Z" />
                     <path fill="#6B7280" d="M105 6h16l28 25 2 5v82l-2 5-28 25h-16v-15h12l19-18V39l-19-18h-12V6Z" />
                     <path fill="#F8F7F4" d="M67 46 95 73v9l-28 27-7-7 26-25-26-25 7-6Z" />
+                    <path fill="#6B7280" fillRule="evenodd" d="M77 1a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17Zm0 6.7a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                    <path fill="#6B7280" fillRule="evenodd" d="M77 135.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17Zm0 6.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
                   </svg>
                 </div>
               </div>
@@ -102,7 +104,7 @@ export default function Home() {
                 </h2>
                 <p className="text-text-secondary mt-2 leading-relaxed max-w-2xl">
                   My AI-native software studio in Denver — I design, build, and ship
-                  full-stack apps, cloud pipelines, and AI systems end to end.
+                  full-stack apps, cloud infrastructure, and AI systems end to end.
                   SquadUp and YardPaint are built here.
                 </p>
               </div>
