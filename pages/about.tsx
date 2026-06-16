@@ -15,9 +15,11 @@ const fadeUp = {
 }
 
 const skills = {
-  'Languages': ['Java', 'C#', 'Python', 'SQL', 'Bash', 'TypeScript'],
-  'Cloud & DevOps': ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'GitLab', 'GitHub Actions'],
-  'Tools & Platforms': ['Rancher', 'Helm', 'Grafana', 'Keycloak', 'Unity'],
+  'Languages': ['C#', 'TypeScript', 'Swift', 'Python', 'SQL', 'Java', 'Bash'],
+  'Frameworks & UI': ['Angular', '.NET', 'Next.js / React', 'SwiftUI'],
+  'Cloud & DevOps': ['Azure', 'AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Azure Pipelines', 'GitHub Actions'],
+  'Data & AI': ['MSSQL', 'PostgreSQL', 'Claude / LLMs', 'AI agents', 'MCP'],
+  'Tools & Platforms': ['Helm', 'Grafana', 'Keycloak', 'Rancher'],
 }
 
 const experiences = [
@@ -37,8 +39,12 @@ const experiences = [
     period: 'Aug 2025 – Present',
     location: 'Remote',
     bullets: [
-      'Building a Progressive Web App with offline-first capability for on-the-mountain assessment of members pursuing skiing and snowboarding instructor certifications — fully usable without connectivity and syncing when back online.',
-      'Full-stack ownership across the offline data model, local storage and sync, and the field-facing interface examiners use on-slope.',
+      'Built an offline-first Progressive Web App (Angular) for on-the-mountain assessment of members pursuing skiing and snowboarding instructor certifications — fully usable without connectivity at altitude, syncing to the backend when back online.',
+      'Designed and shipped a member event self-cancellation and refund service end to end (Angular + .NET), with tiered refunds based on days until the event, integrated with the in-house association management system (AMS).',
+      'Raised the member-portal and admin frontends to >90% test coverage, then gated deployments on those suites in Azure Pipelines with automated test-result comments on pull requests.',
+      'Stood up Claude Code–powered automated PR-review pipelines for the .NET backend and Angular frontends.',
+      'Refactored and reworked the monolithic backend billing service for maintainability and correctness.',
+      'Shipped a steady stream of security hardening, performance improvements, and bug fixes across the member and admin experiences — improving accounting accuracy and business automation.',
     ],
   },
   {
