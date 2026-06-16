@@ -20,6 +20,47 @@ const skills = {
   'Tools & Platforms': ['Rancher', 'Helm', 'Grafana', 'Keycloak', 'Unity'],
 }
 
+const experiences = [
+  {
+    role: 'Founder & Engineer',
+    org: 'Laratta Labs',
+    period: '2026 – Present',
+    location: 'Denver, CO',
+    bullets: [
+      'Run a solo, AI-native software practice — full-stack web and mobile apps, the cloud infrastructure and data pipelines behind them, and AI systems and agents, scoped and shipped to production end to end.',
+      'Designed, built, and shipped SquadUp (a social fitness platform, live on the App Store) and YardPaint (a consumer AI app).',
+    ],
+  },
+  {
+    role: 'Full Stack Engineer',
+    org: 'PSIA-AASI',
+    period: 'Aug 2025 – Present',
+    location: 'Remote',
+    bullets: [
+      'Building a Progressive Web App with offline-first capability for on-the-mountain assessment of members pursuing skiing and snowboarding instructor certifications — fully usable without connectivity and syncing when back online.',
+      'Full-stack ownership across the offline data model, local storage and sync, and the field-facing interface examiners use on-slope.',
+    ],
+  },
+  {
+    role: 'Software Engineer',
+    org: 'Lockheed Martin',
+    period: 'Aug 2022 – Aug 2024',
+    location: 'Littleton, CO',
+    bullets: [
+      'Deployed and managed an internal Kubernetes cluster utilizing Rancher on AWS GovCloud EC2 instances, creating a scalable environment for Docker containerized applications.',
+      'Monitored cluster health using Grafana and Longhorn, responding to incidents with prompt troubleshooting and resolution.',
+      'Took ownership of software and SQL database deployments, becoming the go-to resource for deployment issues and developing new Helm charts.',
+      'Implemented user-configurable data filtering in a C# Unity app, enabling users to customize visual outputs.',
+      'Enhanced GitLab CI/CD pipelines by automating Helm chart linting and deployment, improving consistency and efficiency.',
+      'Deployed and managed Keycloak for role-based access control on a Python application.',
+      'Modified and deployed Dockerfiles eliminating vulnerabilities detected by SAST scans, ensuring security compliance.',
+      'Deployed Docker and Kubernetes (k3s) within air-gapped Red Hat Linux environments using VirtualBox and KVM.',
+      'Authored Linux scripts and documentation for software installation, dependency management, and cluster configuration in restricted networks.',
+      'Thrived in a small Agile team, starting as the sole junior engineer and mentoring multiple new hires.',
+    ],
+  },
+]
+
 export default function About() {
   return (
     <Layout title="About Me | Noah Laratta">
@@ -40,6 +81,21 @@ export default function About() {
             to complex problems. With a bachelor&apos;s degree in Computer Science and years of hands-on
             experience, I&apos;ve developed a deep understanding of software architecture, cloud
             computing, and modern DevOps practices.
+          </motion.p>
+
+          <motion.p variants={fadeUp} className="text-text-secondary leading-relaxed mt-4">
+            Today I run{' '}
+            <a
+              href="https://larattalabs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary font-medium hover:text-primary-dark transition-colors duration-200"
+            >
+              Laratta Labs
+            </a>
+            , an AI-native software practice in Denver — designing, building, and
+            shipping full-stack products end to end — alongside full-stack
+            engineering for PSIA-AASI.
           </motion.p>
         </motion.div>
 
@@ -90,32 +146,31 @@ export default function About() {
             <div className="w-10 h-0.5 bg-primary mt-2" />
           </motion.div>
 
-          <motion.div variants={fadeUp} className="border-l-2 border-border pl-6 ml-2 relative">
-            {/* Green dot */}
-            <div className="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-primary" />
-
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3 mb-1">
-                <h3 className="text-lg font-semibold text-foreground">Software Engineer</h3>
-                <span className="text-sm text-text-secondary">at Lockheed Martin</span>
-              </div>
-              <p className="text-sm text-text-secondary mb-4">
-                Aug 2022 &ndash; Aug 2024 &middot; Littleton, CO
-              </p>
-              <ul className="space-y-3 text-text-secondary text-sm leading-relaxed">
-                <li>Deployed and managed an internal Kubernetes cluster utilizing Rancher on AWS GovCloud EC2 instances, creating a scalable environment for Docker containerized applications.</li>
-                <li>Monitored cluster health using Grafana and Longhorn, responding to incidents with prompt troubleshooting and resolution.</li>
-                <li>Took ownership of software and SQL database deployments, becoming the go-to resource for deployment issues and developing new Helm charts.</li>
-                <li>Implemented user-configurable data filtering in a C# Unity app, enabling users to customize visual outputs.</li>
-                <li>Enhanced GitLab CI/CD pipelines by automating Helm chart linting and deployment, improving consistency and efficiency.</li>
-                <li>Deployed and managed Keycloak for role-based access control on a Python application.</li>
-                <li>Modified and deployed Dockerfiles eliminating vulnerabilities detected by SAST scans, ensuring security compliance.</li>
-                <li>Deployed Docker and Kubernetes (k3s) within air-gapped Red Hat Linux environments using VirtualBox and KVM.</li>
-                <li>Authored Linux scripts and documentation for software installation, dependency management, and cluster configuration in restricted networks.</li>
-                <li>Thrived in a small Agile team, starting as the sole junior engineer and mentoring multiple new hires.</li>
-              </ul>
-            </div>
-          </motion.div>
+          <div className="space-y-8">
+            {experiences.map((exp) => (
+              <motion.div
+                key={`${exp.org}-${exp.role}`}
+                variants={fadeUp}
+                className="border-l-2 border-border pl-6 ml-2 relative"
+              >
+                <div className="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-primary" />
+                <div>
+                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3 mb-1">
+                    <h3 className="text-lg font-semibold text-foreground">{exp.role}</h3>
+                    <span className="text-sm text-text-secondary">at {exp.org}</span>
+                  </div>
+                  <p className="text-sm text-text-secondary mb-4">
+                    {exp.period} &middot; {exp.location}
+                  </p>
+                  <ul className="space-y-3 text-text-secondary text-sm leading-relaxed">
+                    {exp.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.section>
 
         {/* Education */}
