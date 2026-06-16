@@ -37,7 +37,7 @@ const experiences = [
     role: 'Full Stack Engineer',
     org: 'PSIA-AASI',
     period: 'Aug 2025 – Present',
-    location: 'Remote',
+    location: 'Lakewood, CO',
     bullets: [
       'Built an offline-first Progressive Web App (Angular) for on-the-mountain assessment of members pursuing skiing and snowboarding instructor certifications — fully usable without connectivity at altitude, syncing to the backend when back online.',
       'Designed and shipped a member event self-cancellation and refund service end to end (Angular + .NET), with tiered refunds based on days until the event, integrated with the in-house association management system (AMS).',
