@@ -119,6 +119,11 @@ export default function Projects() {
                   <h3 className="text-base font-semibold text-foreground mb-1.5">
                     {project.title}
                   </h3>
+                  {project.studio && (
+                    <p className="text-[11px] text-primary font-medium mb-1.5">
+                      Built through {project.studio.name}
+                    </p>
+                  )}
                   <p className="text-sm text-text-secondary mb-3 leading-relaxed">
                     {project.summary}
                   </p>
@@ -149,7 +154,20 @@ export default function Projects() {
                   transition={{ duration: 0.3, ease: 'easeOut' }}
                   className="border border-border bg-surface rounded-xl p-8"
                 >
-                  <h2 className="text-2xl font-bold text-foreground mb-4">{selectedProject.title}</h2>
+                  <div className="mb-4">
+                    <h2 className="text-2xl font-bold text-foreground">{selectedProject.title}</h2>
+                    {selectedProject.studio && (
+                      <a
+                        href={selectedProject.studio.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary-dark font-medium mt-1.5 transition-colors duration-200"
+                      >
+                        Built through {selectedProject.studio.name}
+                        <span aria-hidden>↗</span>
+                      </a>
+                    )}
+                  </div>
                   {/* Safe: descriptions are hardcoded in lib/projects.ts, no user input */}
                   <div
                     className="prose prose-sm max-w-none prose-p:text-text-secondary prose-p:leading-relaxed prose-strong:text-foreground prose-li:text-text-secondary prose-li:leading-relaxed prose-ul:my-2"

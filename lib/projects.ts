@@ -7,6 +7,7 @@ export interface Project {
   githubLink?: string
   demoLink?: string
   image?: string
+  studio?: { name: string; url: string }
 }
 
 export const projects: Project[] = [
@@ -39,7 +40,8 @@ export const projects: Project[] = [
       - **Activity Feed:** Squad-based social feed with real-time updates on workouts, achievements, and connections.
     `,
     technologies: ['Swift', 'SwiftUI', 'Node.js', 'TypeScript', 'GraphQL', 'Apollo Server', 'PostgreSQL', 'Prisma ORM', 'Redis', 'WebSockets', 'JWT Auth', 'Sharp', 'Mock Services'],
-    demoLink: 'https://www.supsquadup.com/'
+    demoLink: 'https://www.supsquadup.com/',
+    studio: { name: 'Laratta Labs', url: 'https://larattalabs.com' }
   },
   {
     id: 'project1',
