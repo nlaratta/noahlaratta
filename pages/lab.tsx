@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import Layout from '../components/Layout'
 import { getAllLabEntries, LabEntry, LabCategory } from '../lib/lab'
 
@@ -21,38 +22,27 @@ const categoryBadge: Record<LabCategory, { bg: string; label: string }> = {
   workflow: { bg: 'bg-amber-100 text-amber-800', label: 'Workflow' },
 }
 
-function LabCard({ entry }: { entry: LabEntry }) {
-  const badge = categoryBadge[entry.category]
+const cardClass =
+  'border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow] duration-200'
 
+function CardBody({ entry, badge }: { entry: LabEntry; badge: { bg: string; label: string } }) {
   return (
-    <motion.div
-      variants={fadeUp}
-      whileHover={{ scale: 1.01 }}
-      className="border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow] duration-200"
-    >
+    <>
       <div className="flex items-center gap-2 mb-2">
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badge.bg}`}>
           {badge.label}
         </span>
-        <span className="text-xs text-text-secondary uppercase tracking-wider">
-          {entry.date}
-        </span>
+        <span className="text-xs text-text-secondary uppercase tracking-wider">{entry.date}</span>
       </div>
-      <h3 className="text-lg font-semibold text-foreground mt-1 mb-2">
-        {entry.title}
-      </h3>
-      <p className="text-sm text-text-secondary mb-4 leading-relaxed">
-        {entry.summary}
-      </p>
+      <h3 className="text-lg font-semibold text-foreground mt-1 mb-2">{entry.title}</h3>
+      <p className="text-sm text-text-secondary mb-4 leading-relaxed">{entry.summary}</p>
 
       {entry.highlights && (
         <div className="grid grid-cols-2 gap-3 mb-4 bg-primary-lighter/30 rounded-lg p-4">
           {entry.highlights.map((h) => (
             <div key={h.label}>
               <span className="text-xl font-bold text-primary">{h.value}</span>
-              <span className="block text-xs text-text-secondary uppercase">
-                {h.label}
-              </span>
+              <span className="block text-xs text-text-secondary uppercase">{h.label}</span>
             </div>
           ))}
         </div>
@@ -68,7 +58,29 @@ function LabCard({ entry }: { entry: LabEntry }) {
           </span>
         ))}
       </div>
+    </>
+  )
+}
 
+function LabCard({ entry }: { entry: LabEntry }) {
+  const badge = categoryBadge[entry.category]
+
+  if (entry.article) {
+    return (
+      <motion.div variants={fadeUp} whileHover={{ scale: 1.01 }} className={cardClass}>
+        <Link href={`/lab/${entry.id}`} className="block">
+          <CardBody entry={entry} badge={badge} />
+          <span className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200">
+            Read the guide &rarr;
+          </span>
+        </Link>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div variants={fadeUp} whileHover={{ scale: 1.01 }} className={cardClass}>
+      <CardBody entry={entry} badge={badge} />
       {entry.demoLink && (
         <a
           href={entry.demoLink}

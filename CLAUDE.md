@@ -67,8 +67,9 @@ Uses Framer Motion for page transitions and hover effects. Standard animation pa
 
 1. **Adding New Pages**: Create file in `/pages` directory (automatically creates route)
 2. **Adding Projects**: Update the projects array in `/lib/projects.ts`
-3. **Modifying Styles**: Use Tailwind utility classes or update theme in `tailwind.config.ts`
-4. **Testing Changes**: No automated tests configured - manual testing required
+3. **Adding Lab Articles (MDX)**: Write `content/lab/<slug>.mdx` with frontmatter (`title, summary, date, tags, category, readingTime`), then add a matching `LabEntry` with `article: true` to `/lib/lab.ts`. The `/lab` card then links to `/lab/<slug>`, rendered by `pages/lab/[slug].tsx` via `next-mdx-remote` (`remark-gfm`, `rehype-slug`, `rehype-highlight`). Prose uses the `.markdown-content` class; reusable + interactive components live in `components/mdx/` and `components/lab/<topic>/` and are exposed to MDX through `components/mdx/MDXComponents.tsx` (so you can drop `<Callout>`, custom widgets, etc. straight into the `.mdx`). Keep interactive components' browser APIs behind `useEffect` so static export stays clean.
+4. **Modifying Styles**: Use Tailwind utility classes or update theme in `tailwind.config.ts`
+5. **Testing Changes**: No automated tests configured - manual testing required
 
 ## Deployment Notes
 

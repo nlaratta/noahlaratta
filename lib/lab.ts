@@ -12,9 +12,32 @@ export interface LabEntry {
   githubLink?: string
   date: string
   hidden?: boolean
+  /** When true, the card links internally to /lab/<id> (MDX article in content/lab). */
+  article?: boolean
 }
 
 export const labEntries: LabEntry[] = [
+  {
+    id: 'oh-my-pi',
+    title: 'Getting the Most Out of Oh My Pi',
+    summary:
+      'A hands-on guide to the omp terminal coding agent — its standout features, model routing, and workflows — plus running it 100% locally on DeepSeek V4 Flash.',
+    description: `
+      A deep, interactive guide to Oh My Pi (omp): hashline edits, LSP/DAP code intelligence,
+      subagent fanout, plan mode, snapcompact, and multi-model routing — then a walkthrough of
+      wiring it to a fully local DeepSeek V4 Flash server for offline, no-cloud coding.
+    `,
+    tags: ['Oh My Pi', 'Local LLM', 'DeepSeek V4', 'Dev Tools'],
+    category: 'workflow',
+    highlights: [
+      { label: 'Context Window', value: '1M' },
+      { label: 'Providers', value: '40+' },
+      { label: 'Cloud Calls', value: '0' },
+      { label: 'Runs Local', value: '100%' },
+    ],
+    date: 'June 2026',
+    article: true,
+  },
   {
     id: 'trend-research',
     title: 'App Opportunity Intelligence',
