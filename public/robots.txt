@@ -1,0 +1,5 @@
+# noahlaratta.com — all crawlers welcome, including AI search & training bots.
+User-agent: *
+Allow: /
+
+Sitemap: https://noahlaratta.com/sitemap.xml

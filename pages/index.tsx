@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 import { getAllProjects, Project } from '../lib/projects'
 import { getAllLabEntries } from '../lib/lab'
+import { websiteNode, personNode, organizationNode, profilePageNode } from '../lib/seo'
 
 const stagger = {
   animate: {
@@ -27,7 +28,11 @@ export default function Home() {
   ].filter((project): project is Project => project !== undefined)
 
   return (
-    <Layout>
+    <Layout
+      path="/"
+      ogImage="/og/home.png"
+      jsonLd={[websiteNode(), personNode(), organizationNode(), profilePageNode('/')]}
+    >
       <div className="flex flex-col">
         {/* Hero Section */}
         <motion.section

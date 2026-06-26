@@ -71,6 +71,19 @@ Uses Framer Motion for page transitions and hover effects. Standard animation pa
 4. **Modifying Styles**: Use Tailwind utility classes or update theme in `tailwind.config.ts`
 5. **Testing Changes**: No automated tests configured - manual testing required
 
+## SEO & Metadata
+
+Centralized in `lib/seo.ts` (canonical host = apex `https://noahlaratta.com`, identity, JSON-LD builders). `components/Layout.tsx` takes SEO props (`path`, `description`, `ogImage`, `ogType`, `article`, `jsonLd`, `noindex`) and emits canonical + Open Graph + Twitter + robots + theme-color + one `ld+json` `@graph`; each page passes its own data and structured data. `<html lang>` is set in `pages/_document.tsx`.
+
+Generated at build time (wired into `npm run build`):
+- **OG images** — `scripts/generate-og.mjs` (satori → PNG) renders a sage-branded 1200×630 card per route into `public/og/` (gitignored). `npm run og` to preview locally.
+- **sitemap.xml + feed.xml (RSS)** — `scripts/seo-postbuild.mjs` writes both into `out/` from the static routes + `content/lab/*.mdx`.
+- **robots.txt + llms.txt** ship static from `public/`.
+
+Adding a page to SEO: pass `path`/`description`/`ogImage`/`jsonLd` to `Layout`, add an OG route key in `generate-og.mjs`, and a route in `seo-postbuild.mjs`. Lab articles are automatic (derived from MDX frontmatter incl. `published: YYYY-MM-DD`).
+
+Note: the host serves apex, `www`, and `http` with no redirect — canonical tags point at the apex; a `www→apex` + `http→https` 301 should be configured at the 1&1 hosting level.
+
 ## Deployment Notes
 
 - Configured for static export - run `npm run build` to generate static files

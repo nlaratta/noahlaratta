@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Layout from '../components/Layout'
 import { Project, getAllProjects, getAllTechnologies } from '../lib/projects'
+import { breadcrumbNode, itemListNode, absUrl } from '../lib/seo'
 
 function renderDescription(md: string): string {
   const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -60,8 +61,34 @@ export default function Projects() {
     )
   }
 
+  const projectsJsonLd = [
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Projects', path: '/projects' },
+    ]),
+    {
+      '@type': 'CollectionPage',
+      url: absUrl('/projects'),
+      name: 'Projects — Noah Laratta',
+      description: 'Software projects by Noah Laratta.',
+    },
+    itemListNode(
+      'Projects by Noah Laratta',
+      projects.map((p) => ({
+        name: p.title,
+        url: p.demoLink || p.githubLink || absUrl('/projects'),
+      })),
+    ),
+  ]
+
   return (
-    <Layout title="Projects | Noah Laratta">
+    <Layout
+      title="Projects | Noah Laratta"
+      description="Projects by Noah Laratta — full-stack apps, cloud infrastructure, and AI systems, including SquadUp and work shipped through Laratta Labs."
+      path="/projects"
+      ogImage="/og/projects.png"
+      jsonLd={projectsJsonLd}
+    >
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial="initial"

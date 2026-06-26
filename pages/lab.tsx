@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Layout from '../components/Layout'
 import { getAllLabEntries, LabEntry, LabCategory } from '../lib/lab'
+import { breadcrumbNode, itemListNode, absUrl } from '../lib/seo'
 
 const stagger = {
   animate: {
@@ -98,8 +99,36 @@ function LabCard({ entry }: { entry: LabEntry }) {
 export default function Lab() {
   const entries = getAllLabEntries()
 
+  const labJsonLd = [
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Lab', path: '/lab' },
+    ]),
+    {
+      '@type': 'Blog',
+      '@id': `${absUrl('/lab')}#blog`,
+      url: absUrl('/lab'),
+      name: 'Lab — Noah Laratta',
+      description:
+        'Research, learning explorations, and development workflows by Noah Laratta.',
+    },
+    itemListNode(
+      'Lab entries',
+      entries.map((e) => ({
+        name: e.title,
+        url: e.article ? absUrl(`/lab/${e.id}`) : e.demoLink || absUrl('/lab'),
+      })),
+    ),
+  ]
+
   return (
-    <Layout title="Lab | Noah Laratta">
+    <Layout
+      title="Lab | Noah Laratta"
+      description="The Lab — research, learning explorations, and development workflows by Noah Laratta, including a deep, interactive guide to the Oh My Pi coding agent."
+      path="/lab"
+      ogImage="/og/lab.png"
+      jsonLd={labJsonLd}
+    >
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial="initial"

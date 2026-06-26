@@ -35,7 +35,8 @@ jobs:
 
       # 5) Deploy only if this is the main branch
       - name: Deploy via FTP
-        if: github.ref == 'refs/heads/main'
+        # Only deploy a green build — never sync partial output on build failure.
+        if: success() && github.ref == 'refs/heads/main'
         uses: pressidium/lftp-mirror-action@v1
         with:
           host: home298430343.1and1-data.host

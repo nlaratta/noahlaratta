@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
+import { personNode, profilePageNode, breadcrumbNode } from '../lib/seo'
 
 const stagger = {
   animate: {
@@ -69,7 +70,21 @@ const experiences = [
 
 export default function About() {
   return (
-    <Layout title="About Me | Noah Laratta">
+    <Layout
+      title="About | Noah Laratta"
+      description="About Noah Laratta — software engineer and founder of Laratta Labs in Denver. Full-stack, cloud, and AI work across Laratta Labs, PSIA-AASI, and Lockheed Martin."
+      path="/about"
+      ogImage="/og/about.png"
+      ogType="profile"
+      jsonLd={[
+        profilePageNode('/about'),
+        personNode(),
+        breadcrumbNode([
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+        ]),
+      ]}
+    >
       <div className="max-w-3xl mx-auto">
         {/* Intro */}
         <motion.div

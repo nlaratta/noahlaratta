@@ -1,0 +1,22 @@
+# Noah Laratta
+
+> Software engineer and founder of Laratta Labs, an AI-native software studio in Denver. Builds full-stack web and mobile apps, the cloud infrastructure behind them, and AI systems and agents — scoped and shipped to production end to end.
+
+## Key pages
+- [Home](https://noahlaratta.com): overview, featured work, and current focus.
+- [About](https://noahlaratta.com/about): background, technical expertise, and experience (Laratta Labs, PSIA-AASI, Lockheed Martin).
+- [Projects](https://noahlaratta.com/projects): software projects, including SquadUp (a social fitness platform on the App Store).
+- [Lab](https://noahlaratta.com/lab): research, learning explorations, and development-workflow write-ups.
+
+## Writing
+- [Getting the Most Out of Oh My Pi](https://noahlaratta.com/lab/oh-my-pi): a hands-on guide to the omp terminal coding agent — features, model routing, and workflows — plus running it 100% locally on DeepSeek V4 Flash.
+
+## Contact
+- Email: noahlaratta@gmail.com
+- GitHub: https://github.com/nlaratta
+- LinkedIn: https://www.linkedin.com/in/noah-laratta
+- Studio: https://larattalabs.com
+
+## Machine-readable
+- Feed: https://noahlaratta.com/feed.xml
+- Sitemap: https://noahlaratta.com/sitemap.xml

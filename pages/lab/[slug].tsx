@@ -12,6 +12,7 @@ import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'ne
 import Layout from '../../components/Layout'
 import TableOfContents from '../../components/mdx/TableOfContents'
 import { mdxComponents } from '../../components/mdx/MDXComponents'
+import { blogPostingNode, breadcrumbNode } from '../../lib/seo'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content/lab')
 
@@ -22,6 +23,20 @@ interface Frontmatter {
   tags: string[]
   category: 'research' | 'learning' | 'workflow'
   readingTime?: string
+  published?: string
+}
+
+const MONTHS: Record<string, string> = {
+  january: '01', february: '02', march: '03', april: '04', may: '05', june: '06',
+  july: '07', august: '08', september: '09', october: '10', november: '11', december: '12',
+}
+
+/** ISO date for an article: explicit `published` frontmatter, else parse "Month YYYY". */
+function toIso(display?: string, explicit?: string): string {
+  if (explicit && /^\d{4}-\d{2}-\d{2}/.test(explicit)) return explicit
+  const m = /([A-Za-z]+)\s+(\d{4})/.exec(display ?? '')
+  if (m && MONTHS[m[1].toLowerCase()]) return `${m[2]}-${MONTHS[m[1].toLowerCase()]}-01`
+  return '2026-01-01'
 }
 
 const categoryBadge: Record<string, string> = {
@@ -38,10 +53,35 @@ const fadeUp = {
 export default function LabArticle({
   source,
   frontmatter,
+  slug,
+  published,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const fm = frontmatter as Frontmatter
+  const ogImage = `/og/lab-${slug}.png`
   return (
-    <Layout title={`${fm.title} | Lab | Noah Laratta`} description={fm.summary}>
+    <Layout
+      title={`${fm.title} | Lab | Noah Laratta`}
+      description={fm.summary}
+      path={`/lab/${slug}`}
+      ogImage={ogImage}
+      ogType="article"
+      article={{ publishedTime: published, modifiedTime: published, tags: fm.tags }}
+      jsonLd={[
+        blogPostingNode({
+          title: fm.title,
+          description: fm.summary,
+          slug,
+          published,
+          image: ogImage,
+          tags: fm.tags,
+        }),
+        breadcrumbNode([
+          { name: 'Home', path: '/' },
+          { name: 'Lab', path: '/lab' },
+          { name: fm.title, path: `/lab/${slug}` },
+        ]),
+      ]}
+    >
       <article className="min-w-0">
         <motion.header initial="initial" animate="animate" variants={fadeUp} className="mb-2">
           <Link
@@ -110,6 +150,8 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps<{
   source: MDXRemoteSerializeResult
   frontmatter: Frontmatter
+  slug: string
+  published: string
 }> = async ({ params }) => {
   const slug = params?.slug as string
   const raw = fs.readFileSync(path.join(CONTENT_DIR, `${slug}.mdx`), 'utf8')
@@ -122,5 +164,6 @@ export const getStaticProps: GetStaticProps<{
   })
   // Ensure props are JSON-serializable (e.g. no Date objects from YAML).
   const frontmatter = JSON.parse(JSON.stringify(data)) as Frontmatter
-  return { props: { source, frontmatter } }
+  const published = toIso(frontmatter.date, frontmatter.published)
+  return { props: { source, frontmatter, slug, published } }
 }
