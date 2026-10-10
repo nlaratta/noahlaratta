@@ -1,311 +1,175 @@
-import { motion } from 'framer-motion'
-import Layout from '../components/Layout'
 import Link from 'next/link'
-import { getAllProjects, Project } from '../lib/projects'
+import Layout from '../components/Layout'
+import Container from '../components/Container'
+import Contours from '../components/Contours'
+import ProjectCard from '../components/ProjectCard'
+import SectionHeading from '../components/SectionHeading'
+import { getAllProjects, getFeaturedProjects } from '../lib/projects'
 import { getAllLabEntries } from '../lib/lab'
+import { experiences } from '../lib/experience'
 import { websiteNode, personNode, organizationNode, profilePageNode } from '../lib/seo'
 
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-}
-
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-}
+const MORE_WORK = ['architect', 'local-lab', 'claude-helpers']
 
 export default function Home() {
-  const allProjects = getAllProjects()
-  const featuredLab = getAllLabEntries()[0]
-  const featuredProjects = [
-    allProjects.find(p => p.id === 'project9'), // SquadUp
-    allProjects.find(p => p.id === 'project6'), // Database Analytics Dashboard
-    allProjects.find(p => p.id === 'project1'), // Nutrition Tracker
-  ].filter((project): project is Project => project !== undefined)
+  const featured = getFeaturedProjects()
+  const more = MORE_WORK.map((slug) => getAllProjects().find((p) => p.slug === slug)!).filter(Boolean)
+  const [latest, ...olderLab] = getAllLabEntries()
 
   return (
-    <Layout
-      path="/"
-      ogImage="/og/home.png"
-      jsonLd={[websiteNode(), personNode(), organizationNode(), profilePageNode('/')]}
-    >
-      <div className="flex flex-col">
-        {/* Hero Section */}
-        <motion.section
-          initial="initial"
-          animate="animate"
-          variants={stagger}
-          className="py-24 md:py-32 flex flex-col items-center text-center"
-        >
-          <motion.h1
-            variants={fadeUp}
-            className="text-4xl md:text-6xl font-bold text-foreground mb-6 max-w-3xl"
-          >
-            Hi, I&apos;m{' '}
-            <span className="font-serif text-primary">Noah</span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            className="text-lg md:text-xl text-text-secondary mb-10 max-w-2xl leading-relaxed"
-          >
-            Software engineer and founder of Laratta Labs, shipping full-stack apps, cloud infrastructure, and AI systems.
-          </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <Link
-              href="/projects"
-              className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200"
-            >
-              View Projects
+    <Layout path="/" ogImage="/og/home.png" jsonLd={[websiteNode(), personNode(), organizationNode(), profilePageNode('/')]}>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        <Contours animate className="absolute inset-y-0 right-0 h-full w-full sm:w-[72%]" />
+        <div aria-hidden className="absolute inset-0 bg-background/75 sm:bg-transparent sm:bg-gradient-to-r sm:from-background sm:from-30% sm:via-background/40 sm:via-55% sm:to-transparent" />
+        <Container className="relative py-24 sm:py-32 lg:py-40">
+          <h1 className="font-serif text-[3.25rem] font-semibold leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-[6.5rem]">
+            Noah Laratta
+          </h1>
+          <p className="mt-8 max-w-xl text-xl leading-relaxed text-text-secondary sm:text-[1.375rem]">
+            I&apos;m a software engineer in Denver. I build full-stack apps, the cloud infrastructure behind
+            them, and AI systems, and I run{' '}
+            <a href="https://larattalabs.com" className="text-foreground underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+              Laratta Labs
+            </a>
+            , my one-person software studio.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href="/projects" className="rounded-md bg-primary px-6 py-3 font-medium text-on-primary transition-colors hover:bg-primary-dark dark:hover:bg-primary-light">
+              See my projects
             </Link>
-            <Link
-              href="/about"
-              className="inline-block border border-border text-foreground px-8 py-3 rounded-lg font-medium hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
-            >
-              About Me
+            <Link href="/lab" className="rounded-md border border-border bg-background px-6 py-3 font-medium text-foreground transition-colors hover:border-primary">
+              Read the Lab
             </Link>
-          </motion.div>
-        </motion.section>
+          </div>
+          <p className="mt-12 flex items-start gap-3 text-[15px] text-text-secondary">
+            <span aria-hidden className="relative mt-[7px] flex h-2 w-2 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-[ping_1.2s_cubic-bezier(0,0,0.2,1)_3_forwards] rounded-full bg-gold-mark opacity-50 motion-reduce:hidden" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-mark" />
+            </span>
+            <span>
+              <span className="font-medium text-gold">Now</span> shipping YardPaint and SquadUp at Laratta Labs, and
+              engineering for PSIA-AASI.
+            </span>
+          </p>
+        </Container>
+      </section>
 
-        {/* Currently — Laratta Labs */}
-        <section className="pb-4">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={stagger}
-          >
-            <motion.div
-              variants={fadeUp}
-              className="border border-border bg-primary-lighter/20 rounded-2xl p-6 md:p-8 flex flex-col sm:flex-row sm:items-center gap-5 md:gap-7"
-            >
-              {/* Laratta Labs mark — a token from the studio's own brand */}
-              <div className="shrink-0">
-                <div className="w-14 h-14 rounded-xl bg-[#0F1419] flex items-center justify-center">
-                  <svg width="32" height="32" viewBox="0 0 154 154" role="img" aria-label="Laratta Labs">
-                    <path fill="#B7410E" d="M49 6H33L5 31 3 36v82l2 5 28 25h16v-15H37l-19-18V39l19-18h12V6Z" />
-                    <path fill="#6B7280" d="M105 6h16l28 25 2 5v82l-2 5-28 25h-16v-15h12l19-18V39l-19-18h-12V6Z" />
-                    <path fill="#F8F7F4" d="M67 46 95 73v9l-28 27-7-7 26-25-26-25 7-6Z" />
-                    <path fill="#6B7280" fillRule="evenodd" d="M77 1a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17Zm0 6.7a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-                    <path fill="#6B7280" fillRule="evenodd" d="M77 135.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17Zm0 6.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-                  </svg>
-                </div>
-              </div>
+      {/* Selected work */}
+      <section className="py-20 sm:py-28" aria-labelledby="work">
+        <Container>
+          <SectionHeading id="work" action={{ label: 'All projects', href: '/projects' }}>
+            Selected work
+          </SectionHeading>
+          <div className="grid gap-6 md:grid-cols-2">
+            {featured.map((p) => (
+              <ProjectCard key={p.slug} project={p} feature />
+            ))}
+          </div>
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            {more.map((p) => (
+              <ProjectCard key={p.slug} project={p} />
+            ))}
+          </div>
+        </Container>
+      </section>
 
-              <div className="flex-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                  Currently
-                </span>
-                <h2 className="text-xl md:text-2xl font-bold text-foreground mt-1">
-                  Building <span className="font-serif text-primary">Laratta Labs</span>
-                </h2>
-                <p className="text-text-secondary mt-2 leading-relaxed max-w-2xl">
-                  My AI-native software studio in Denver — I design, build, and ship
-                  full-stack apps, cloud infrastructure, and AI systems end to end.
-                  SquadUp and YardPaint are built here.
-                </p>
-              </div>
-
-              <div className="shrink-0">
-                <a
-                  href="https://larattalabs.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200 whitespace-nowrap"
-                >
-                  Visit the studio
-                  <span aria-hidden>&rarr;</span>
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* Featured Projects — Bento Grid */}
-        <section className="py-16">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={stagger}
-          >
-            <motion.div variants={fadeUp} className="mb-8">
-              <h2 className="text-2xl font-bold text-foreground">
-                Featured Projects
-              </h2>
-              <div className="w-12 h-0.5 bg-primary mt-3" />
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {featuredProjects.map((project, i) => (
-                <motion.div
-                  key={project.id}
-                  variants={fadeUp}
-                  whileHover={{ scale: 1.01 }}
-                  className={`border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow] duration-200 ${
-                    i === 0 ? 'md:col-span-2 md:row-span-2 bg-primary-lighter/20' : ''
-                  }`}
-                >
-                  <div className={i === 0 ? 'flex flex-col h-full justify-between' : ''}>
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">
-                        {project.title}
-                      </h3>
-                      {project.studio && (
-                        <p className="text-xs text-primary font-medium mb-2">
-                          Built through {project.studio.name}
-                        </p>
-                      )}
-                      <p className="text-text-secondary mb-4 leading-relaxed">
-                        {project.summary}
-                      </p>
-                    </div>
-                    <div>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.slice(0, i === 0 ? 5 : 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-xs px-2 py-1 rounded-md bg-primary-lighter text-primary-dark"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex gap-4">
-                        {project.githubLink && (
-                          <a
-                            href={project.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
-                          >
-                            View Code &rarr;
-                          </a>
-                        )}
-                        {project.demoLink && (
-                          <a
-                            href={project.demoLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
-                          >
-                            Website &rarr;
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div variants={fadeUp} className="mt-8 text-center">
-              <Link
-                href="/projects"
-                className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200"
-              >
-                View All Projects
-              </Link>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* Latest from the Lab — Green Border Callout */}
-        <section className="py-16">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={stagger}
-          >
-            <motion.div variants={fadeUp} className="mb-8">
-              <h2 className="text-2xl font-bold text-foreground">
-                Latest from the Lab
-              </h2>
-              <div className="w-12 h-0.5 bg-primary mt-3" />
-            </motion.div>
-
-            <motion.p
-              variants={fadeUp}
-              className="text-text-secondary mb-8 max-w-2xl"
-            >
-              Research, learning explorations, and development workflows
-              worth sharing.
-            </motion.p>
-
-            {featuredLab && (
-              <motion.div
-                variants={fadeUp}
-                className="border border-border bg-surface rounded-xl p-6 max-w-lg border-l-4 border-l-primary hover:shadow-sm transition-[border-color,box-shadow] duration-200"
-              >
-                <span className="text-xs text-text-secondary uppercase tracking-wider">
-                  {featuredLab.date}
-                </span>
-                <h3 className="text-lg font-semibold text-foreground mt-2 mb-2">
-                  {featuredLab.title}
+      {/* From the Lab: a dark band in both themes */}
+      {latest && (
+        <section className="dark bg-surface py-20 text-foreground sm:py-28" aria-labelledby="lab">
+          <Container>
+            <SectionHeading id="lab" action={{ label: 'Visit the Lab', href: '/lab' }}>
+              From the Lab
+            </SectionHeading>
+            <div className="grid gap-12 lg:grid-cols-12">
+              <Link href={latest.article ? `/lab/${latest.id}` : '/lab'} className="group lg:col-span-7">
+                <p className="font-mono text-xs text-text-secondary">{latest.date}</p>
+                <h3 className="mt-3 font-serif text-3xl font-semibold leading-tight tracking-tight group-hover:text-primary sm:text-4xl">
+                  {latest.title}
                 </h3>
-                <p className="text-text-secondary mb-4 text-sm leading-relaxed">
-                  {featuredLab.summary}
-                </p>
-
-                {featuredLab.highlights && (
-                  <div className="grid grid-cols-2 gap-3 mb-4 bg-primary-lighter/30 rounded-lg p-4">
-                    {featuredLab.highlights.map((h) => (
-                      <div key={h.label}>
-                        <span className="text-xl font-bold text-primary">
-                          {h.value}
-                        </span>
-                        <span className="block text-xs text-text-secondary uppercase">
-                          {h.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {featuredLab.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-primary-lighter text-primary-dark text-xs px-2 py-1 rounded-md"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {featuredLab.demoLink && (
-                  <a
-                    href={featuredLab.demoLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-primary hover:text-primary-dark font-medium transition-colors duration-200"
-                  >
-                    View Dashboard &rarr;
-                  </a>
-                )}
-              </motion.div>
-            )}
-
-            <motion.div variants={fadeUp} className="mt-8">
-              <Link
-                href="/lab"
-                className="inline-block bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200"
-              >
-                View the Lab
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-text-secondary">{latest.summary}</p>
+                <span className="mt-6 inline-block font-medium text-primary underline decoration-primary/40 underline-offset-4 group-hover:decoration-primary">
+                  Read the guide
+                </span>
               </Link>
-            </motion.div>
-          </motion.div>
+              {latest.highlights && (
+                <dl className="grid grid-cols-2 gap-px self-start overflow-hidden rounded-lg border border-border bg-border lg:col-span-5">
+                  {latest.highlights.map((h) => (
+                    <div key={h.label} className="bg-surface p-6">
+                      <dt className="text-sm text-text-secondary">{h.label}</dt>
+                      <dd className="mt-1 font-serif text-4xl font-semibold text-primary">{h.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </div>
+            {olderLab.length > 0 && (
+              <ul className="mt-14 divide-y divide-border border-t border-border">
+                {olderLab.map((e) => (
+                  <li key={e.id}>
+                    <a
+                      href={e.article ? `/lab/${e.id}` : e.demoLink ?? '/lab'}
+                      className="group flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:gap-8"
+                    >
+                      <span className="w-32 shrink-0 font-mono text-xs text-text-secondary">{e.date}</span>
+                      <span className="font-medium group-hover:text-primary">{e.title}</span>
+                      <span className="text-sm text-text-secondary sm:ml-auto sm:max-w-md sm:text-right">{e.summary}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Container>
         </section>
-      </div>
+      )}
+
+      {/* Experience */}
+      <section className="bg-sand py-20 sm:py-28" aria-labelledby="experience">
+        <Container>
+          <SectionHeading id="experience" action={{ label: 'More about me', href: '/about' }}>
+            Where I&apos;ve worked
+          </SectionHeading>
+          <ol className="divide-y divide-border border-y border-border">
+            {experiences.map((x) => (
+              <li key={x.org} className="grid gap-2 py-6 sm:grid-cols-12 sm:gap-6">
+                <p className="font-mono text-sm text-text-secondary sm:col-span-3">
+                  {x.start} – {x.end}
+                </p>
+                <div className="sm:col-span-9">
+                  <p className="text-lg text-foreground">
+                    <span className="font-medium">{x.role}</span>
+                    <span className="text-text-secondary">, {x.org}</span>
+                  </p>
+                  <p className="mt-1 text-text-secondary">{x.summary}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      {/* Contact */}
+      <section className="py-20 sm:py-28" aria-labelledby="contact">
+        <Container className="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-8">
+            <h2 id="contact" className="font-serif text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+              Hiring, or have something that needs building?
+            </h2>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-text-secondary">
+              Email me and I&apos;ll get back to you. For client projects, Laratta Labs is the way to start: I scope
+              every engagement myself, and the first call is free.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
+            <a href="mailto:noahlaratta@gmail.com" className="rounded-md bg-primary px-6 py-3 font-medium text-on-primary transition-colors hover:bg-primary-dark dark:hover:bg-primary-light">
+              Email me
+            </a>
+            <a href="https://larattalabs.com/contact" className="rounded-md border border-border px-6 py-3 font-medium text-foreground transition-colors hover:border-primary">
+              Start a project
+            </a>
+          </div>
+        </Container>
+      </section>
     </Layout>
   )
 }

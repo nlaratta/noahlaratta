@@ -4,7 +4,7 @@ export default function ComparisonTable() {
   return (
     <div className="not-prose my-8">
       <div className="overflow-x-auto border border-border rounded-xl">
-        <table className="w-full text-sm border-collapse min-w-[34rem]">
+        <table className="w-full text-sm border-collapse min-w-136">
           <thead>
             <tr className="bg-background">
               <th className="text-left font-medium text-text-secondary px-4 py-3 w-1/4">Dimension</th>

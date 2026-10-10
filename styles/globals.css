@@ -1,8 +1,77 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Theme is a class on <html>, set before paint by the script in _document. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Design tokens. Utilities (bg-primary, text-text-secondary, border-border…)
+  resolve to these variables, so every component follows the active theme.
+  A section can force the dark palette locally with className="dark".
+*/
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #5c635e;
+  --border: #e3e1da;
+  --primary: #2d6a4f;
+  --primary-light: #52b788;
+  --primary-lighter: #d8f3dc;
+  --primary-dark: #1b4332;
+  --on-primary: #ffffff;
+  --sand: #eee9de;
+  --gold: #8a6416;
+  --gold-mark: #c29a35;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0e1713;
+  --surface: #15221b;
+  --fg: #e6ece8;
+  --muted: #9aaaa1;
+  --border: #243529;
+  --primary: #7cc9a0;
+  --primary-light: #95d5b2;
+  --primary-lighter: #1d3a2b;
+  --primary-dark: #b7e4c7;
+  --on-primary: #0e1713;
+  --sand: #121e18;
+  --gold: #d9b45a;
+  --gold-mark: #d9b45a;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-foreground: var(--fg);
+  --color-text-secondary: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-lighter: var(--primary-lighter);
+  --color-primary-dark: var(--primary-dark);
+  --color-on-primary: var(--on-primary);
+  --color-sand: var(--sand);
+  --color-gold: var(--gold);
+  --color-gold-mark: var(--gold-mark);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
 @layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border);
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -14,90 +83,112 @@
   ::selection {
     @apply bg-primary-lighter text-primary-dark;
   }
-}
 
-.markdown-content {
-  @apply prose prose-lg max-w-none;
-  @apply prose-headings:text-foreground prose-headings:font-bold;
-  @apply prose-p:text-text-secondary;
-  @apply prose-a:text-primary hover:prose-a:text-primary-dark;
-  @apply prose-code:text-primary-dark prose-code:bg-primary-lighter/30 prose-code:px-1 prose-code:rounded;
-  @apply prose-pre:bg-gray-900;
-  @apply prose-strong:text-foreground;
-  @apply prose-li:text-text-secondary prose-li:marker:text-primary/50;
-  @apply prose-blockquote:border-primary prose-blockquote:text-text-secondary prose-blockquote:not-italic;
-  @apply prose-th:text-foreground prose-td:text-text-secondary;
-}
-
-/* highlight.js — compact dark theme on a transparent background
-   (the CodeBlock wrapper supplies the dark surface). */
-.hljs {
-  color: #e6edf3;
-  background: transparent;
-}
-.hljs-comment,
-.hljs-quote {
-  color: #8b949e;
-  font-style: italic;
-}
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-literal,
-.hljs-type {
-  color: #ff7b72;
-}
-.hljs-string,
-.hljs-meta .hljs-string,
-.hljs-regexp {
-  color: #a5d6ff;
-}
-.hljs-number,
-.hljs-symbol,
-.hljs-bullet {
-  color: #79c0ff;
-}
-.hljs-title,
-.hljs-title.function_,
-.hljs-section,
-.hljs-name {
-  color: #d2a8ff;
-}
-.hljs-attr,
-.hljs-attribute,
-.hljs-variable,
-.hljs-template-variable {
-  color: #ffa657;
-}
-.hljs-built_in,
-.hljs-class .hljs-title {
-  color: #7ee787;
-}
-.hljs-meta {
-  color: #8b949e;
-}
-.hljs-emphasis {
-  font-style: italic;
-}
-.hljs-strong {
-  font-weight: 600;
-}
-
-/* Custom scrollbar */
-@layer utilities {
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
-  .scrollbar-thin::-webkit-scrollbar-track {
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Hero contour field: each line draws in once on load. Decorative only. */
+@keyframes contour-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.contour-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: contour-draw 2.4s cubic-bezier(0.33, 0, 0.2, 1) both;
+}
+
+@layer utilities {
+  .markdown-content {
+    @apply prose prose-lg max-w-none;
+    @apply prose-headings:text-foreground prose-headings:font-serif prose-headings:font-semibold;
+    @apply prose-p:text-text-secondary;
+    @apply prose-a:text-primary prose-a:hover:text-primary-dark;
+    @apply prose-code:text-primary-dark prose-code:bg-primary-lighter/40 prose-code:px-1 prose-code:rounded-sm;
+    @apply prose-pre:bg-[#0d1117];
+    @apply prose-strong:text-foreground;
+    @apply prose-li:text-text-secondary prose-li:marker:text-primary/50;
+    @apply prose-blockquote:border-primary prose-blockquote:text-text-secondary prose-blockquote:not-italic;
+    @apply prose-th:text-foreground prose-td:text-text-secondary prose-hr:border-border;
+  }
+
+  /* Typography adds literal backticks around inline code; we style code instead. */
+  .markdown-content :where(code)::before,
+  .markdown-content :where(code)::after {
+    content: none;
+  }
+
+  /* highlight.js — compact dark theme on a transparent background
+   (the CodeBlock wrapper supplies the dark surface). */
+  .hljs {
+    color: #e6edf3;
     background: transparent;
   }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #E5E7EB;
-    border-radius: 3px;
+  .hljs-comment,
+  .hljs-quote {
+    color: #8b949e;
+    font-style: italic;
   }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background-color: #2D6A4F;
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-literal,
+  .hljs-type {
+    color: #ff7b72;
+  }
+  .hljs-string,
+  .hljs-meta .hljs-string,
+  .hljs-regexp {
+    color: #a5d6ff;
+  }
+  .hljs-number,
+  .hljs-symbol,
+  .hljs-bullet {
+    color: #79c0ff;
+  }
+  .hljs-title,
+  .hljs-title.function_,
+  .hljs-section,
+  .hljs-name {
+    color: #d2a8ff;
+  }
+  .hljs-attr,
+  .hljs-attribute,
+  .hljs-variable,
+  .hljs-template-variable {
+    color: #ffa657;
+  }
+  .hljs-built_in,
+  .hljs-class .hljs-title {
+    color: #7ee787;
+  }
+  .hljs-meta {
+    color: #8b949e;
+  }
+  .hljs-emphasis {
+    font-style: italic;
+  }
+  .hljs-strong {
+    font-weight: 600;
   }
 }

@@ -18,11 +18,13 @@ npm ci
 npm run dev        # http://localhost:3000
 ```
 
-`npm run build` produces the static site in `out/`.
+`npm run build` produces the static site in `out/`. It needs Node 24.
 
 ## How it works
 
 - **Static export.** Next.js (Pages Router) with `output: 'export'`. There's no server or API routes, and every page is prerendered at build time.
+- **Projects.** Each project in `lib/projects.ts` gets a card on `/projects` and its own page at `/projects/<slug>`.
+- **Themes.** Light and dark, from CSS-variable design tokens in `styles/globals.css`; the toggle remembers your choice.
 - **Lab write-ups.** These are MDX files in `content/lab/`, rendered with `next-mdx-remote`, GFM, slugged headings and syntax highlighting. Interactive pieces live in `components/lab/`.
 - **Build steps.** `scripts/generate-og.mjs` renders a branded Open Graph card for each page with satori and resvg before `next build`. `scripts/seo-postbuild.mjs` then writes the sitemap and feed into `out/`.
 - **Deploys.** Every push to `main` builds the site in GitHub Actions and mirrors `out/` to the host over SFTP ([`deploy.yaml`](.github/workflows/deploy.yaml)). Pull requests build without deploying.
@@ -42,7 +44,7 @@ To update the content, edit project entries in `lib/projects.ts` and add article
 
 ## Tech stack
 
-Next.js 15 · React 19 · TypeScript · Tailwind CSS · Framer Motion · MDX
+Next.js 15 · React 19 · TypeScript · Tailwind CSS 4 · MDX
 
 ## License
 

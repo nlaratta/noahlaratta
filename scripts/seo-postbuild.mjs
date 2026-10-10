@@ -52,9 +52,16 @@ const staticPages = [
   { path: '/projects', priority: '0.9', changefreq: 'monthly' },
   { path: '/lab', priority: '0.9', changefreq: 'weekly' },
 ]
+// Project pages, discovered from the export (one HTML file per project).
+const PROJECTS_OUT = path.join(OUT, 'projects')
+const projectSlugs = fs.existsSync(PROJECTS_OUT)
+  ? fs.readdirSync(PROJECTS_OUT).filter((f) => f.endsWith('.html') && f !== 'index.html').map((f) => f.replace(/\.html$/, ''))
+  : []
+
 const urls = [
   ...staticPages.map((p) => ({ loc: SITE_URL + (p.path === '/' ? '' : p.path), lastmod: today, priority: p.priority, changefreq: p.changefreq })),
   ...articles.map((a) => ({ loc: `${SITE_URL}/lab/${a.slug}`, lastmod: a.published, priority: '0.8', changefreq: 'monthly' })),
+  ...projectSlugs.map((slug) => ({ loc: `${SITE_URL}/projects/${slug}`, lastmod: today, priority: '0.7', changefreq: 'yearly' })),
 ]
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { type FC } from 'react'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { Inter, Playfair_Display, JetBrains_Mono } from 'next/font/google'
 import '../styles/globals.css'
 
 const inter = Inter({
@@ -13,9 +13,15 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
 })
 
+const jetbrains = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-jetbrains',
+})
+
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <div className={`${inter.variable} ${playfair.variable} font-sans`}>
+    <div className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} font-sans`}>
       <Component {...pageProps} />
     </div>
   )

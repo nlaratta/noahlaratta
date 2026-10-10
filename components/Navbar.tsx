@@ -1,93 +1,85 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { motion } from 'framer-motion'
-import { Disclosure } from '@headlessui/react'
+import ThemeToggle from './ThemeToggle'
+
+const navigation = [
+  { name: 'Projects', href: '/projects' },
+  { name: 'Lab', href: '/lab' },
+  { name: 'About', href: '/about' },
+]
 
 export default function Navbar() {
   const router = useRouter()
+  const [open, setOpen] = useState(false)
 
-  const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Lab', href: '/lab' },
-  ]
+  // Close the mobile menu after navigating.
+  useEffect(() => {
+    const close = () => setOpen(false)
+    router.events.on('routeChangeStart', close)
+    return () => router.events.off('routeChangeStart', close)
+  }, [router.events])
 
-  const isActive = (path: string) => router.pathname === path
+  const isActive = (href: string) => router.pathname === href || router.pathname.startsWith(`${href}/`)
 
   return (
-    <Disclosure as="nav" className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-border/50">
-      {({ open }) => (
-        <>
-          <div className="max-w-5xl mx-auto px-6 sm:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex-shrink-0 flex items-center">
-                <Link href="/" className="text-lg font-semibold text-foreground hover:text-primary transition-colors duration-200">
-                  Noah Laratta
-                </Link>
-              </div>
+    <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8" aria-label="Main">
+        <Link href="/" className="font-serif text-xl font-semibold tracking-tight text-foreground hover:text-primary">
+          Noah Laratta
+        </Link>
 
-              {/* Desktop menu */}
-              <div className="hidden md:flex items-center space-x-1">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`text-sm font-medium px-3 py-1.5 rounded-full transition-all duration-200 ${
-                      isActive(item.href)
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-text-secondary hover:text-foreground hover:bg-gray-100'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Mobile menu button */}
-              <div className="md:hidden flex items-center">
-                <Disclosure.Button className="text-text-secondary hover:text-foreground transition-colors duration-200 p-2 rounded-lg hover:bg-gray-100">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  ) : (
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  )}
-                </Disclosure.Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile menu */}
-          <Disclosure.Panel className="md:hidden border-t border-border/50 bg-white/95 backdrop-blur-lg">
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="px-4 pt-2 pb-3 space-y-1"
-            >
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as={Link}
+        <div className="flex items-center gap-1">
+          <ul className="hidden items-center gap-1 sm:flex">
+            {navigation.map((item) => (
+              <li key={item.href}>
+                <Link
                   href={item.href}
-                  className={`block px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  className={`relative rounded-md px-3 py-2 text-[15px] transition-colors ${
                     isActive(item.href)
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-secondary hover:text-foreground hover:bg-gray-50'
+                      ? 'text-foreground after:absolute after:inset-x-3 after:-bottom-[13px] after:h-[2px] after:bg-primary'
+                      : 'text-text-secondary hover:text-foreground'
                   }`}
                 >
                   {item.name}
-                </Disclosure.Button>
-              ))}
-            </motion.div>
-          </Disclosure.Panel>
-        </>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <ThemeToggle />
+
+          <button
+            type="button"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-secondary hover:bg-primary-lighter hover:text-primary-dark sm:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((o) => !o)}
+          >
+            <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+            <svg aria-hidden className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
+              {open ? <path d="M6 18 18 6M6 6l12 12" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {open && (
+        <ul id="mobile-menu" className="border-t border-border px-5 py-2 sm:hidden">
+          {navigation.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                className={`block py-3 text-lg ${isActive(item.href) ? 'font-medium text-primary' : 'text-foreground'}`}
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
       )}
-    </Disclosure>
+    </header>
   )
 }

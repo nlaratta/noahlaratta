@@ -39,14 +39,14 @@ export default function ModelRolesDiagram() {
       <div className="flex items-center gap-2 mt-4 text-xs text-text-secondary">
         <span className="font-mono">roles</span>
         <span className="flex-1 border-t border-dashed border-border" />
-        <span className="px-2 py-0.5 rounded bg-background border border-border">
+        <span className="px-2 py-0.5 rounded-sm bg-background border border-border">
           any OpenAI/Anthropic-compatible provider
         </span>
       </div>
 
       <motion.div
         key={current.id}
-        initial={{ opacity: 0, y: 4 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
         className="mt-4 pt-3 border-t border-border"
