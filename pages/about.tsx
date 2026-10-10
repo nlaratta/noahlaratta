@@ -56,11 +56,11 @@ export default function About() {
         <div className="relative lg:col-span-4 lg:col-start-9">
           <Contours className="absolute -inset-4 h-[calc(100%+2rem)] w-[calc(100%+2rem)] sm:-inset-8 sm:h-[calc(100%+4rem)] sm:w-[calc(100%+4rem)]" variant={13} strength={0.8} />
           <img
-            src="/me.jpg"
-            alt="Noah Laratta"
-            width={480}
-            height={480}
-            className="relative aspect-square w-full max-w-sm rounded-lg border border-border object-cover"
+            src="/noah.jpg"
+            alt="Noah Laratta, smiling, in a white shirt and blue tie"
+            width={776}
+            height={862}
+            className="relative aspect-[9/10] w-full max-w-sm rounded-lg border border-border object-cover"
           />
         </div>
       </Container>
