@@ -105,13 +105,18 @@ console.log(`seo-postbuild: sitemap (${urls.length} urls) + feed (${articles.len
 // A page that shares its name with a directory (lab.html next to lab/, which
 // holds the articles) is unreachable on Apache: /lab redirects to /lab/,
 // which has no index. Give each such directory an index.html copy so the
-// page loads on any static host.
-for (const entry of fs.readdirSync(OUT, { withFileTypes: true })) {
-  if (!entry.isDirectory()) continue
-  const page = path.join(OUT, `${entry.name}.html`)
-  const index = path.join(OUT, entry.name, 'index.html')
-  if (fs.existsSync(page) && !fs.existsSync(index)) {
-    fs.copyFileSync(page, index)
-    console.log(`seo-postbuild: ${entry.name}.html -> ${entry.name}/index.html`)
+// page loads on any static host. Checked at every level of out/.
+const addIndexes = (dir) => {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue
+    const sub = path.join(dir, entry.name)
+    const page = path.join(dir, `${entry.name}.html`)
+    const index = path.join(sub, 'index.html')
+    if (fs.existsSync(page) && !fs.existsSync(index)) {
+      fs.copyFileSync(page, index)
+      console.log(`seo-postbuild: ${path.relative(OUT, page)} -> ${path.relative(OUT, index)}`)
+    }
+    addIndexes(sub)
   }
 }
+addIndexes(OUT)

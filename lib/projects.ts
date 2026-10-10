@@ -61,9 +61,9 @@ export const projects: Project[] = [
       kind: 'phones',
       background: '#1f48e6',
       images: [
-        { src: '/projects/squadup/squadup-find.png', alt: 'SquadUp: find a workout near you' },
-        { src: '/projects/squadup/squadup-elite.png', alt: 'SquadUp: hosts get paid to train' },
-        { src: '/projects/squadup/squadup-chat.png', alt: 'SquadUp: chat with your squad' },
+        { src: '/images/projects/squadup/squadup-find.png', alt: 'SquadUp: find a workout near you' },
+        { src: '/images/projects/squadup/squadup-elite.png', alt: 'SquadUp: hosts get paid to train' },
+        { src: '/images/projects/squadup/squadup-chat.png', alt: 'SquadUp: chat with your squad' },
       ],
     },
     featured: true,
@@ -99,14 +99,14 @@ The app is SwiftUI on a TypeScript GraphQL API. The App Store screenshots were g
       kind: 'phones',
       background: 'linear-gradient(135deg, #2c5435, #346139)',
       images: [
-        { src: '/projects/yardpaint/yardpaint-result-card.jpg', alt: 'YardPaint: before and after slider of a generated yard design' },
-        { src: '/projects/yardpaint/yardpaint-paint-card.jpg', alt: 'YardPaint: painting zones onto a yard photo' },
+        { src: '/images/projects/yardpaint/yardpaint-result-card.jpg', alt: 'YardPaint: before and after slider of a generated yard design' },
+        { src: '/images/projects/yardpaint/yardpaint-paint-card.jpg', alt: 'YardPaint: painting zones onto a yard photo' },
       ],
     },
     gallery: [
-      { src: '/projects/yardpaint/yardpaint-paint.jpg', alt: 'Painting zones onto a photo of a yard', caption: 'Paint the zones you want changed', tall: true },
-      { src: '/projects/yardpaint/yardpaint-themes.jpg', alt: 'Thirteen landscaping styles', caption: 'Pick one of thirteen styles', tall: true },
-      { src: '/projects/yardpaint/yardpaint-result.jpg', alt: 'Before and after slider with the plant list', caption: 'Compare, then see the plant list', tall: true },
+      { src: '/images/projects/yardpaint/yardpaint-paint.jpg', alt: 'Painting zones onto a photo of a yard', caption: 'Paint the zones you want changed', tall: true },
+      { src: '/images/projects/yardpaint/yardpaint-themes.jpg', alt: 'Thirteen landscaping styles', caption: 'Pick one of thirteen styles', tall: true },
+      { src: '/images/projects/yardpaint/yardpaint-result.jpg', alt: 'Before and after slider with the plant list', caption: 'Compare, then see the plant list', tall: true },
     ],
     widget: 'yardpaint-compare',
     featured: true,
@@ -134,13 +134,13 @@ The backend runs on Cloudflare Workers with D1 and R2, and the app is Swift 6 wi
     links: [{ label: 'Source on GitHub', href: 'https://github.com/larattalabs/architect-mc' }],
     cover: {
       kind: 'image',
-      src: '/projects/architect/hero.jpg',
+      src: '/images/projects/architect/hero.jpg',
       alt: 'A small Minecraft village on a hillside, built with Architect',
     },
     gallery: [
-      { src: '/projects/architect/ghost.jpg', alt: 'A design shown as a translucent ghost on the terrain', caption: 'Review a design as a ghost before placing it' },
-      { src: '/projects/architect/placed.jpg', alt: 'The building placed in the world', caption: 'Placed, with terrain cleared and a foundation filled' },
-      { src: '/projects/architect/library.jpg', alt: 'The design library screen', caption: 'Every design kept in a searchable library' },
+      { src: '/images/projects/architect/ghost.jpg', alt: 'A design shown as a translucent ghost on the terrain', caption: 'Review a design as a ghost before placing it' },
+      { src: '/images/projects/architect/placed.jpg', alt: 'The building placed in the world', caption: 'Placed, with terrain cleared and a foundation filled' },
+      { src: '/images/projects/architect/library.jpg', alt: 'The design library screen', caption: 'Every design kept in a searchable library' },
     ],
     body: `
 Describe a building, or mark a plot on the ground. Claude designs it as **parametric code**, checks it against the rules for its building type, and renders previews. You review it as a translucent ghost on the real terrain, place it, and keep it in a library where new variants cost nothing.
@@ -184,13 +184,13 @@ It runs offline by default, so a missing model fails fast with instructions inst
     links: [{ label: 'Source on GitHub', href: 'https://github.com/larattalabs/blender-hunyuan3d-mac' }],
     cover: {
       kind: 'image',
-      src: '/projects/blender-hunyuan3d/chest.jpg',
+      src: '/images/projects/blender-hunyuan3d/chest.jpg',
       alt: 'A generated, textured treasure chest',
       background: '#e9e7e2',
     },
     gallery: [
-      { src: '/projects/blender-hunyuan3d/chest.jpg', alt: 'A generated treasure chest', caption: 'Generated chest, shape and texture' },
-      { src: '/projects/blender-hunyuan3d/lantern.jpg', alt: 'A generated oil lantern', caption: 'Generated lantern' },
+      { src: '/images/projects/blender-hunyuan3d/chest.jpg', alt: 'A generated treasure chest', caption: 'Generated chest, shape and texture' },
+      { src: '/images/projects/blender-hunyuan3d/lantern.jpg', alt: 'A generated oil lantern', caption: 'Generated lantern' },
     ],
     body: `
 An image goes in and a textured mesh lands in your Blender scene: about 6½ minutes at default quality, or 95 seconds in fast mode while you iterate.
@@ -230,14 +230,14 @@ CI checks every skill's frontmatter and links and runs each script.
     links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/db-tinkering' }],
     cover: {
       kind: 'image',
-      src: '/projects/db-tinkering/comedy.jpg',
+      src: '/images/projects/db-tinkering/comedy.jpg',
       alt: 'Tableau dashboard of comedy budgets and revenue by year',
       position: 'top',
       background: '#ffffff',
     },
     gallery: [
-      { src: '/projects/db-tinkering/comedy.jpg', alt: 'Comedy dashboard', caption: 'Top genres, and comedy budget against revenue since 1950' },
-      { src: '/projects/db-tinkering/releases.jpg', alt: 'Releases dashboard', caption: 'Releases per year and by genre, 1900–2019' },
+      { src: '/images/projects/db-tinkering/comedy.jpg', alt: 'Comedy dashboard', caption: 'Top genres, and comedy budget against revenue since 1950' },
+      { src: '/images/projects/db-tinkering/releases.jpg', alt: 'Releases dashboard', caption: 'Releases per year and by genre, 1900–2019' },
     ],
     body: `
 Practice in SQL and reporting on the [Open Media Database](https://www.omdb.org/): about 211,000 movies in PostgreSQL, explored with SQL and turned into Tableau dashboards.
@@ -256,7 +256,7 @@ The repo includes the queries behind each chart and a script that restores the d
     links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/study-guide-generator' }],
     cover: {
       kind: 'image',
-      src: '/projects/study-guide/form.jpg',
+      src: '/images/projects/study-guide/form.jpg',
       alt: 'The study guide form: subject, level, weekly hours, learning style and goal',
       position: 'top',
     },
@@ -286,7 +286,7 @@ It uses the current OpenAI SDK with a configurable model, and its tests run agai
     ],
     cover: {
       kind: 'image',
-      src: '/projects/freakmoji/game.jpg',
+      src: '/images/projects/freakmoji/game.jpg',
       alt: 'Freakmoji Clicker: the emoji, score and shop',
     },
     body: `
