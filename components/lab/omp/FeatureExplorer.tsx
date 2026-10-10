@@ -22,7 +22,7 @@ export default function FeatureExplorer() {
               onClick={() => setFilter(p.id)}
               className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
                 active
-                  ? 'bg-primary text-white border-primary'
+                  ? 'bg-primary text-on-primary border-primary'
                   : 'bg-surface text-text-secondary border-border hover:border-primary/40'
               }`}
             >
@@ -33,7 +33,7 @@ export default function FeatureExplorer() {
       </div>
 
       <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {shown.map((f) => {
             const open = openId === f.id
             return (

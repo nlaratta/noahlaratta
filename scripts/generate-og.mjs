@@ -156,6 +156,12 @@ async function main() {
     }
   }
 
+  // Per-project cards from lib/projects.ts (Node 24 strips the types on import).
+  const { getAllProjects } = await import('../lib/projects.ts')
+  for (const p of getAllProjects()) {
+    routes[`project-${p.slug}`] = { eyebrow: `Project · ${p.years}`, title: p.title, subtitle: p.summary }
+  }
+
   console.log(`Generating ${Object.keys(routes).length} OG images…`)
   for (const [key, spec] of Object.entries(routes)) {
     await render(key, spec)

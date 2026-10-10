@@ -34,8 +34,9 @@ for (let j = 0; j < H; j++) {
 }
 void rand
 
-let lo = Infinity, hi = -Infinity
-for (const v of values) { if (v < lo) lo = v; if (v > hi) hi = v }
+let lo = Infinity, hi = -Infinity, top = 0
+values.forEach((v, k) => { if (v < lo) lo = v; if (v > hi) { hi = v; top = k } })
+const summit = { x: ((top % W) - PAD + 0.5) * SCALE, y: (Math.floor(top / W) - PAD + 0.5) * SCALE }
 const N = 20
 const levels = Array.from({ length: N }, (_, k) => lo + (hi - lo) * (0.06 + 0.9 * (k / (N - 1)) ** 1.15))
 const polys = contours().size([W, H]).thresholds(levels)(values)
@@ -63,6 +64,9 @@ for (const mp of polys) {
 const out = `// Generated topographic contour field (scripts/generate-contours.mjs); do not edit by hand.
 // viewBox 0 0 1200 600. \`level\` is the contour's elevation, 0–1.
 export const CONTOUR_PATHS: { level: number; d: string }[] = ${JSON.stringify(paths.map((p) => ({ level: +p.level.toFixed(2), d: p.d })))}
+
+/** The highest point of the field, in viewBox units. */
+export const SUMMIT = ${JSON.stringify(summit)}
 `
 fs.writeFileSync(process.argv[2] ?? new URL("../lib/contours.ts", import.meta.url), out)
 console.log(paths.length, 'paths', (out.length / 1024).toFixed(1), 'KB')

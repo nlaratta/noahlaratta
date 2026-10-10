@@ -46,7 +46,7 @@ export default function ModelRolesDiagram() {
 
       <motion.div
         key={current.id}
-        initial={{ opacity: 0, y: 4 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
         className="mt-4 pt-3 border-t border-border"

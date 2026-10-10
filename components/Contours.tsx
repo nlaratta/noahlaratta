@@ -1,4 +1,4 @@
-import { CONTOUR_PATHS } from '../lib/contours'
+import { CONTOUR_PATHS, SUMMIT } from '../lib/contours'
 
 /**
  * The topographic contour field. Decorative: hidden from assistive tech.
@@ -16,7 +16,7 @@ export default function Contours({
   animate?: boolean
   /** Opacity multiplier, for quieter uses such as card covers. */
   strength?: number
-  /** 0–3: mirror the field so repeated uses don't look identical. */
+  /** Picks a mirrored, zoomed crop so repeated uses don't look identical. */
   variant?: number
   /** Mark the highest peak with a small gold triangle. */
   summit?: boolean
@@ -28,6 +28,11 @@ export default function Contours({
     'translate(0 600) scale(1 -1)',
     'translate(1200 600) scale(-1 -1)',
   ][variant % 4]
+  // Zoomed windows that stay inside the field (x ≥ 1200·(1−s), y ≥ 600·(1−s)).
+  const zoom = ['', 'translate(-300 -100) scale(1.5)', 'translate(-560 -220) scale(1.6)', 'translate(-150 -260) scale(1.5)', 'translate(-700 -40) scale(1.7)'][
+    Math.floor(variant / 4) % 5
+  ]
+  const transform = [flip, zoom].filter(Boolean).join(' ')
   return (
     <svg
       aria-hidden
@@ -36,7 +41,7 @@ export default function Contours({
       className={`pointer-events-none text-primary ${className}`}
       fill="none"
     >
-      <g transform={flip || undefined}>
+      <g transform={transform || undefined}>
         {CONTOUR_PATHS.map((p, i) => (
           <path
             key={i}
@@ -52,8 +57,8 @@ export default function Contours({
         ))}
         {summit && (
           <g>
-            <circle cx={960} cy={240} r={30} stroke="var(--gold-mark)" strokeOpacity={0.5} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
-            <circle cx={960} cy={240} r={12} fill="var(--gold-mark)" />
+            <circle cx={SUMMIT.x} cy={SUMMIT.y} r={30} stroke="var(--gold-mark)" strokeOpacity={0.5} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+            <circle cx={SUMMIT.x} cy={SUMMIT.y} r={12} fill="var(--gold-mark)" />
           </g>
         )}
       </g>

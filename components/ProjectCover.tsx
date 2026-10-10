@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- static export: no image optimizer */
-import type { Project } from '../lib/projects'
+import { getAllProjects, type Project } from '../lib/projects'
 import Contours from './Contours'
 
 /** The visual header of a project: phones on a panel, a screenshot, or contours. */
@@ -14,7 +14,7 @@ export default function ProjectCover({
   const height = size === 'hero' ? 'h-[300px] sm:h-[420px]' : size === 'feature' ? 'h-[260px] sm:h-[340px]' : 'h-[200px]'
 
   if (cover.kind === 'phones') {
-    const phoneW = size === 'card' ? 'w-[110px]' : 'w-[140px] sm:w-[170px]'
+    const phoneW = size === 'card' ? 'w-[110px]' : size === 'hero' ? 'w-[150px] sm:w-[230px]' : 'w-[140px] sm:w-[170px]'
     return (
       <div className={`relative flex ${height} items-start justify-center gap-4 overflow-hidden px-6 pt-8`} style={{ background: cover.background }}>
         {cover.images.slice(0, size === 'card' ? 2 : 3).map((img, i) => (
@@ -45,14 +45,14 @@ export default function ProjectCover({
   }
 
   // No screenshot: this project's own crop of the site's topography.
-  const variant = [...project.slug].reduce((n, c) => n + c.charCodeAt(0), 0)
+  const contourProjects = getAllProjects().filter((p) => p.cover.kind === 'contour')
+  const variant = [1, 6, 11, 16, 3, 9, 14, 19][contourProjects.findIndex((p) => p.slug === project.slug) % 8]
   return (
     <div className={`relative ${height} overflow-hidden bg-sand`}>
       <Contours
         className="absolute inset-0 h-full w-full"
         variant={variant}
         summit
-        preserveAspectRatio={['xMinYMin slice', 'xMaxYMid slice', 'xMidYMax slice'][variant % 3]}
       />
     </div>
   )

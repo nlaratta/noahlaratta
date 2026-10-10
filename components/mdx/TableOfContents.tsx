@@ -57,7 +57,7 @@ export default function TableOfContents() {
 
   return (
     <nav aria-label="On this page" className="text-sm">
-      <span className="block text-xs uppercase tracking-wider text-text-secondary mb-3">
+      <span className="mb-3 block font-medium text-foreground">
         On this page
       </span>
       <ul className="space-y-1.5 border-l border-border">

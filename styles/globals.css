@@ -133,6 +133,12 @@
     @apply prose-th:text-foreground prose-td:text-text-secondary prose-hr:border-border;
   }
 
+  /* Typography adds literal backticks around inline code; we style code instead. */
+  .markdown-content :where(code)::before,
+  .markdown-content :where(code)::after {
+    content: none;
+  }
+
   /* highlight.js — compact dark theme on a transparent background
    (the CodeBlock wrapper supplies the dark surface). */
   .hljs {

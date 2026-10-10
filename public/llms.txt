@@ -5,8 +5,16 @@
 ## Key pages
 - [Home](https://noahlaratta.com): overview, featured work, and current focus.
 - [About](https://noahlaratta.com/about): background, technical expertise, and experience (Laratta Labs, PSIA-AASI, Lockheed Martin).
-- [Projects](https://noahlaratta.com/projects): software projects, including SquadUp (a social fitness platform on the App Store).
+- [Projects](https://noahlaratta.com/projects): every project, filterable by category, each with its own page.
 - [Lab](https://noahlaratta.com/lab): research, learning explorations, and development-workflow write-ups.
+
+## Projects
+- [SquadUp](https://noahlaratta.com/projects/squadup): social fitness platform, native iOS app with a GraphQL backend and Stripe payouts; live on the App Store (Laratta Labs).
+- [YardPaint](https://noahlaratta.com/projects/yardpaint): consumer AI app that previews a landscaped yard from a photo; live on the App Store (Laratta Labs).
+- [Architect](https://noahlaratta.com/projects/architect): Minecraft mod where Claude designs buildings as parametric code (open source).
+- [Local Lab](https://noahlaratta.com/projects/local-lab): desktop app for comparing local AI models on Apple Silicon (open source).
+- [Hunyuan3D for Blender on Mac](https://noahlaratta.com/projects/blender-hunyuan3d): textured 3D generation in Blender on Apple Silicon (open source).
+- [claude-helpers](https://noahlaratta.com/projects/claude-helpers): Claude Code skills, including recovering lost work from transcripts.
 
 ## Writing
 - [Getting the Most Out of Oh My Pi](https://noahlaratta.com/lab/oh-my-pi): a hands-on guide to the omp terminal coding agent — features, model routing, and workflows — plus running it 100% locally on DeepSeek V4 Flash.

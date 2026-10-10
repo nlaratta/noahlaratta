@@ -30,7 +30,7 @@ export default function ContextRamWidget() {
               key={r.ctx}
               onClick={() => setI(idx)}
               className={`text-xs font-mono font-medium px-3 py-1.5 rounded-md transition-colors ${
-                i === idx ? 'bg-primary text-white' : 'text-text-secondary hover:text-foreground'
+                i === idx ? 'bg-primary text-on-primary' : 'text-text-secondary hover:text-foreground'
               }`}
             >
               {r.label}
@@ -77,7 +77,7 @@ export default function ContextRamWidget() {
           className={`px-2 py-0.5 rounded-full font-medium ${
             row.thinkMax
               ? 'bg-primary-lighter text-primary-dark'
-              : 'bg-amber-100 text-amber-800'
+              : 'bg-gold-mark/15 text-gold'
           }`}
         >
           {row.thinkMax ? 'Think Max available' : 'Think Max off'}

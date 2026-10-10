@@ -220,31 +220,6 @@ CI checks every skill's frontmatter and links and runs each script.
 `,
   },
   {
-    slug: 'study-guide-generator',
-    title: 'Study Guide Generator',
-    summary: 'A Flask and OpenAI web app that builds a step-by-step study plan for any subject.',
-    years: '2024',
-    context: 'Personal project',
-    categories: ['AI', 'Apps'],
-    stack: ['Python', 'Flask', 'OpenAI API', 'JavaScript'],
-    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/study-guide-generator' }],
-    cover: {
-      kind: 'image',
-      src: '/projects/study-guide/form.jpg',
-      alt: 'The study guide form: subject, level, weekly hours, learning style and goal',
-      position: 'top',
-    },
-    body: `
-Tell it what you want to learn, your current level, how many hours a week you have, and how you like to learn. It builds a guide in six steps: knowledge assessment, learning path, resources, practice, progress tracking and a schedule.
-
-- **Highlight to explain.** Select any text in the guide to get a deeper explanation.
-- **Track progress.** Progress is saved in the browser and can be exported as JSON.
-- **Responses are cached,** so revisiting a guide doesn't call the API again.
-
-It uses the current OpenAI SDK with a configurable model, and its tests run against a mocked client.
-`,
-  },
-  {
     slug: 'movie-database-analytics',
     title: 'Movie Database Analytics',
     summary: 'SQL and Tableau dashboards over a 211,000-movie PostgreSQL database.',
@@ -268,6 +243,31 @@ It uses the current OpenAI SDK with a configurable model, and its tests run agai
 Practice in SQL and reporting on the [Open Media Database](https://www.omdb.org/): about 211,000 movies in PostgreSQL, explored with SQL and turned into Tableau dashboards.
 
 The repo includes the queries behind each chart and a script that restores the database snapshot. CI restores it into a fresh Postgres 17 and runs every query on each push.
+`,
+  },
+  {
+    slug: 'study-guide-generator',
+    title: 'Study Guide Generator',
+    summary: 'A Flask and OpenAI web app that builds a step-by-step study plan for any subject.',
+    years: '2024',
+    context: 'Personal project',
+    categories: ['AI', 'Apps'],
+    stack: ['Python', 'Flask', 'OpenAI API', 'JavaScript'],
+    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/study-guide-generator' }],
+    cover: {
+      kind: 'image',
+      src: '/projects/study-guide/form.jpg',
+      alt: 'The study guide form: subject, level, weekly hours, learning style and goal',
+      position: 'top',
+    },
+    body: `
+Tell it what you want to learn, your current level, how many hours a week you have, and how you like to learn. It builds a guide in six steps: knowledge assessment, learning path, resources, practice, progress tracking and a schedule.
+
+- **Highlight to explain.** Select any text in the guide to get a deeper explanation.
+- **Track progress.** Progress is saved in the browser and can be exported as JSON.
+- **Responses are cached,** so revisiting a guide doesn't call the API again.
+
+It uses the current OpenAI SDK with a configurable model, and its tests run against a mocked client.
 `,
   },
   {
