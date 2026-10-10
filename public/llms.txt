@@ -15,6 +15,9 @@
 - [Local Lab](https://noahlaratta.com/projects/local-lab): desktop app for comparing local AI models on Apple Silicon (open source).
 - [Hunyuan3D for Blender on Mac](https://noahlaratta.com/projects/blender-hunyuan3d): textured 3D generation in Blender on Apple Silicon (open source).
 - [claude-helpers](https://noahlaratta.com/projects/claude-helpers): Claude Code skills, including recovering lost work from transcripts.
+- [Idea Battleground](https://noahlaratta.com/projects/idea-battleground): AI agents generate, judge and battle product ideas in Elo rounds, visualized live (open source).
+- [Progression Compass](https://noahlaratta.com/projects/progression-compass): Terraria mod that recommends what to craft, farm and fight next (open source).
+- [Apple HIG MCP](https://noahlaratta.com/projects/apple-hig-mcp): MCP server for searching Apple's Human Interface Guidelines from Claude (open source).
 
 ## Writing
 - [Getting the Most Out of Oh My Pi](https://noahlaratta.com/lab/oh-my-pi): a hands-on guide to the omp terminal coding agent — features, model routing, and workflows — plus running it 100% locally on DeepSeek V4 Flash.

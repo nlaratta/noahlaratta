@@ -220,6 +220,60 @@ CI checks every skill's frontmatter and links and runs each script.
 `,
   },
   {
+    slug: 'idea-battleground',
+    title: 'Idea Battleground',
+    summary: 'AI agents pitch product ideas, judge them, and battle the survivors in Elo rounds, visualized live.',
+    years: '2026',
+    context: 'Personal project',
+    status: 'Open source',
+    categories: ['AI'],
+    stack: ['TypeScript', 'Claude Agent SDK', 'React', 'Three.js', 'SQLite'],
+    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/IdeaBattleGround' }],
+    cover: {
+      kind: 'image',
+      src: '/images/projects/idea-battleground/orbital-mid-battle.jpg',
+      alt: 'The orbital view mid-tournament: ideas as glowing orbs, two of them dueling',
+      position: '60% center',
+      background: '#000000',
+    },
+    gallery: [
+      { src: '/images/projects/idea-battleground/tree-final.jpg', alt: 'Tree view after a finished tournament', caption: 'The tree view: every round, down to the champions' },
+      { src: '/images/projects/idea-battleground/universe-champions.jpg', alt: 'Universe view with the champions', caption: 'The universe view once the champions are crowned' },
+    ],
+    body: `
+An AI tournament for product ideas. Agents generate ideas from a sampling matrix of domain, audience, business model and constraint, so they don't all come out the same. Then:
+
+- **Score.** Each idea gets rubric scores for novelty, feasibility, market and buildability.
+- **Cull.** Near-duplicates and the weakest ideas are dropped.
+- **Battle.** Survivors meet in Swiss-style pairwise duels with Elo ratings.
+- **Crown.** A deeper judge reviews the finalists and picks the champions.
+
+The whole run streams to a live 3D view (universe, orbital and tree), built for watching. It runs on the Claude Agent SDK with your Claude Code login, or on a built-in mock provider for free demos. Tests cover the Elo math, pairing and a full headless tournament.
+`,
+  },
+  {
+    slug: 'progression-compass',
+    title: 'Progression Compass',
+    summary: 'A Terraria mod that tells you what to craft, farm and fight next, ranked for your class and progress.',
+    years: '2026',
+    context: 'Personal project',
+    status: 'Open source',
+    categories: ['Games'],
+    stack: ['C#', 'tModLoader', '.NET 8'],
+    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/ProgressionCompass' }],
+    cover: { kind: 'contour' },
+    body: `
+A client-side tModLoader mod for Terraria. It scans everything you own (inventory, equipment, every bank, nearby chests and Magic Storage), works out which upgrades are within reach and what you're missing, and tells you where to get it.
+
+- **What's next.** Gear upgrades are ranked by your class, progression tier and current loadout, sorted into Ready to craft, Almost ready and Building toward.
+- **Where to go.** An action plan groups everything to farm, buy, craft or trigger by location, so you make one trip instead of ten.
+- **Goals.** Pin any item for a HUD overlay with your progress.
+- **Bosses.** Boss order with summon hints, using Boss Checklist when it's installed.
+
+It reads the game's live recipe and drop data, so it works with Calamity, Thorium and other content mods. Under the hood a depth-first resolver builds the cheapest crafting tree, using snapshot-and-rollback so a losing branch never spends materials another needs. CI builds and packages it against the official tModLoader release.
+`,
+  },
+  {
     slug: 'movie-database-analytics',
     title: 'Movie Database Analytics',
     summary: 'SQL and Tableau dashboards over a 211,000-movie PostgreSQL database.',
@@ -243,6 +297,25 @@ CI checks every skill's frontmatter and links and runs each script.
 Practice in SQL and reporting on the [Open Media Database](https://www.omdb.org/): about 211,000 movies in PostgreSQL, explored with SQL and turned into Tableau dashboards.
 
 The repo includes the queries behind each chart and a script that restores the database snapshot. CI restores it into a fresh Postgres 17 and runs every query on each push.
+`,
+  },
+  {
+    slug: 'apple-hig-mcp',
+    title: 'Apple HIG MCP',
+    summary: "An MCP server that lets Claude search and read Apple's Human Interface Guidelines, fetched live from Apple.",
+    years: '2025–2026',
+    context: 'Personal project',
+    status: 'Open source',
+    categories: ['AI'],
+    stack: ['TypeScript', 'MCP', 'Node.js'],
+    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/apple-hig-mcp' }],
+    cover: { kind: 'contour' },
+    body: `
+Gives Claude four tools for Apple's Human Interface Guidelines: ranked search with platform and category filters, full pages as Markdown, the table of contents, and server status.
+
+Apple's HIG site is a JavaScript app, but each page is backed by a JSON document. The server reads that JSON directly, with no browser involved, and converts it to Markdown. It walks the section pages to build a catalog of about 170 pages.
+
+It's built to be polite to Apple: a descriptive User-Agent, one request at a time, retry with backoff, and a 24-hour cache, with a stale copy served when Apple is unreachable. No Apple content is bundled in the repo. Unit tests run offline on small synthetic fixtures, and a smoke test drives every tool over stdio against the live site.
 `,
   },
   {
