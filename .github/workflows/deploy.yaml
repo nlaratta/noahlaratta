@@ -17,17 +17,18 @@ jobs:
     steps:
       # 1) Check out the repository
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       # 2) Set up Node
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
-          node-version: '22'  # or whatever version you need
+          node-version: '22'
+          cache: npm
 
       # 3) Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # 4) Build your project
       - name: Build project

@@ -1,57 +1,49 @@
-# Noah Laratta's Portfolio Website
+<p align="center">
+  <img src=".github/banner.png" alt="noahlaratta.com" width="100%">
+</p>
 
-A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features include a projects showcase, technical blog, and contact form.
+<p align="center">
+  <a href="https://github.com/nlaratta/noahlaratta/actions/workflows/deploy.yaml"><img src="https://github.com/nlaratta/noahlaratta/actions/workflows/deploy.yaml/badge.svg" alt="Build and Deploy"></a>
+  <a href="https://noahlaratta.com"><img src="https://img.shields.io/badge/site-noahlaratta.com-52B788" alt="noahlaratta.com"></a>
+</p>
 
-## Tech Stack
+The source for [noahlaratta.com](https://noahlaratta.com), my personal site. It covers my projects and experience, plus a lab section for longer write-ups on research and development workflow.
 
-- [Next.js](https://nextjs.org/) - React framework
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Framer Motion](https://www.framer.com/motion/) - Animations
+## Quick start
 
-## Getting Started
+```bash
+git clone https://github.com/nlaratta/noahlaratta.git
+cd noahlaratta
+npm ci
+npm run dev        # http://localhost:3000
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/portfolio.git
-   cd portfolio
-   ```
+`npm run build` produces the static site in `out/`.
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+## How it works
 
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+- **Static export.** Next.js (Pages Router) with `output: 'export'`. There's no server or API routes, and every page is prerendered at build time.
+- **Lab write-ups.** These are MDX files in `content/lab/`, rendered with `next-mdx-remote`, GFM, slugged headings and syntax highlighting. Interactive pieces live in `components/lab/`.
+- **Build steps.** `scripts/generate-og.mjs` renders a branded Open Graph card for each page with satori and resvg before `next build`. `scripts/seo-postbuild.mjs` then writes the sitemap and feed into `out/`.
+- **Deploys.** Every push to `main` builds the site in GitHub Actions and mirrors `out/` to the host over SFTP ([`deploy.yaml`](.github/workflows/deploy.yaml)). Pull requests build without deploying.
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+## Project structure
 
-## Project Structure
+```
+pages/          routes (index, about, projects, lab, lab/[slug])
+components/     layout, navbar, MDX + lab components
+content/lab/    lab articles (MDX with frontmatter)
+lib/            project data, lab loader, SEO helpers
+scripts/        OG image + sitemap/feed generation
+public/         static assets, favicons, robots.txt, llms.txt
+```
 
-- `/components` - Reusable React components
-- `/pages` - Next.js pages and API routes
-- `/lib` - Data and utility functions
-- `/public` - Static assets
-- `/styles` - Global styles and Tailwind configuration
+To update the content, edit project entries in `lib/projects.ts` and add articles as `content/lab/<slug>.mdx`.
 
-## Customization
+## Tech stack
 
-1. Update personal information:
-   - Edit social links in `components/Layout.tsx`
-   - Modify project data in `lib/projects.ts`
+Next.js 15 · React 19 · TypeScript · Tailwind CSS · Framer Motion · MDX
 
-2. Styling:
-   - Modify the color scheme in `tailwind.config.ts`
+## License
 
-3. Content:
-   - Update meta tags in `pages/_app.tsx`
-   - Modify page content in respective page components
-
-## Contact
-
-Noah Laratta - [noahlaratta@gmail.com](mailto:noahlaratta@gmail.com)
-
-Project Link: [https://www.noahlaratta.com](https://www.noahlaratta.com)
+© Noah Laratta. The code is free to read and learn from. The site's content, photos and branding are not licensed for reuse.
