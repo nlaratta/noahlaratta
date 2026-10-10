@@ -18,8 +18,8 @@ export default function Footer() {
           </Link>
           <p className="mt-1 text-sm text-text-secondary">
             Software engineer in Denver, Colorado.{' '}
-            <a href="mailto:noahlaratta@gmail.com" className="underline decoration-border underline-offset-4 hover:text-primary hover:decoration-primary">
-              noahlaratta@gmail.com
+            <a href="mailto:noah@larattalabs.com" className="underline decoration-border underline-offset-4 hover:text-primary hover:decoration-primary">
+              noah@larattalabs.com
             </a>
           </p>
         </div>

@@ -153,19 +153,19 @@ export default function Home() {
         <Container className="grid gap-10 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
             <h2 id="contact" className="font-serif text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-              Hiring, or have something that needs building?
+              Have something you want built?
             </h2>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-text-secondary">
-              Email me and I&apos;ll get back to you. For client projects, Laratta Labs is the way to start: I scope
-              every engagement myself, and the first call is free.
+              I take on client work through Laratta Labs, my software studio. Tell me about your project with the
+              form, or email me directly. I scope every engagement myself, and the first call is free.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-            <a href="mailto:noahlaratta@gmail.com" className="rounded-md bg-primary px-6 py-3 font-medium text-on-primary transition-colors hover:bg-primary-dark dark:hover:bg-primary-light">
-              Email me
-            </a>
-            <a href="https://larattalabs.com/contact" className="rounded-md border border-border px-6 py-3 font-medium text-foreground transition-colors hover:border-primary">
+            <a href="https://larattalabs.com/contact/" className="rounded-md bg-primary px-6 py-3 font-medium text-on-primary transition-colors hover:bg-primary-dark dark:hover:bg-primary-light">
               Start a project
+            </a>
+            <a href="mailto:noah@larattalabs.com" className="rounded-md border border-border px-6 py-3 font-medium text-foreground transition-colors hover:border-primary">
+              Email me
             </a>
           </div>
         </Container>
