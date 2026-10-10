@@ -9,7 +9,7 @@ export const SITE_URL = 'https://noahlaratta.com'
 export const SITE_NAME = 'Noah Laratta'
 export const AUTHOR = 'Noah Laratta'
 export const JOB_TITLE = 'Software Engineer'
-export const EMAIL = 'noahlaratta@gmail.com'
+export const EMAIL = 'noah@larattalabs.com'
 export const TWITTER_HANDLE = '' // none set; twitter:site is omitted when empty
 
 export const DEFAULT_DESCRIPTION =

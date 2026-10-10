@@ -20,7 +20,7 @@
 - [Getting the Most Out of Oh My Pi](https://noahlaratta.com/lab/oh-my-pi): a hands-on guide to the omp terminal coding agent — features, model routing, and workflows — plus running it 100% locally on DeepSeek V4 Flash.
 
 ## Contact
-- Email: noahlaratta@gmail.com
+- Email: noah@larattalabs.com
 - GitHub: https://github.com/nlaratta
 - LinkedIn: https://www.linkedin.com/in/noah-laratta
 - Studio: https://larattalabs.com
