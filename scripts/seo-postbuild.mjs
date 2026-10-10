@@ -120,3 +120,16 @@ const addIndexes = (dir) => {
   }
 }
 addIndexes(OUT)
+
+// The deploy mirrors out/ without deleting, so these folders (project images
+// before they moved to /images/projects in #28) still exist on the host and
+// shadow the project pages. Give each an index.html until they're removed
+// from the server; then this list can go.
+const STALE_HOST_DIRS = ['projects/squadup', 'projects/yardpaint', 'projects/architect', 'projects/blender-hunyuan3d']
+for (const dir of STALE_HOST_DIRS) {
+  const page = path.join(OUT, `${dir}.html`)
+  if (!fs.existsSync(page)) continue
+  fs.mkdirSync(path.join(OUT, dir), { recursive: true })
+  fs.copyFileSync(page, path.join(OUT, dir, 'index.html'))
+  console.log(`seo-postbuild: ${dir}.html -> ${dir}/index.html (stale host folder)`)
+}
