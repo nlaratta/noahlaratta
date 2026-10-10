@@ -44,7 +44,7 @@ export default function Home() {
           </div>
           <p className="mt-12 flex items-start gap-3 text-[15px] text-text-secondary">
             <span aria-hidden className="relative mt-[7px] flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-mark opacity-50 motion-reduce:hidden" />
+              <span className="absolute inline-flex h-full w-full animate-[ping_1.2s_cubic-bezier(0,0,0.2,1)_3_forwards] rounded-full bg-gold-mark opacity-50 motion-reduce:hidden" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-mark" />
             </span>
             <span>

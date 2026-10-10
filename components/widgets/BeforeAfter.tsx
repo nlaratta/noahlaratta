@@ -15,7 +15,7 @@ export default function BeforeAfter({
 
   return (
     <figure>
-      <div className="relative aspect-[3/2] select-none overflow-hidden rounded-lg border border-border bg-sand">
+      <div className="relative aspect-[3/2] select-none overflow-hidden rounded-lg border border-border bg-sand has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-4 has-[:focus-visible]:outline-primary">
         <img src={after.src} alt={after.alt} className="absolute inset-0 h-full w-full object-cover" />
         <img
           src={before.src}
