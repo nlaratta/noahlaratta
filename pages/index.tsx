@@ -150,7 +150,7 @@ export default function Home() {
                   key={project.id}
                   variants={fadeUp}
                   whileHover={{ scale: 1.01 }}
-                  className={`border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow] duration-200 ${
+                  className={`border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-xs transition-[border-color,box-shadow] duration-200 ${
                     i === 0 ? 'md:col-span-2 md:row-span-2 bg-primary-lighter/20' : ''
                   }`}
                 >
@@ -244,7 +244,7 @@ export default function Home() {
             {featuredLab && (
               <motion.div
                 variants={fadeUp}
-                className="border border-border bg-surface rounded-xl p-6 max-w-lg border-l-4 border-l-primary hover:shadow-sm transition-[border-color,box-shadow] duration-200"
+                className="border border-border bg-surface rounded-xl p-6 max-w-lg border-l-4 border-l-primary hover:shadow-xs transition-[border-color,box-shadow] duration-200"
               >
                 <span className="text-xs text-text-secondary uppercase tracking-wider">
                   {featuredLab.date}

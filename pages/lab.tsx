@@ -24,7 +24,7 @@ const categoryBadge: Record<LabCategory, { bg: string; label: string }> = {
 }
 
 const cardClass =
-  'border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow] duration-200'
+  'border border-border bg-surface rounded-xl p-6 hover:border-primary/30 hover:shadow-xs transition-[border-color,box-shadow] duration-200'
 
 function CardBody({ entry, badge }: { entry: LabEntry; badge: { bg: string; label: string } }) {
   return (

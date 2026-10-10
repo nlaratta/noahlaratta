@@ -95,7 +95,7 @@ export default function Layout({
 
       <Navbar />
 
-      <main className="flex-grow max-w-5xl w-full mx-auto px-6 sm:px-8 py-12 pt-28">
+      <main className="grow max-w-5xl w-full mx-auto px-6 sm:px-8 py-12 pt-28">
         {children}
       </main>
 

@@ -23,7 +23,7 @@ export default function Callout({
       <span className={`block text-xs font-semibold uppercase tracking-wider mb-1 ${s.label}`}>
         {title || s.text}
       </span>
-      <div className="text-sm text-foreground/80 leading-relaxed [&>p]:m-0 [&>p+p]:mt-2 [&_code]:font-mono [&_code]:text-primary-dark [&_code]:bg-white/60 [&_code]:px-1 [&_code]:rounded">
+      <div className="text-sm text-foreground/80 leading-relaxed [&>p]:m-0 [&>p+p]:mt-2 [&_code]:font-mono [&_code]:text-primary-dark [&_code]:bg-white/60 [&_code]:px-1 [&_code]:rounded-sm">
         {children}
       </div>
     </div>

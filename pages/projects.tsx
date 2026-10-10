@@ -140,7 +140,7 @@ export default function Projects() {
                   className={`border bg-surface rounded-xl p-5 cursor-pointer transition-[border-color,box-shadow,background-color] duration-200 ${
                     selectedProject?.id === project.id
                       ? 'border-l-2 border-l-primary border-border bg-primary/5'
-                      : 'border-border hover:border-primary/30 hover:shadow-sm'
+                      : 'border-border hover:border-primary/30 hover:shadow-xs'
                   }`}
                 >
                   <h3 className="text-base font-semibold text-foreground mb-1.5">

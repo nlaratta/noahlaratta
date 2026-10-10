@@ -45,7 +45,7 @@ export default function FeatureExplorer() {
                 exit={{ opacity: 0, scale: 0.97 }}
                 transition={{ duration: 0.2 }}
                 className={`border rounded-xl bg-surface overflow-hidden transition-colors ${
-                  open ? 'border-primary/40 shadow-sm' : 'border-border hover:border-primary/30'
+                  open ? 'border-primary/40 shadow-xs' : 'border-border hover:border-primary/30'
                 }`}
               >
                 <button
@@ -55,7 +55,7 @@ export default function FeatureExplorer() {
                 >
                   <div className="flex items-center justify-between gap-3">
                     <h4 className="text-sm font-semibold text-foreground">{f.name}</h4>
-                    <span className="text-[10px] uppercase tracking-wider text-primary-dark bg-primary-lighter px-1.5 py-0.5 rounded shrink-0">
+                    <span className="text-[10px] uppercase tracking-wider text-primary-dark bg-primary-lighter px-1.5 py-0.5 rounded-sm shrink-0">
                       {f.facet}
                     </span>
                   </div>

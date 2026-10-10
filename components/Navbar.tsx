@@ -21,7 +21,7 @@ export default function Navbar() {
         <>
           <div className="max-w-5xl mx-auto px-6 sm:px-8">
             <div className="flex justify-between h-16">
-              <div className="flex-shrink-0 flex items-center">
+              <div className="shrink-0 flex items-center">
                 <Link href="/" className="text-lg font-semibold text-foreground hover:text-primary transition-colors duration-200">
                   Noah Laratta
                 </Link>

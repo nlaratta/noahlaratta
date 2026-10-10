@@ -57,7 +57,7 @@ export default function ContextRamWidget() {
         {segments.map((s) => (
           <div key={s.key}>
             <div className="flex items-center gap-1.5">
-              <span className={`w-2.5 h-2.5 rounded-sm ${s.className}`} />
+              <span className={`w-2.5 h-2.5 rounded-xs ${s.className}`} />
               <motion.span
                 key={`${s.key}-${s.gb}`}
                 initial={{ opacity: 0.4 }}
