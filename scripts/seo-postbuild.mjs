@@ -94,3 +94,17 @@ ${items}
 fs.writeFileSync(path.join(OUT, 'feed.xml'), feed)
 
 console.log(`seo-postbuild: sitemap (${urls.length} urls) + feed (${articles.length} items) written to out/`)
+
+// A page that shares its name with a directory (lab.html next to lab/, which
+// holds the articles) is unreachable on Apache: /lab redirects to /lab/,
+// which has no index. Give each such directory an index.html copy so the
+// page loads on any static host.
+for (const entry of fs.readdirSync(OUT, { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue
+  const page = path.join(OUT, `${entry.name}.html`)
+  const index = path.join(OUT, entry.name, 'index.html')
+  if (fs.existsSync(page) && !fs.existsSync(index)) {
+    fs.copyFileSync(page, index)
+    console.log(`seo-postbuild: ${entry.name}.html -> ${entry.name}/index.html`)
+  }
+}

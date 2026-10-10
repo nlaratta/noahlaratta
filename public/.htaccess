@@ -1,13 +1,4 @@
-# Static export serves /lab from lab.html, but out/lab/ is also a directory
-# (it holds the articles). Stop Apache from redirecting /lab -> /lab/ (which
-# has no index and 403s) and map extensionless URLs to their .html file.
-DirectorySlash Off
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  # /lab/ -> /lab when lab.html exists
-  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-  RewriteRule ^(.+)/$ /$1 [R=301,L]
-  # /lab -> lab.html
-  RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.+)$ $1.html [L]
-</IfModule>
+# Intentionally empty: server defaults. (The deploy mirrors without deleting,
+# so this file must exist to overwrite an earlier rewrite-based version.)
+# Pages that share a name with a directory (lab.html + lab/) get a copy at
+# lab/index.html from scripts/seo-postbuild.mjs instead.
