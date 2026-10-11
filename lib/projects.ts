@@ -201,6 +201,27 @@ Every other route to Hunyuan3D on a Mac is either shape-only or CUDA-only. This 
 `,
   },
   {
+    slug: 'lab-ui',
+    title: 'Lab UI',
+    summary: 'The shared client UI library of the Laratta Labs Minecraft mods: one screen kit, world-space UI and crash guard for all three.',
+    years: '2026',
+    context: 'Laratta Labs',
+    status: 'Open source',
+    categories: ['Games'],
+    stack: ['Java', 'Fabric', 'Gradle'],
+    links: [{ label: 'Source on GitHub', href: 'https://github.com/larattalabs/lab-ui' }],
+    cover: { kind: 'contour' },
+    body: `
+AgentCraft Worlds, Architect and Steward each carried their own port of the same "Warm Studio" UI kit. Lab UI moves that code into one Fabric library mod that all three bundle jar-in-jar, so a fix lands once.
+
+- **Screen kit.** GUI sprites, panels, buttons, scrollbars and style tokens.
+- **World-space UI.** Billboards, nine-sliced plates, speech bubbles and face displays.
+- **Crash guard.** HUD and tick handlers whose failures are logged once and swallowed, so they never crash the game.
+
+The code was moved out of AgentCraft Worlds, not rewritten: only the package, the resource namespace and a few small seams changed, and the README maps every old class to its new home. It's published to GitHub Packages with semantic versions, and Fabric loads one shared copy however many mods bundle it.
+`,
+  },
+  {
     slug: 'claude-helpers',
     title: 'claude-helpers',
     summary: 'Claude Code skills and scripts, starting with recovering lost work from session transcripts.',
