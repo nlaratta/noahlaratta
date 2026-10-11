@@ -371,12 +371,12 @@ It uses the current OpenAI SDK with a configurable model, and its tests run agai
   {
     slug: 'freakmoji-clicker',
     title: 'Freakmoji Clicker',
-    summary: 'A browser clicker game: click the emoji, climb a ladder of upgrades, and chase a top-10 score.',
-    years: '2024',
+    summary: 'A 3D incremental browser game: poke a very startled emoji through seven diorama eras with forty weapons and an animated minion crew.',
+    years: '2024–2026',
     context: 'Personal project',
     status: 'Live',
     categories: ['Games'],
-    stack: ['JavaScript', 'HTML', 'CSS'],
+    stack: ['TypeScript', 'Three.js', 'Vite', 'Blender', 'Web Audio'],
     links: [
       { label: 'Play it', href: 'https://nlaratta.github.io/emoji-clicker/' },
       { label: 'Game Hub', href: 'https://nlaratta.github.io/game-hub/' },
@@ -385,12 +385,20 @@ It uses the current OpenAI SDK with a configurable model, and its tests run agai
     cover: {
       kind: 'image',
       src: '/images/projects/freakmoji/game.jpg',
-      alt: 'Freakmoji Clicker: the emoji, score and shop',
+      alt: 'Freakmoji Clicker: the Freakmoji under attack by its minion crew in a night-city diorama',
     },
+    gallery: [
+      { src: '/images/projects/freakmoji/eras.jpg', alt: 'The seven eras, from a Stone Age meadow to a floating patchwork island', caption: 'Seven eras, each a 3D diorama that rises out of the ground as the last one sinks' },
+    ],
     body: `
-Click the freakmoji to earn points, spend them on a long ladder of upgrades (from Bare Fists to the Railgun and beyond), then finish the game to post a top-10 high score. High scores are saved in your browser.
+An incremental arcade game about one very startled emoji. Poke the 3D Freakmoji to make it gasp, arm yourself with forty weapons from bare fists to a galaxy destroyer, recruit minions that bombard it for you, beat each era's Composure boss, then collapse the timeline and start again, more paranoid.
 
-It's plain HTML, CSS and JavaScript with no build step, deployed to GitHub Pages and listed on my [Game Hub](https://nlaratta.github.io/game-hub/).
+- **A modelled star.** The Freakmoji dents where you hit it, squashes and stretches, tracks your cursor and flinches. Each weapon family lands its own way.
+- **Seven diorama eras.** A Stone Age meadow, a castle bailey, a factory yard, a night city plaza, a rainy neon arcade district, an asteroid outpost, and a floating island patched together from every earlier era.
+- **A working crew.** Fourteen minion types are animated 3D characters that walk to their stations, work and rest, while the machines attack on their own: drones zap, satellites fire beams, a black hole engine pulls matter off the star.
+- **Depth.** Combos, crits, weak spots, five abilities, golden Freakmojis, bosses, offline progress, and a three-branch prestige tree.
+
+The game logic is a deterministic TypeScript simulation, kept separate from the Three.js rendering. The 3D models are procedural Blender scripts exported as compressed glTF, the icons were illustrated with a locally run image model, and every sound is synthesised in the browser. CI runs unit and Playwright tests, then deploys to GitHub Pages.
 `,
   },
   {
