@@ -321,22 +321,26 @@ The repo includes the queries behind each chart and a script that restores the d
 `,
   },
   {
-    slug: 'apple-hig-mcp',
-    title: 'Apple HIG MCP',
-    summary: "An MCP server that lets Claude search and read Apple's Human Interface Guidelines, fetched live from Apple.",
+    slug: 'hig-review',
+    title: 'HIG Review',
+    summary: "Review Apple-platform UI against Apple's Human Interface Guidelines from Claude, with every rule cited.",
     years: '2025–2026',
     context: 'Personal project',
     status: 'Open source',
-    categories: ['AI'],
-    stack: ['TypeScript', 'MCP', 'Node.js'],
-    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/apple-hig-mcp' }],
+    categories: ['AI', 'Apps'],
+    stack: ['TypeScript', 'MCP', 'Claude Code plugin'],
+    links: [{ label: 'Source on GitHub', href: 'https://github.com/nlaratta/hig-review' }],
     cover: { kind: 'contour' },
     body: `
-Gives Claude four tools for Apple's Human Interface Guidelines: ranked search with platform and category filters, full pages as Markdown, the table of contents, and server status.
+Show Claude a screenshot, a simulator capture or a SwiftUI view and ask what breaks the HIG. Claude does the looking. HIG Review supplies the rules: 107 curated checks across 21 HIG pages, each cited with a link and a one-sentence quote fetched live from Apple.
 
-Apple's HIG site is a JavaScript app, but each page is backed by a JSON document. The server reads that JSON directly, with no browser involved, and converts it to Markdown. It walks the section pages to build a catalog of about 170 pages.
+- **Cited checklists.** Ask for the rules that apply to a tab bar, a sheet or an alert. Every rule is scoped to the platforms its page actually covers, and Apple's "consider" and "prefer" stay recommendations, not requirements.
+- **SwiftUI checks.** Eleven lexical heuristics flag likely problems in source, such as tap targets under the platform minimum, fixed font sizes that break Dynamic Type, and alerts with too many buttons. Each finding says it's a heuristic and how confident it is.
+- **Contrast.** A deterministic WCAG ratio, reported against both the HIG accessibility table and its Dark Mode guidance. A translucent background with no known backdrop gets "unknown", never a false pass.
 
-It's built to be polite to Apple: a descriptive User-Agent, one request at a time, retry with backoff, and a 24-hour cache, with a stale copy served when Apple is unreachable. No Apple content is bundled in the repo. Unit tests run offline on small synthetic fixtures, and a smoke test drives every tool over stdio against the live site.
+**Honest by design.** A rule only counts as verified when its locator phrase matches exactly one sentence on the live page. If Apple changes the wording, or the tool can only reach a cached copy, the citation says so instead of quoting stale text.
+
+It ships as an MCP server and as a Claude Code plugin with a review skill and a reviewer agent. It grew out of a simple HIG lookup server, after tools like sosumi.ai made plain documentation lookup a solved problem.
 `,
   },
   {
