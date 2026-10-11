@@ -17,7 +17,8 @@
 - [claude-helpers](https://noahlaratta.com/projects/claude-helpers): Claude Code skills, including recovering lost work from transcripts.
 - [Idea Battleground](https://noahlaratta.com/projects/idea-battleground): AI agents generate, judge and battle product ideas in Elo rounds, visualized live (open source).
 - [Progression Compass](https://noahlaratta.com/projects/progression-compass): Terraria mod that recommends what to craft, farm and fight next (open source).
-- [Apple HIG MCP](https://noahlaratta.com/projects/apple-hig-mcp): MCP server for searching Apple's Human Interface Guidelines from Claude (open source).
+- [HIG Review](https://noahlaratta.com/projects/hig-review): MCP server and Claude Code plugin for reviewing Apple-platform UI against the Human Interface Guidelines, with live-cited rules (open source).
+- [Lab UI](https://noahlaratta.com/projects/lab-ui): shared Fabric client UI library for the Laratta Labs Minecraft mods (open source).
 
 ## Writing
 - [Getting the Most Out of Oh My Pi](https://noahlaratta.com/lab/oh-my-pi): a hands-on guide to the omp terminal coding agent — features, model routing, and workflows — plus running it 100% locally on DeepSeek V4 Flash.

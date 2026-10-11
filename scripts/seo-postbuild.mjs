@@ -133,3 +133,13 @@ for (const dir of STALE_HOST_DIRS) {
   fs.copyFileSync(page, path.join(OUT, dir, 'index.html'))
   console.log(`seo-postbuild: ${dir}.html -> ${dir}/index.html (stale host folder)`)
 }
+
+// Renamed project pages. The deploy never deletes remote files, so each old
+// path gets a tiny page that sends visitors (and crawlers) to the new one.
+const RENAMED_PROJECTS = { 'apple-hig-mcp': 'hig-review' }
+for (const [from, to] of Object.entries(RENAMED_PROJECTS)) {
+  const target = `${SITE_URL}/projects/${to}`
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Moved</title><link rel="canonical" href="${target}"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=${target}"></head><body><p>This page moved to <a href="${target}">${target}</a>.</p></body></html>\n`
+  fs.writeFileSync(path.join(OUT, 'projects', `${from}.html`), html)
+  console.log(`seo-postbuild: redirect projects/${from} -> projects/${to}`)
+}
