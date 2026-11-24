@@ -159,10 +159,9 @@ It's a Fabric mod for singleplayer that starts its own small Node helper to run 
     summary: 'A desktop playground for comparing local AI models on Apple Silicon side by side: image, video, music and text.',
     years: '2026',
     context: 'Laratta Labs',
-    status: 'Open source',
     categories: ['AI'],
     stack: ['Electron', 'Svelte', 'TypeScript', 'Python', 'MLX'],
-    links: [{ label: 'Source on GitHub', href: 'https://github.com/larattalabs/local-lab' }],
+    links: [],
     cover: { kind: 'contour' },
     body: `
 Write one prompt, run it across several models, and look at the results side by side. Image, video, music and text each get their own section, and adding a model is a declarative entry in a registry, with no UI work.
